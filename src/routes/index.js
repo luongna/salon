@@ -1,0 +1,42 @@
+// Layouts
+
+
+// Pages
+import Home from '~/pages/Home';
+import Cart from '~/pages/Cart'
+import Login from '~/pages/Login/index'
+import Register from '~/pages/Register/index'
+import Branch from '~/pages/Admin/scenes/branch'
+import Calendar from '~/pages/Admin/scenes/calendar/calendar'
+import Form from '~/pages/Admin/scenes/form/user'
+import FormService from '~/pages/Admin/scenes/form/service'
+import EditForm from '~/pages/Admin/scenes/form/editUser'
+import EditFormBranch from '~/pages/Admin/scenes/form/editBranch'
+import EditFormService from '~/pages/Admin/scenes/form/editService'
+import FormBranch from '~/pages/Admin/scenes/form/branch'
+import BookServiceContent from '~/pages/BookServiceContent'
+import Service from  '~/pages/Service'
+import Staff from  '~/pages/Staff'
+// Public routes
+const publicRoutes = [
+    { path: '/', component: Home },
+    { path: '/cart', component: Cart },
+    { path: '/bookservice', component: BookServiceContent },
+    { path: '/login', component: Login , layout: null},
+    { path: '/register', component: Register , layout: null},
+    { path: '/service', component: Service},
+    { path: '/staff', component: Staff},
+    { path: '/branch', component: Branch , admin: true},
+    { path: '/formBranch', component: FormBranch , admin: true},
+    { path: '/calendar', component: Calendar , admin: true},
+    { path: '/form', component: Form , admin: true},
+    { path: '/formService', component: FormService , admin: true},
+    { path: '/editUser/:id', component: EditForm , admin: true},
+    { path: '/editBranch/:id', component: EditFormBranch , admin: true},
+    { path: '/editService/:id', component: EditFormService , admin: true},
+            
+];
+
+const privateRoutes = [];
+
+export { publicRoutes, privateRoutes };

@@ -1,0 +1,36 @@
+.footer-element{
+    width: 80%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    background-color: #e2e8f0;
+    padding: 20px;
+    align-items: center;
+    border-radius: 12px;
+    margin-top: 20px;
+    div{
+        max-width: 300px;
+        min-width: 120px;
+        h3 {
+            color: #2c5282;
+            text-transform: uppercase;
+        }
+    }
+}
+.footer-bottom{
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-bottom-element{
+    padding: 10px;
+   
+}
+
+@media screen and (max-width: 769px) {
+    .footer-element{
+        display: grid;
+        grid-template-columns: 1fr 1fr ;
+    }
+}
