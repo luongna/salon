@@ -1,23 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
- import axios from '~/utils/api/axios'; 
+import axios from '~/utils/api/axios';
 // import { render } from '@testing-library/react';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-import {useTokenStore } from '~/utils/store/token'
-import { useUserStore } from '~/utils/store/user'
+import { useTokenStore } from '~/utils/store/token';
+import { useUserStore } from '~/utils/store/user';
 import './login.component.scss';
 import { Link } from 'react-router-dom';
-
+import { loginStart, loginFailed, loginSuccess } from '~/utils/store/authSlice';
+import { useDispatch } from 'react-redux';
 const LoginForm = (onClose) => {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
-    // const [message, setMessage] = useState('');
-    // const [errorMessage, setErrorMessage] = useState('');
     const [errors, setErrors] = useState({});
     const [setUserInfo] = useUserStore((state) => [state.setUserInfo]);
     const [setToken] = useTokenStore((state) => [state.setToken]);
     const navigate = useNavigate();
-
+    const dispath = useDispatch();
     const validateForm = () => {
         let formIsValid = true;
 
@@ -25,13 +24,13 @@ const LoginForm = (onClose) => {
             formIsValid = false;
             setErrors((errors) => ({ ...errors, phone: 'Vui lòng nhập email!' }));
         } else {
-            const regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
-            if (!regexPhoneNumber.test(phone)) {
-                formIsValid = false;
-                setErrors((errors) => ({ ...errors, phone: 'Vui lòng nhập số điện thoại hợp lệ!' }));
-            } else {
-                setErrors((errors) => ({ ...errors, phone: '' }));
-            }
+            // const regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+            // if (!regexPhoneNumber.test(phone)) {
+            //     formIsValid = false;
+            //     setErrors((errors) => ({ ...errors, phone: 'Vui lòng nhập số điện thoại hợp lệ!' }));
+            // } else {
+            //     setErrors((errors) => ({ ...errors, phone: '' }));
+            // }
         }
 
         if (!password) {
@@ -46,11 +45,12 @@ const LoginForm = (onClose) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
+            dispath(loginStart());
             axios
                 .post(
-                    '/user/list',
+                    '/auth/login',
                     {
-                        phone: phone,
+                        email: phone,
                         password: password,
                     },
                     {
@@ -69,21 +69,24 @@ const LoginForm = (onClose) => {
                             timer: 1100,
                         });
 
-                        const { user, accessToken } = response.data;
-                        if (user.id === 1) {
-                            setUserInfo(user);
-                            setToken(accessToken);
-                            navigate('/');
-                        } else {
-                            setUserInfo(user);
-                            setToken(accessToken);
-                            navigate('/');
-                        }
+                        dispath(loginSuccess(response.data));
+                        navigate('/');
+                        // const { user, accessToken } = response.data;
+                        // if (user.id === 1) {
+                        setUserInfo(response.data);
+                        setToken(response.data.accessToken);
+                        //     navigate('/');
+                        // } else {
+                        //     setUserInfo(user);
+                        //     setToken(accessToken);
+                        //     navigate('/');
+                        // }
                     }
                 })
                 .catch((err) => {
                     document.getElementById('f').innerText = `Tài khoản email hoặc mật khẩu không đúng!`;
                     console.log('error', err);
+                    dispath(loginFailed());
                 });
         }
     };
@@ -115,7 +118,7 @@ const LoginForm = (onClose) => {
                     </label>
 
                     <input
-                        type="number"
+                        type="text"
                         id="form3Example3"
                         className="form-control form-control-lg"
                         placeholder="Enter a valid email address"

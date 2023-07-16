@@ -40,7 +40,20 @@ const Form = () => {
             };
             axios
                 .post(`http://localhost:8080/branch`, formValues)
-                .then((res) => {})
+                .then((res) => {
+                    resetForm();
+                    setSelectedPoint(null);
+                    toast.success('Tạo chi nhánh thành công!', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'light',
+                    });
+                })
                 .catch((error) => console.log(error));
             // axios
             //     .post(`http://localhost:8080/auth/login`, { email: 'nam@codejava.net', password: 'nam2020' })
@@ -49,18 +62,6 @@ const Form = () => {
             //         console.log(persons);
             //     })
             //     .catch((error) => console.log(error));
-            resetForm();
-            setSelectedPoint(null);
-            toast.success('Tạo chi nhánh thành công!', {
-                position: 'top-right',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'light',
-            });
         } else {
             alert('Chưa chọn chi nhánh trên bản đồ');
         }

@@ -13,10 +13,13 @@ import FormService from '~/pages/Admin/scenes/form/service'
 import EditForm from '~/pages/Admin/scenes/form/editUser'
 import EditFormBranch from '~/pages/Admin/scenes/form/editBranch'
 import EditFormService from '~/pages/Admin/scenes/form/editService'
+import Dashboard from '~/pages/Admin/scenes/dashboard/index'
 import FormBranch from '~/pages/Admin/scenes/form/branch'
 import BookServiceContent from '~/pages/BookServiceContent'
 import Service from  '~/pages/Service'
 import Staff from  '~/pages/Staff'
+import AccessDeny from '~/pages/Admin/Status/accessDeny'
+import NotFound from '~/pages/Admin/Status/NotFound';
 // Public routes
 const publicRoutes = [
     { path: '/', component: Home },
@@ -30,11 +33,13 @@ const publicRoutes = [
     { path: '/formBranch', component: FormBranch , admin: true},
     { path: '/calendar', component: Calendar , admin: true},
     { path: '/form', component: Form , admin: true},
+    { path: '/dashboard', component: Dashboard , admin: true},
     { path: '/formService', component: FormService , admin: true},
     { path: '/editUser/:id', component: EditForm , admin: true},
     { path: '/editBranch/:id', component: EditFormBranch , admin: true},
     { path: '/editService/:id', component: EditFormService , admin: true},
-            
+    { path: '/accessDeny', component: AccessDeny,layout: null },
+    { path: '/404', component: NotFound,layout: null },
 ];
 
 const privateRoutes = [];

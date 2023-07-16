@@ -33,21 +33,19 @@ const Branch = () => {
                 setOpen(false);
                 setTeamData((prevData) => prevData.filter((item) => item.id !== deleteData));
                 toast.success('Xóa thành công', {
-                    position: "top-right",
+                    position: 'top-right',
                     autoClose: 5000,
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
-                    theme: "light",
-                    });
+                    theme: 'light',
+                });
             })
             .catch((err) => {
                 console.log(err);
             });
-        
-       
     }
 
     function openDelete(id) {
@@ -144,10 +142,10 @@ const Branch = () => {
             <ConfirmBox
                 open={open}
                 closeDialog={() => setOpen(false)}
-                title={"Bạn có chắc muốn xóa chi nhánh!"}
+                title={'Bạn có chắc muốn xóa chi nhánh!'}
                 deleteFunction={deleteUser}
             />
-             <ToastContainer />
+            <ToastContainer />
         </>
     );
 };
