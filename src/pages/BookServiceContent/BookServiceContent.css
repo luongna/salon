@@ -9,7 +9,7 @@
     background-size: cover;
 }
 .grid {
-    min-width: 100%;
+    width: 100%;
 }
 
 .grid-row {
@@ -39,16 +39,16 @@
 .book-service-content {
     width: 100%;
     margin: 40px 0;
-    color: #000;
 }
 
 .book-service {
-    background-color: #fff;
+    background-color: #f9f9f9;
 }
 
 .service-name {
     text-align: center;
     margin-top: 10px;
+    font-weight: 600;
 }
 
 .branch,
@@ -58,20 +58,14 @@
     margin: 15px;
 }
 
-.branch-item {
-    height: 54px;
-    border: transparent;
+.branch-select {
+    width: 100%;
+    padding: 7px;
+    border: 1px solid rgb(246, 109, 109);
     border-radius: 5px;
-    text-align: center;
-    margin-bottom: 10px;
-    margin-right: 5px;
+    outline: none;
+    cursor: pointer;
     background-color: rgb(246, 109, 109);
-    color: #000;
-}
-
-.branch-item:hover {
-    background-color: #000;
-    color: rgb(246, 109, 109);
 }
 
 .staff-select {
@@ -136,7 +130,8 @@
 }
 
 .submit {
-    margin: 15px;
+    margin: 15px auto;
+    display: flex;
     padding: 12px 20px;
     border: transparent;
     border-radius: 5px;
@@ -150,15 +145,16 @@
     background-color: #000;
 }
 
+
 .staff-info {
     min-height: 46%;
-    background-color: #fff;
-    margin-bottom: 30px;
+    background-color: #f9f9f9;
 }
 
 .staff-info-content {
     padding-top: 10px;
     text-align: center;
+    font-weight: 600;
 }
 
 .staff-items {
