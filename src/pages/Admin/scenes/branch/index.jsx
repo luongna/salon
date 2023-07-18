@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, useTheme } from '@mui/material';
 import { DataGrid, viVN } from '@mui/x-data-grid';
 import { tokens } from '~/utils/theme/theme';
-import axios from 'axios';
+import axios from '~/utils/api/axios';
 import Header from '../../components/Header';
 import { IconButton } from '@mui/material';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -18,7 +18,7 @@ const Branch = () => {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/branch`)
+            .get(`/branch`)
             .then((res) => {
                 const branch = res.data;
                 setTeamData(branch);

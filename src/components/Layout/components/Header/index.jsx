@@ -71,7 +71,7 @@ function Header() {
                         </div>
                     </Link>
                 ) : (
-                    <div className={cx('actions')}>Xin chào {user.email}</div>
+                    <div className={cx('actions')}>Xin chào {user.name}</div>
                 )}
             </div>
             <div className={cx('mobile')} onClick={() => setStatus(!status)}>

@@ -1,27 +1,40 @@
-import axios from 'axios'
-// import {  useSelector } from 'react-redux';
-const BASE_URL = 'http://localhost:8080'
+import axios from 'axios';
+import { store } from '~/utils/store/store';
+const BASE_URL = 'http://localhost:8080';
 
 // axios.interceptors.request.use(async (config) => {
 //     const customHeaders = {};
-  
-//     const accessToken = useSelector((state)=> state.auth.login.currenUser.accessToken)
-//     if (accessToken) {
-//       customHeaders.Authorization = accessToken;
-//     }
-  
-//     return {
-//       ...config,
-//       headers: {
-//         ...customHeaders,  // auto attach token
-//         ...config.headers, // but you can override for some requests
-//       }
-//     };
-//   });
+//     const state = store.getState();
+//     const accessToken
+//     if (state) {
+//         const accessToken = state.auth.login?.currenUser.accessToken;
+//         customHeaders.authorization = `Bearer ${accessToken}`;
 
-export default axios.create({
+//     }
+
+//     return {
+//         ...config,
+//         headers: {
+//           authorization: `Bearer ${accessToken}`,
+//             ...config.headers, // but you can override for some requests
+//         },
+//     };
+// });
+const api = axios.create({
     baseURL: BASE_URL,
     headers: {
         'content-type': 'application/json',
-      },
-})
+    },
+});
+api.interceptors.request.use(function (config) {
+    const state = store.getState().auth.login?.currenUser;
+
+    if (state) {
+        const accessToken = state.accessToken;
+        config.headers.authorization = `Bearer ${accessToken}`;
+
+    }
+
+    return config;
+});
+export default api;

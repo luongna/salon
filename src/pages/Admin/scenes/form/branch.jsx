@@ -1,5 +1,5 @@
 import { Box, Button, TextField } from '@mui/material';
-import axios from 'axios';
+import axios from '~/utils/api/axios';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -37,9 +37,10 @@ const Form = () => {
                 address: values.address,
                 lat: selectedPoint.lat,
                 lng: selectedPoint.lng,
+                status : 1
             };
             axios
-                .post(`http://localhost:8080/branch`, formValues)
+                .post(`/branch`, formValues)
                 .then((res) => {
                     resetForm();
                     setSelectedPoint(null);
