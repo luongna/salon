@@ -10,7 +10,6 @@ import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import './BookServiceContent.css';
-
 import staffNghia from '~/assets/images/n.jpg';
 import staffLuong from '~/assets/images/luong.jpg';
 import staffdube from '~/assets/images/dube.jpg';
@@ -101,7 +100,7 @@ function BookServiceContent() {
             name: 'Lê Quý Nghĩa',
             avatar: staffNghia,
             position: 'Salon staff',
-            phone: '0123456789',
+            phone: '0969140342',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
         },
         {
@@ -148,8 +147,10 @@ function BookServiceContent() {
         }
     };
 
-    const handleBranchesClick = (id) => {
-        setSelectedBranchId(id);
+    const handleBranchesChange = (event) => {
+        const selectedID = parseInt(event.target.value);
+        const selected = branches.find((branch) => branch.id === selectedID);
+        setSelectedBranchId(selected)
     };
     const handleDateClick = (id) => {
         setSelectedDateId(id);
@@ -181,30 +182,30 @@ function BookServiceContent() {
     L.Marker.prototype.options.icon = defaultIcon;
 
     return (
-        <div className="">
+        <div className="grid">
             <section
                 className="header"
-                // style={{
-                //     backgroundImage: `url('https://theme.hstatic.net/1000181446/1000235350/14/image_breadcrumb_bg.png?v=1737')`
-                // }}
+                style={{
+                    '--bg-url': `url(${'https://theme.hstatic.net/1000181446/1000235350/14/image_breadcrumb_bg.png?v=1737'})`
+                }}
             >
                 <h1 className="heading">CÁC DỊCH VỤ</h1>
                 <Breadcrumbs className="breadcrumbs">
-                    <Link className="breadcrumb-link" to="/">
+                    <Link className="breadcrumb-link" to='/'>
                         Trang chủ
                     </Link>
-                    <Link className="breadcrumb-link" to="/bookservice">
-                        Đặt hàng
+                    <Link className="breadcrumb-link" to='/service'>
+                        Các dịch vụ
                     </Link>
                 </Breadcrumbs>
             </section>
             <div className="grid">
                 <div className="grid-row book-service-content">
                     <div className="grid-col-6 book-service">
-                        <h4 className="service-name">ĐẶT LỊCH</h4>
+                        <h3 className="service-name">ĐẶT LỊCH</h3>
                         <div className="branch">
                             <p>Chọn salon (*):</p>
-                            <div className="branch-add grid-row">
+                            {/* <div className="branch-add grid-row">
                                 {branches.map((branch) => (
                                     <button
                                         className={`branch-item grid-col-3 ${
@@ -216,7 +217,18 @@ function BookServiceContent() {
                                         {branch.address}
                                     </button>
                                 ))}
-                            </div>
+                            </div> */}
+                            <select className="branch-select" onChange={handleBranchesChange}>
+                                <option value="0">- Vui lòng chọn chi nhánh -</option>
+                                {branches.map((branch) => (
+                                    <option
+                                        key={branch.id} value={branch.id}
+                                        // onClick={() => handleBranchesClick(branch.id)}
+                                    >
+                                        {branch.address}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                         <div className="staff">
                             <p>Chọn nhân viên (*):</p>
@@ -305,7 +317,7 @@ function BookServiceContent() {
                     </div>
                     <div className="grid-col-6 service-info">
                         <div className="staff-info">
-                            <h4 className="staff-info-content">THÔNG TIN NHÂN VIÊN BẠN ĐÃ CHỌN</h4>
+                            <h3 className="staff-info-content">THÔNG TIN NHÂN VIÊN BẠN ĐÃ CHỌN</h3>
                             {selectedStaff && (
                                 <div className="staff-items">
                                     <img className="staff-image" src={selectedStaff.avatar} alt="avatar" />
@@ -324,7 +336,7 @@ function BookServiceContent() {
                             center={position}
                             zoom={15}
                             scrollWheelZoom={false}
-                            style={{ height: '308px', width: '100%' }}
+                            style={{ height: '254px', width: '100%'}}
                         >
                             <TileLayer
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

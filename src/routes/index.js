@@ -43,6 +43,7 @@ const publicRoutes = [
     { path: '/404', component: NotFound,layout: null },
     { path: '/profile', component: Profile},
 ];
+//dddd
 
 const privateRoutes = [];
 
