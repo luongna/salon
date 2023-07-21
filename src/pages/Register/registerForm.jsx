@@ -82,6 +82,7 @@ function RegisterForm() {
                 setErrors((errors) => ({ ...errors, confirmPassword: '' }));
             }
         }
+       
     };
 
     const handleSubmit = (e) => {

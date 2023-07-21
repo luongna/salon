@@ -5,26 +5,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Header from '../../components/Header';
 import InputAdornment from '@mui/material/InputAdornment';
 // import { useState, useEffect } from 'react';
-import MenuItem from '@mui/material/MenuItem';
 import * as React from 'react';
-const currencies = [
-    {
-        value: 'none',
-        label: 'Chọn chi nhánh',
-    },
-    {
-        value: '1',
-        label: 'ngũ hành sơn',
-    },
-    {
-        value: '2',
-        label: 'hòa hải',
-    },
-    {
-        value: '3',
-        label: 'hải châu',
-    },
-];
+
 
 const Form = () => {
     const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -62,26 +44,7 @@ const Form = () => {
                                 sx={{ gridColumn: 'span 4' }}
                             />
 
-                            <TextField
-                                fullWidth
-                                variant="filled"
-                                // type="text"
-                                select
-                                label="Chi nhánh"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.branch}
-                                name="branch"
-                                error={!!touched.branch && !!errors.branch}
-                                helperText={touched.branch && errors.branch}
-                                sx={{ gridColumn: 'span 4' }}
-                            >
-                                {currencies.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                            
                             <TextField
                                 fullWidth
                                 variant="filled"

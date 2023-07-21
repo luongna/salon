@@ -28,7 +28,7 @@ const Branch = () => {
 
     function deleteUser() {
         axios
-            .delete(`http://localhost:8080/branch/${deleteData}`)
+            .delete(`/branch/${deleteData}`)
             .then((res) => {
                 setOpen(false);
                 setTeamData((prevData) => prevData.filter((item) => item.id !== deleteData));
@@ -45,6 +45,18 @@ const Branch = () => {
             })
             .catch((err) => {
                 console.log(err);
+                if (err.response.status === 404) {
+                    toast.warning('Không tìm thấy chi nhánh', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'light',
+                    });
+                }
             });
     }
 
@@ -69,6 +81,21 @@ const Branch = () => {
             headerAlign: 'left',
             align: 'left',
             flex: 1,
+        },
+        {
+            field: 'status',
+            headerName: 'Trạng thái',
+            type: 'text',
+            headerAlign: 'left',
+            align: 'left',
+            flex: 1,
+            renderCell: ({ row: { status } }) => {
+                return (
+                    <span>
+                        {status === 0 ?('Đóng cửa'):('Mở cửa')}
+                    </span>
+                );
+            }
         },
 
         {
