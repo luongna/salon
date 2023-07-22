@@ -42,32 +42,21 @@ function Cart() {
     );
     const [jsonData, setJsonData] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
-    const [selectedItems, setSelectedItems] = useState([]);
     const deleteElement = (index) => {
         const updatedElements = [...jsonData];
         updatedElements.splice(index, 1);
         setJsonData(updatedElements);
     };
-    const handleCheckboxChange = (index) => {
-        if (selectedItems.includes(index)) {
-            setSelectedItems(selectedItems.filter((item) => item !== index));
-            // setTotalPrice(totalPrice+selectedItems[index].price)
-        } else {
-            setSelectedItems([...selectedItems, index]);
-            // setTotalPrice(totalPrice-selectedItems[index].price)
-        }
-    };
+   
     useEffect(() => {
-        // Calculate the total price based on the selected items
-        const newTotalPrice = selectedItems.reduce(
-            (total, index) => total + jsonData[index].price,
+        const newTotalPrice = jsonData.reduce(
+            (total, element) => total + element.price,
             0
-        );
+          );
         setTotalPrice(newTotalPrice);
-    }, [selectedItems, jsonData]);
+    }, [ jsonData]);
     const handleOrder = () => {
-        const selectedTitles = selectedItems.map((index) => jsonData[index].ud);
-        console.log('Selected titles:', selectedTitles);
+        console.log('Selected titles:');
     };
     useEffect(() => {
         setJsonData(data);
@@ -83,13 +72,6 @@ function Cart() {
                         <tbody>
                             {jsonData.map((element, index) => (
                                 <tr key={index}>
-                                    <th>
-                                        <input
-                                            type="checkbox"
-                                            onChange={() => handleCheckboxChange(index)}
-                                            checked={selectedItems.includes(index)}
-                                        />
-                                    </th>
                                     <th className={cx('imgaes')}>
                                         <img src={element.img} alt="abc" />
                                     </th>
