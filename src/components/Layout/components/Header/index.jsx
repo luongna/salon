@@ -123,7 +123,9 @@ function Header() {
                             render={(attrs) => (
                                 <div className={cx('box_tippy')} tabIndex="-1" {...attrs}>
                                     <ul>
-                                        <li>Hồ sơ</li>
+                                        <Link to={'/profile'}>
+                                            <li>Hồ sơ</li>
+                                        </Link>
                                         <li>Lịch sử</li>
                                         <li onClick={handleLogout}>Đăng xuất</li>
                                     </ul>
