@@ -65,7 +65,7 @@ function Cart() {
             0
           );
         setTotalPrice(newTotalPrice);
-
+        })
     const handleOrder = () => {
         console.log('Selected titles:');
     };

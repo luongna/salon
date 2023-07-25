@@ -1,12 +1,15 @@
 import PropTypes from 'prop-types';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 // import { Link } from 'react-router-dom';
 // import './serviceItem.css';
 
 export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
-  return (
-    <div className="service-wrapper" onClick={onClick}>
-      <style>
-        {`
+    return (
+        <div className="service-wrapper" onClick={onClick}>
+            <style>
+                {`
             .service-wrapper {
               cursor: pointer;
               overflow: hidden;
@@ -34,6 +37,7 @@ export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
+              margin-bottom: 0px;
             }
             
             .service-image {
@@ -44,24 +48,40 @@ export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
               transition: all 0.6s;
               transform: scale(1);
             }
+
+         
+            .add-cart-button {
+              width: 100%;
+              background-color: rgb(255, 193, 7);
+              border-radius: 0px;
+              color: #fff;
+                .add-cart-icon {
+                font-size: 32px !important;
+              }
+              &:hover {
+                background-color: rgb(255,193,7, 0.8);
+              }
+            }
             @media screen and (max-width: 769px) {
               .service-image {
                 width: 100%
               }
             }
           `}
-      </style>
-      {/* <Link to={`/service/${id}/details`}>
-      </Link> */}
-        <img className="service-image" src={imgUrl} alt="service" />
-        <h3 className="service-title">{title}</h3>
-    </div>
-  );
+            </style>
+            <Link to={`/services/${id}`} className="item">
+                <img className="service-image" src={imgUrl} alt="service" />
+                <h3 className="service-title">{title}</h3>
+            </Link>
+            <Button className="add-cart-button">
+                <AddShoppingCartIcon className="add-cart-icon" />
+            </Button>
+        </div>
+    );
 };
 
-
 ServiceItem.propTypes = {
-  title: PropTypes.string,
-  imgUrl: PropTypes.string,
-  onClick: PropTypes.func
+    title: PropTypes.string,
+    imgUrl: PropTypes.string,
+    onClick: PropTypes.func,
 };
