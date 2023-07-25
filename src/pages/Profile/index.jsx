@@ -186,7 +186,7 @@ function Profile() {
                                                         sx={{ fontFamily: 'Lora, serif' }}
                                                         onClick={() => setIsEditProfile(true)}
                                                     >
-                                                        Cập nhật thông tin
+                                                        Cập nhật thông tin!
                                                     </Button>
                                                     <Button
                                                         variant="contained"
