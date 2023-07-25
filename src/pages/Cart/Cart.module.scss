@@ -2,40 +2,6 @@
     margin-top: 20px;
     width: 80vw;
     tr {
-        th {
-            text-align: center;
-            &:first-child {
-                width: 5%;
-                // max-width: 15px;
-            }
-            &:nth-child(2) {
-                // max-width: 120px;
-                width: 10%;
-            }
-            &:nth-child(3) {
-                text-align: start;
-                text-overflow: ellipsis;
-                // max-width: 120px;
-                width: 80%;
-            }
-            &:nth-child(4) {
-                // max-width: 120px;
-                width: 5%;
-            }
-        }
-    }
-}
-
-.imgaes {
-    img {
-        width: 120px;
-        height: 120px;
-    }
-}
-.table-element {
-    margin-top: 20px;
-    width: 80vw;
-    tr {
         box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.08);
         border-radius: 13px;
         th {
@@ -44,7 +10,7 @@
                 width: 20%;
                 // max-width: 15px;
             }
-
+           
             &:nth-child(2) {
                 text-align: start;
                 text-overflow: ellipsis;
@@ -69,6 +35,7 @@
         height: 120px;
     }
 }
+
 .total-price {
     text-align: end;
     font-size: 32px;
@@ -85,6 +52,7 @@
     margin: 10px 0px;
     cursor: pointer;
 }
+
 
 //Booking Services
 .booking-service {
@@ -265,3 +233,4 @@
         }
     }
 }
+

@@ -5,14 +5,13 @@ import * as yup from 'yup';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Header from '../../components/Header';
 import InputAdornment from '@mui/material/InputAdornment';
-import { useState, useEffect } from 'react';
-import MenuItem from '@mui/material/MenuItem';
+import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from 'react';
 
 const Form = () => {
-    const [branchData, setBranchData] = useState([]);
+
 
     function isImageFile(file) {
         const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -34,15 +33,6 @@ const Form = () => {
     }
     const isNonMobile = useMediaQuery('(min-width:600px)');
 
-    useEffect(() => {
-        axios
-            .get(`http://localhost:8080/branch`)
-            .then((res) => {
-                const branch = res.data;
-                setBranchData(branch);
-            })
-            .catch((error) => console.log(error));
-    }, []);
 
     const handleFormSubmit = (values, { resetForm }) => {
         if (imageBase64 !== '') {
@@ -140,29 +130,7 @@ const Form = () => {
                                     sx={{ gridColumn: 'span 4' }}
                                 />
 
-                                <TextField
-                                    fullWidth
-                                    variant="filled"
-                                    // type="text"
-                                    select
-                                    label="Chi nhánh"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    value={values.branch}
-                                    name="branch"
-                                    error={!!touched.branch && !!errors.branch}
-                                    helperText={touched.branch && errors.branch}
-                                    sx={{ gridColumn: 'span 4' }}
-                                >
-                                    <MenuItem key={0} value={'none'}>
-                                        {'Chọn chi nhánh'}
-                                    </MenuItem>
-                                    {branchData.map((option) => (
-                                        <MenuItem key={option.id} value={option.id}>
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                            
                                 <TextField
                                     fullWidth
                                     variant="filled"

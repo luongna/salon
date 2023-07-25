@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { faFacebook, faInstagram, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { faMailBulk } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import styles from './Footer.module.scss';
 const cx = classNames.bind(styles);
@@ -24,26 +25,26 @@ function Footer() {
                 <div>
                     <h3>LIÊN KẾT VỚI CHÚNG TÔI </h3>
                     <div>
-                        <a href="https://facebook.com" >
-                            <FontAwesomeIcon icon={faFacebook} size='xl'></FontAwesomeIcon >
+                        <a href="https://facebook.com">
+                            <FontAwesomeIcon icon={faFacebook} size="xl"></FontAwesomeIcon>
                         </a>
                         <a href="https://facebook.com">
-                            <FontAwesomeIcon icon={faInstagram} size='xl'></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faInstagram} size="xl"></FontAwesomeIcon>
                         </a>
                     </div>
                 </div>
                 <div>
                     <h3>LIÊN lạc </h3>
                     <div>
-                        phone:<span>13135123</span>
+                        <FontAwesomeIcon icon={faWhatsapp} size="xl"></FontAwesomeIcon><span> 13135123</span>
                         <br></br>
-                        mail:<span>anhluong@gmail.com</span>
+                        <FontAwesomeIcon icon={faMailBulk} size="xl"></FontAwesomeIcon><span> anhluong@gmail.com</span>
                     </div>
                 </div>
             </footer>
             <div className={cx('footer-bottom')}>
                 <div className={cx('footer-bottom-element')}>@2023 All Rights reserved</div>
-                <div  className={cx('footer-bottom-element')}>Powered by Company</div>
+                <div className={cx('footer-bottom-element')}>Powered by Company</div>
             </div>
         </>
     );

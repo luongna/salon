@@ -1,5 +1,5 @@
 import { Box, Button, TextField } from '@mui/material';
-import axios from 'axios';
+import axios from '~/utils/api/axios';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -37,9 +37,10 @@ const Form = () => {
                 address: values.address,
                 lat: selectedPoint.lat,
                 lng: selectedPoint.lng,
+                status : 1
             };
             axios
-                .post(`http://localhost:8080/branch`, formValues)
+                .post(`/branch`, formValues)
                 .then((res) => {
                     resetForm();
                     setSelectedPoint(null);
@@ -55,13 +56,7 @@ const Form = () => {
                     });
                 })
                 .catch((error) => console.log(error));
-            // axios
-            //     .post(`http://localhost:8080/auth/login`, { email: 'nam@codejava.net', password: 'nam2020' })
-            //     .then((res) => {
-            //         const persons = res.data;
-            //         console.log(persons);
-            //     })
-            //     .catch((error) => console.log(error));
+        
         } else {
             alert('Chưa chọn chi nhánh trên bản đồ');
         }
@@ -70,7 +65,7 @@ const Form = () => {
     return (
         <>
             <Box m="20px">
-                <Header title="Tại chi nhánh" />
+                <Header title="Tạo chi nhánh" />
 
                 <Formik onSubmit={handleFormSubmit} initialValues={initialValues} validationSchema={checkoutSchema}>
                     {({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => (

@@ -3,8 +3,8 @@ import { useState } from 'react';
 import axios from '~/utils/api/axios';
 // import { render } from '@testing-library/react';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-import { useTokenStore } from '~/utils/store/token';
-import { useUserStore } from '~/utils/store/user';
+// import { useTokenStore } from '~/utils/store/token';
+// import { useUserStore } from '~/utils/store/user';
 import './login.component.scss';
 import { Link } from 'react-router-dom';
 import { loginStart, loginFailed, loginSuccess } from '~/utils/store/authSlice';
@@ -13,8 +13,8 @@ const LoginForm = (onClose) => {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
-    const [setUserInfo] = useUserStore((state) => [state.setUserInfo]);
-    const [setToken] = useTokenStore((state) => [state.setToken]);
+    // const [setUserInfo] = useUserStore((state) => [state.setUserInfo]);
+    // const [setToken] = useTokenStore((state) => [state.setToken]);
     const navigate = useNavigate();
     const dispath = useDispatch();
     const validateForm = () => {
@@ -24,13 +24,13 @@ const LoginForm = (onClose) => {
             formIsValid = false;
             setErrors((errors) => ({ ...errors, phone: 'Vui lòng nhập email!' }));
         } else {
-            // const regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
-            // if (!regexPhoneNumber.test(phone)) {
-            //     formIsValid = false;
-            //     setErrors((errors) => ({ ...errors, phone: 'Vui lòng nhập số điện thoại hợp lệ!' }));
-            // } else {
-            //     setErrors((errors) => ({ ...errors, phone: '' }));
-            // }
+            const regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+            if (!regexPhoneNumber.test(phone)) {
+                formIsValid = false;
+                setErrors((errors) => ({ ...errors, phone: 'Vui lòng nhập số điện thoại hợp lệ!' }));
+            } else {
+                setErrors((errors) => ({ ...errors, phone: '' }));
+            }
         }
 
         if (!password) {
@@ -50,7 +50,7 @@ const LoginForm = (onClose) => {
                 .post(
                     '/auth/login',
                     {
-                        email: phone,
+                        phone: phone,
                         password: password,
                     },
                     {
@@ -73,8 +73,8 @@ const LoginForm = (onClose) => {
                         navigate('/');
                         // const { user, accessToken } = response.data;
                         // if (user.id === 1) {
-                        setUserInfo(response.data);
-                        setToken(response.data.accessToken);
+                        // setUserInfo(response.data);
+                        // setToken(response.data.accessToken);
                         //     navigate('/');
                         // } else {
                         //     setUserInfo(user);
