@@ -58,14 +58,10 @@ function Cart() {
         setJsonData(updatedElements);
     };
 
-   
     useEffect(() => {
-        const newTotalPrice = jsonData.reduce(
-            (total, element) => total + element.price,
-            0
-          );
+        const newTotalPrice = jsonData.reduce((total, element) => total + element.price, 0);
         setTotalPrice(newTotalPrice);
-        })
+    },[jsonData]);
     const handleOrder = () => {
         console.log('Selected titles:');
     };
@@ -261,7 +257,6 @@ function Cart() {
                                     <th>{element.price.toLocaleString('en-US')} VNĐ</th>
                                     <th>
                                         <div onClick={() => deleteElement(index)} style={{ cursor: 'pointer' }}>
-
                                             <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
                                         </div>
                                     </th>
@@ -403,7 +398,6 @@ function Cart() {
                     </div>
                 </>
             )}
-
         </div>
     );
 }
