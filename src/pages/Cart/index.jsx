@@ -58,14 +58,10 @@ function Cart() {
         setJsonData(updatedElements);
     };
 
-   
     useEffect(() => {
-        const newTotalPrice = jsonData.reduce(
-            (total, element) => total + element.price,
-            0
-          );
+        const newTotalPrice = jsonData.reduce((total, element) => total + element.price, 0);
         setTotalPrice(newTotalPrice);
-
+    }, [jsonData]);
     const handleOrder = () => {
         console.log('Selected titles:');
     };
@@ -255,13 +251,11 @@ function Cart() {
                                     </th>
                                     <th>
                                         <h2>{element.tittle}</h2>
-
                                         <div> Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
                                     </th>
                                     <th>{element.price.toLocaleString('en-US')} VNĐ</th>
                                     <th>
                                         <div onClick={() => deleteElement(index)} style={{ cursor: 'pointer' }}>
-
                                             <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
                                         </div>
                                     </th>
@@ -269,7 +263,6 @@ function Cart() {
                             ))}
                         </tbody>
                     </table>
-
                     <div className={cx('booking-service')}>
                         <div className={cx('booking-information')}>
                             <h3>ĐẶT LỊCH</h3>
@@ -378,7 +371,7 @@ function Cart() {
                                 center={position}
                                 zoom={15}
                                 scrollWheelZoom={false}
-                                style={{ height: '48%', width: '100%', bottom: '0' }}
+                                style={{ height: '45%', width: '100%'}}
                             >
                                 <TileLayer
                                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -403,7 +396,6 @@ function Cart() {
                     </div>
                 </>
             )}
-
         </div>
     );
 }
