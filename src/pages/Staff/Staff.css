@@ -1,18 +1,31 @@
 /* main css */
+.breadcrumbs {
+    color: rgb(246, 109, 109);
+    margin-top: 14px;
+}
+
+.breadcrumb-link {
+    text-decoration: none;
+    color: rgb(246, 109, 109) !important;
+    font-size: 16px;
+}
+
 .staff-content {
-    margin: 10px 0;
+    margin: 30px 0 10px;
+    text-align: center;
+    font-weight: 700;
 }
 
 .staff-all-desc {
     width: 70%;
-    margin: 0 auto 15px;
+    margin: 0 auto 40px;
     font-weight: 400;
     text-align: justify;
 }
 
 .staff-list {
-    width: 100%;
-    margin: 50px 0;
+    width: 80%;
+    margin: auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -23,11 +36,12 @@
     width: calc(100% / 3);
     display: inline;
     margin-bottom: 30px;
+    text-align: center;
 }
 
 .staff-img {
-    width: 50%;
-    height: 50%;
+    width: 40%;
+    height: 40%;
     margin: 0;
     border-radius: 50%;
 }
