@@ -103,7 +103,7 @@ function ServiceDetail() {
                         <h1 className="service-title">CẠO MẶT ÊM ÁI - GỘI XẢ KỸ CÀNG</h1>
                         <p>
                             Cạo mặt êm ái giúp da sáng mịn. Gội xả kỹ càng sau cắt để bạn luôn hoàn hảo trước mỗi buổi
-                            hẹn quan trọng. Không lo tóc con bám dính nhờ giấy cuốn cổ đặc biệt từ Suploo
+                            hẹn quan trọng. Không lo tóc con bám dính nhờ giấy cuốn cổ đặc biệt từ Suplo
                         </p>
                     </div>
                 </div>
