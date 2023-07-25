@@ -20,6 +20,7 @@ import ServiceDetail from '~/pages/ServiceDetail';
 import Staff from '~/pages/Staff';
 import AccessDeny from '~/pages/Admin/Status/accessDeny';
 import NotFound from '~/pages/Admin/Status/NotFound';
+import Profile from '~/pages/Profile'
 // Public routes
 const publicRoutes = [
     { path: '/', component: Home },
@@ -41,6 +42,7 @@ const publicRoutes = [
     { path: '/editService/:id', component: EditFormService, admin: true },
     { path: '/accessDeny', component: AccessDeny, layout: null },
     { path: '/404', component: NotFound, layout: null },
+    { path: '/profile', component: Profile },
 ];
 //dddd
 
