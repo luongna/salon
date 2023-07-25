@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loginStart, loginFailed, loginSuccess } from '~/utils/store/authSlice';
 import { useDispatch } from 'react-redux';
-import avatarDefault from '~/assets/images/avatarDefault.jpg'
+import avatarDefault from '~/pages/Profile'
 function Profile() {
     const user = useSelector((state) => state.auth.login?.currenUser);
     const [isEditProfile, setIsEditProfile] = useState(false);
@@ -186,7 +186,7 @@ function Profile() {
                                                         sx={{ fontFamily: 'Lora, serif' }}
                                                         onClick={() => setIsEditProfile(true)}
                                                     >
-                                                        Cập nhật thông tin
+                                                        Cập nhật thông tin!
                                                     </Button>
                                                     <Button
                                                         variant="contained"
