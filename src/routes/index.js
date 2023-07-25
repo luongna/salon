@@ -20,6 +20,7 @@ import ServiceDetail from '~/pages/ServiceDetail';
 import Staff from '~/pages/Staff';
 import AccessDeny from '~/pages/Admin/Status/accessDeny';
 import NotFound from '~/pages/Admin/Status/NotFound';
+import Profile from '~/pages/Profile';
 // Public routes
 const publicRoutes = [
     { path: '/', component: Home },
