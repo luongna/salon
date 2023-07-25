@@ -9,10 +9,15 @@
     justify-content: space-between;
     margin: 20px;
     .service-content {
-        overflow: hidden;
-        .service-image {
+        &__image {
+            overflow: hidden;
             width: 56vw;
             height: 60vh;
+        }
+        .service-image {
+            width: 56vw;
+            height: 56vh;
+            object-fit: fill;
             &:hover {
                 transform: scale(1.1);
                 transition: all 0.5s ease;
@@ -26,7 +31,6 @@
             margin-top: 20px;
             display: flex;
             width: 56vw;
-            overflow: hidden;
             position: relative;
             .left-button,
             .right-button {
@@ -43,9 +47,13 @@
     }
     .right-sider-bar {
         width: 24vw;
-        background-color: rgb(246, 109, 109);
+        height: max-content;
+        background-color: #fbfbf1;
         position: relative;
-        color: #fff;
+        font-family: 'Roboto Condensed', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        h3 {
+            font-weight: bold;
+        }
     }
     .add-cart-button {
         width: 100%;
@@ -59,6 +67,9 @@
         &:hover {
             background-color: rgb(255, 193, 7, 0.8);
         }
+        &:focus {
+            outline: none;
+        }
     }
 }
 
@@ -68,6 +79,10 @@
         .service-image,
         .list-images {
             width: 100% !important;
+        }
+        .service-content__image {
+            width: 100%;
+            height: auto;
         }
     }
     .right-sider-bar {

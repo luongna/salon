@@ -5,8 +5,9 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Button } from '@mui/material';
 import { Breadcrumbs } from '../Breadcrumbs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 function ServiceDetail() {
+    const navigate = useNavigate();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -61,11 +62,14 @@ function ServiceDetail() {
                     <Link className="breadcrumb-link" to="/service">
                         Các dịch vụ
                     </Link>
+                    <Link className="breadcrumb-text">CẠO MẶT ÊM ÁI - GỘI XẢ KỸ CÀNG</Link>
                 </Breadcrumbs>
             </section>
             <div className="service-container">
                 <div className="service-content">
-                    <img className="service-image" src={images[currentIndex]} alt={`Image ${currentIndex + 1}`} />
+                <div className="service-content__image">
+                        <img className="service-image" src={images[currentIndex]} alt={`Image ${currentIndex + 1}`} />
+                    </div>
                     <div className="list-images">
                         <button className="left-button" onClick={handlePrevClick}>
                             <ArrowBackIosNewIcon />
@@ -77,6 +81,7 @@ function ServiceDetail() {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 marginTop: '16px',
+                                overflowX: 'scroll',
                             }}
                         >
                             {images.map((image, index) => (
@@ -109,7 +114,16 @@ function ServiceDetail() {
                 </div>
                 <div className="right-sider-bar">
                     <div style={{ padding: '12px' }}>
-                        <h2 style={{ display: 'flex', justifyContent: 'center' }}>THÔNG TIN DỊCH VỤ</h2>
+                    <h2
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                textAlign: 'center',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            THÔNG TIN DỊCH VỤ
+                        </h2>
                         <h3>Tên:</h3>
                         <p>CẠO MẶT ÊM ÁI - GỘI XẢ KỸ CÀNG</p>
                         <h3>Mô tả:</h3>
@@ -122,7 +136,7 @@ function ServiceDetail() {
                         <h3>Giá:</h3>
                         <p>50,000₫</p>
                     </div>
-                    <Button className="add-cart-button">
+                    <Button className="add-cart-button" onClick={() => navigate('/cart')}>
                         <AddShoppingCartIcon className="add-cart-icon" />
                     </Button>
                 </div>
