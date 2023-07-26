@@ -67,9 +67,11 @@ function ServiceDetail() {
             </section>
             <div className="service-container">
                 <div className="service-content">
+
                 <div className="service-content__image">
                         <img className="service-image" src={images[currentIndex]} alt={`Image ${currentIndex + 1}`} />
                     </div>
+
                     <div className="list-images">
                         <button className="left-button" onClick={handlePrevClick}>
                             <ArrowBackIosNewIcon />
@@ -88,7 +90,7 @@ function ServiceDetail() {
                                 <img
                                     key={index}
                                     src={image}
-                                    alt={`Image ${index + 1}`}
+                                    alt={` ${index + 1}`}
                                     style={{
                                         width: '150px',
                                         height: '100px',
