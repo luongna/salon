@@ -10,7 +10,7 @@
                 width: 20%;
                 // max-width: 15px;
             }
-           
+
             &:nth-child(2) {
                 text-align: start;
                 text-overflow: ellipsis;
@@ -52,7 +52,6 @@
     margin: 10px 0px;
     cursor: pointer;
 }
-
 
 //Booking Services
 .booking-service {
@@ -106,9 +105,15 @@
             text-align: center;
             background-color: rgb(246, 109, 109);
             color: #000;
-            // cursor: not-allowed;
+            &:not(:disabled) {
+                &:hover {
+                    background-color: #000;
+                    color: rgb(246, 109, 109);
+                }
+            }
         }
     }
+    
     .status-time {
         display: flex;
         margin-bottom: 15px;
@@ -161,7 +166,6 @@
     color: rgb(246, 109, 109) !important;
     background-color: #000 !important;
 }
-
 
 /* Tablet */
 @media (min-width: 481px) and (max-width: 1000px) {
@@ -233,4 +237,3 @@
         }
     }
 }
-
