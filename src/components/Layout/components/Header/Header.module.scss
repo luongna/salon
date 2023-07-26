@@ -3,7 +3,7 @@
     --search-height: 46px;
     --search-top-spacer: 9px;
     --search-button-width: 52px;
-    width: 90%;
+    width: 100%;
     height: var(--default-layout-header-height, 60px);
     box-shadow: 0px 5px 15px rgb(0 0 0 / 12%);
     display: flex;
@@ -11,7 +11,6 @@
     justify-content: space-between;
     background: #fbfbf1;
     padding: 0 30px;
-    border-radius: 13px;
 }
 .logo {
     width: 96px;
