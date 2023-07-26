@@ -25,6 +25,13 @@
     font-size: 16px;
 }
 
+.breadcrumb-text {
+    text-decoration: none;
+    pointer-events: none;
+    color: rgb(246, 109, 109) !important;
+    font-size: 16px;
+}
+
 .breadcrumbs:hover,
 .breadcrumb-link:hover {
     color: #fff !important;
@@ -83,5 +90,11 @@
 
     .service-list {
         grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .breadcrumbs {
+        display: block !important;
     }
 }

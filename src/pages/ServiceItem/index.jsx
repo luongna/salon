@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Button } from '@mui/material';
-import { Link } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
-// import './serviceItem.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
+  const navigate = useNavigate(); 
     return (
         <div className="service-wrapper" onClick={onClick}>
             <style>
@@ -61,6 +60,9 @@ export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
               &:hover {
                 background-color: rgb(255,193,7, 0.8);
               }
+              &:focus {
+                outline: none;
+              }
             }
             @media screen and (max-width: 769px) {
               .service-image {
@@ -73,7 +75,7 @@ export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
                 <img className="service-image" src={imgUrl} alt="service" />
                 <h3 className="service-title">{title}</h3>
             </Link>
-            <Button className="add-cart-button">
+            <Button className="add-cart-button" onClick={() => navigate('/cart')}>
                 <AddShoppingCartIcon className="add-cart-icon" />
             </Button>
         </div>
