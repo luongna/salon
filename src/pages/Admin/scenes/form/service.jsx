@@ -1,5 +1,5 @@
-import { Box, Button, TextField } from '@mui/material';
-import axios from 'axios';
+import { Box, Button, ImageList, ImageListItem, TextField } from '@mui/material';
+import axios from '~/utils/api/axios';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -9,10 +9,9 @@ import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from 'react';
-
+import DeleteIcon from '@mui/icons-material/Delete';
 const Form = () => {
-
-
+    const [itemData, setItemData] = useState([]);
     function isImageFile(file) {
         const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
         const acceptedExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
@@ -32,35 +31,42 @@ const Form = () => {
         return false;
     }
     const isNonMobile = useMediaQuery('(min-width:600px)');
-
-
+    const removeImg = (id) => {
+        setItemData((prevItemData) => prevItemData.filter((item) => item.id !== id));
+    };
     const handleFormSubmit = (values, { resetForm }) => {
         if (imageBase64 !== '') {
+            const newImages = [];
+            for (let i = 0; i < itemData.length; i++) {
+                newImages.push(itemData[i].img);
+            }
             const formValues = {
                 ...values,
                 name: values.name,
                 price: values.price,
-                // rankPoint: values.rankPoint,
                 branch: values.branch * 1,
                 img: imageBase64,
+                imgList: newImages,
             };
             axios
-                .post(`http://localhost:8080/service`, formValues)
-                .then((res) => {})
+                .post(`/service`, formValues)
+                .then((res) => {
+                    toast.success('Tạo dịch vụ thành công thành công!', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'light',
+                    });
+                    resetForm();
+                    setImageBase64('');
+                    setItemData([])
+                })
                 .catch((error) => console.log(error));
-                toast.success('Tạo dịch vụ thành công thành công!', {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'light',
-                });
-                resetForm();
-                setImageBase64('');
-        }else{
+        } else {
             toast.warning('Bạn chưa chọn ảnh!', {
                 position: 'top-right',
                 autoClose: 5000,
@@ -74,6 +80,33 @@ const Form = () => {
         }
     };
     const [imageBase64, setImageBase64] = useState('');
+
+    function handleImageUploadMulti(event) {
+        const files = event.target.files;
+        const newItems = [];
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (isImageFile(file)) {
+                const reader = new FileReader();
+
+                reader.onloadend = () => {
+                    const base64String = reader.result;
+                    newItems.push({ id: itemData.length + i, img: base64String });
+                    // If all images have been processed, update the itemData state
+                    if (i === files.length - 1) {
+                        setItemData([...itemData, ...newItems]);
+                    }
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                toast.warning('Đây không phải là ảnh!', {
+                    // Toast settings...
+                });
+            }
+        }
+    }
 
     function handleImageUpload(event) {
         const file = event.target.files[0];
@@ -130,7 +163,6 @@ const Form = () => {
                                     sx={{ gridColumn: 'span 4' }}
                                 />
 
-                            
                                 <TextField
                                     fullWidth
                                     variant="filled"
@@ -147,19 +179,7 @@ const Form = () => {
                                         startAdornment: <InputAdornment position="start">VND</InputAdornment>,
                                     }}
                                 />
-                                {/* <TextField
-                                fullWidth
-                                variant="filled"
-                                type="text"
-                                label="Điểm rank"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.rankPoint}
-                                name="rankPoint"
-                                error={!!touched.rankPoint && !!errors.rankPoint}
-                                helperText={touched.rankPoint && errors.rankPoint}
-                                sx={{ gridColumn: 'span 4' }}
-                            /> */}
+
                                 <TextField
                                     fullWidth
                                     variant="filled"
@@ -173,10 +193,60 @@ const Form = () => {
                                     helperText={touched.description && errors.description}
                                     sx={{ gridColumn: 'span 4' }}
                                 />
-                                <input type="file" accept=".jpg,.jpeg,.png" onChange={handleImageUpload} />
-                                {imageBase64 && <img src={imageBase64} alt="Selected" />}
+                                <TextField
+                                    fullWidth
+                                    variant="filled"
+                                    type="file"
+                                    label="Ảnh chính"
+                                    onBlur={handleBlur}
+                                    onChange={handleImageUpload}
+                                    sx={{ gridColumn: 'span 4' }}
+                                    inputProps={{
+                                        accept: '.jpg,.jpeg,.png',
+                                    }}
+                                    InputProps={{
+                                        startAdornment: <InputAdornment position="start"></InputAdornment>,
+                                    }}
+                                />
+                                {imageBase64 && (
+                                    <img src={imageBase64} alt="Selected" style={{ width: '400px', height: '400px' }} />
+                                )}
+                                <TextField
+                                    fullWidth
+                                    variant="filled"
+                                    type="file"
+                                    label="Ảnh phụ"
+                                    onBlur={handleBlur}
+                                    onChange={handleImageUploadMulti}
+                                    sx={{ gridColumn: 'span 4' }}
+                                    inputProps={{
+                                        accept: '.jpg,.jpeg,.png',
+                                        multiple: true,
+                                    }}
+                                    InputProps={{
+                                        startAdornment: <InputAdornment position="start"></InputAdornment>,
+                                    }}
+                                />
+                                {itemData.length !== 0 && (
+                                    <ImageList sx={{ width: 500, height: 450 }} variant="woven" cols={3} gap={8}>
+                                        {itemData.map((item) => (
+                                            <ImageListItem key={item.id}>
+                                                <Button
+                                                    variant="contained"
+                                                    endIcon={<DeleteIcon />}
+                                                    color="primary"
+                                                    size="small"
+                                                    sx={{ fontFamily: 'Lora, serif', backgroundColor: '#FE8A50' }}
+                                                    onClick={() => removeImg(item.id)}
+                                                >
+                                                    Xóa
+                                                </Button>
+                                                <img src={item.img} alt={item.id} loading="lazy" />
+                                            </ImageListItem>
+                                        ))}
+                                    </ImageList>
+                                )}
                             </Box>
-
                             <Box display="flex" justifyContent="end" mt="20px">
                                 <Button type="submit" color="secondary" variant="contained">
                                     Tạo dịch vụ
@@ -190,22 +260,16 @@ const Form = () => {
         </>
     );
 };
-const legex = /^(?!none$).*$/;
+
 const checkoutSchema = yup.object().shape({
     name: yup.string().required('Không hợp lệ'),
     price: yup.number().required('Không hợp lệ'),
-    // rankPoint: yup.number().required('Không hợp lệ'),
-    branch: yup.string().matches(legex, 'Vui lòng chọn chi nhánh').required('Không hợp lệ'),
     description: yup.string().required('Không hợp lệ'),
-    // file: yup.string().required('Không hợp lệ'),
 });
 const initialValues = {
     name: '',
     price: '',
-    // rankPoint: '',
-    branch: 'none',
     description: '',
-    // file: '',
 };
 
 export default Form;

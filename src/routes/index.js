@@ -21,6 +21,8 @@ import Staff from '~/pages/Staff';
 import AccessDeny from '~/pages/Admin/Status/accessDeny';
 import NotFound from '~/pages/Admin/Status/NotFound';
 import Profile from '~/pages/Profile';
+import DataService from '~/pages/Admin/scenes/service'
+import Message from '~/pages/Message'
 // Public routes
 const publicRoutes = [
     { path: '/', component: Home },
@@ -32,6 +34,7 @@ const publicRoutes = [
     { path: '/services/:id', component: ServiceDetail },
     { path: '/staff', component: Staff },
     { path: '/branch', component: Branch, admin: true },
+    { path: '/dataService', component: DataService, admin: true },
     { path: '/formBranch', component: FormBranch, admin: true },
     { path: '/calendar', component: Calendar, admin: true },
     { path: '/form', component: Form, admin: true },
@@ -43,6 +46,7 @@ const publicRoutes = [
     { path: '/accessDeny', component: AccessDeny, layout: null },
     { path: '/404', component: NotFound, layout: null },
     { path: '/profile', component: Profile },
+    { path: '/message', component: Message, layout: null},
 ];
 //dddd
 

@@ -10,6 +10,7 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import { useSelector } from "react-redux";
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -148,21 +149,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {/* <Item
-              title="Contacts Information"
-              to="/contacts"
-              icon={<ContactsOutlinedIcon />}
+            <Item
+              title="Dịch vụ"
+              to="/dataService"
+              icon={<ShoppingCartIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
-              title="Invoices Balances"
-              to="/invoices"
-              icon={<ReceiptOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
-
             <Typography
               variant="h6"
               color={colors.grey[300]}
@@ -187,7 +180,7 @@ const Sidebar = () => {
              <Item
               title="Tạo dịch vụ"
               to="/formService"
-              icon={<ShoppingCartIcon />}
+              icon={<AddShoppingCartIcon />}
               selected={selected}
               setSelected={setSelected}
             />

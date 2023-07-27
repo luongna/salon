@@ -129,7 +129,7 @@ const Branch = () => {
     return (
         <>
             <Box m="20px">
-                <Header title="Người dùng" subtitle="Quản lý người dùng" />
+                <Header title="Chi nhánh" subtitle="Quản lý chi nhánh" />
                 <Box
                     m="40px 0 0 0"
                     height="75vh"
