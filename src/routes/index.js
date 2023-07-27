@@ -20,7 +20,11 @@ import ServiceDetail from '~/pages/ServiceDetail';
 import Staff from '~/pages/Staff';
 import AccessDeny from '~/pages/Admin/Status/accessDeny';
 import NotFound from '~/pages/Admin/Status/NotFound';
+import MailPage from '~/pages/ForgotPass/mailPage';
+import ForgotPage from '~/pages/ForgotPass/forgotPage';
+
 import Profile from '~/pages/Profile';
+
 // Public routes
 const publicRoutes = [
     { path: '/', component: Home },
@@ -43,6 +47,11 @@ const publicRoutes = [
     { path: '/accessDeny', component: AccessDeny, layout: null },
     { path: '/404', component: NotFound, layout: null },
     { path: '/profile', component: Profile },
+    { path: '/mail', component: MailPage,layout: null },
+    { path: '/reset', component: ForgotPage,layout: null },
+    { path: '/mail', component: MailPage,layout: null },
+    { path: '/reset', component: ForgotPage,layout: null },
+
 ];
 //dddd
 
