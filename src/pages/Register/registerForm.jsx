@@ -93,7 +93,7 @@ function RegisterForm() {
         console.log("noneee")
 
         if (validateForm) {
-            dispath(loginStart());
+            
             axios.post('/users/mail', {
                     name: username,
                     birthday: birthday,
