@@ -153,8 +153,8 @@ const LoginForm = (onClose) => {
                             Remember me
                         </label>
                     </div>
-                    <a href="#!" className="text-body">
-                        Forgot password?
+                    <a href="#!" className="text-body" >
+                        <Link to={'/mail'}>Forgot password?</Link>
                     </a>
                 </div>
 

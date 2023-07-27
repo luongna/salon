@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {  toast } from 'react-toastify';
 import './registerForm.scss';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import Swal from 'sweetalert2'
 import axios from '~/utils/api/axios';
+import { loginStart, loginFailed, loginSuccess } from '~/utils/store/authSlice';
+import { useDispatch } from 'react-redux';
 
 function RegisterForm() {
     const [username, setUsername] = useState('');
@@ -14,6 +16,7 @@ function RegisterForm() {
     const [errors, setErrors] = useState({});
     const [birthday, setBirthday] = useState('');
     const navigate = useNavigate();
+    const dispath = useDispatch();
     const handleInputChange = (e) => {
         const { id, value } = e.target;
 
@@ -38,33 +41,33 @@ function RegisterForm() {
     };
 
     const validateForm = () => {
-        // let formIsValid = true;
+        let formIsValid = true;
         if (!username) {
-            // formIsValid = false;
+            formIsValid = false;
             setErrors((errors) => ({ ...errors, username: 'vui lòng nhập Tên !' }));
         } else {
             setErrors((errors) => ({ ...errors, username: '' }));
         }
 
         if (!email) {
-            // formIsValid = false;
+            formIsValid = false;
             setErrors((errors) => ({ ...errors, email: 'Vui lòng nhập email!' }));
         } else {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
-                // formIsValid = false;
+                formIsValid = false;
                 setErrors((errors) => ({ ...errors, email: 'Vui lòng nhập email hợp lệ!' }));
             } else {
                 setErrors((errors) => ({ ...errors, email: '' }));
             }
         }
         if (!phone) {
-            // formIsValid = false;
+            formIsValid = false;
             setErrors((errors) => ({ ...errors, phone: 'Vui lòng nhập số điện thoại!' }));
         } else {
             const regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
             if (!regexPhoneNumber.test(phone)) {
-                // formIsValid = false;
+                formIsValid = false;
                 setErrors((errors) => ({ ...errors, phone: 'Vui lòng nhập số điện thoại hợp lệ!' }));
             } else {
                 setErrors((errors) => ({ ...errors, phone: '' }));
@@ -73,7 +76,7 @@ function RegisterForm() {
         if (!password) {
         }
         if (!confirmPassword) {
-            // formIsValid = false;
+            formIsValid = false;
             setErrors((errors) => ({ ...errors, confirmPassword: 'vui lòng nhập lại mật khẩu !' }));
         } else {
             if (confirmPassword !== password) {
@@ -82,28 +85,33 @@ function RegisterForm() {
                 setErrors((errors) => ({ ...errors, confirmPassword: '' }));
             }
         }
-       
+
+        return formIsValid
+
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log("noneee")
 
-        if (validateForm()) {
-            axios
-                .post('/register', {
+        if (validateForm) {
+            
+            axios.post('/users/mail', {
                     name: username,
-                    phone: phone,
-                    email: email,
                     birthday: birthday,
-                    password: password,
+                    phone: phone,
+                    pass: password,
+                    email: email,   
                 })
-                .then((res) => {
-                    if (res.data === 'Email is already existed') {
+                .then((response) => {
+                    console.log("aaaaa")
+                    dispath(loginSuccess(response.data));
+                    if (response.data === 'Email is already existed') {
                         setErrors((errors) => ({ ...errors, email: 'Email đã tồn tại!' }));
                     } else {
                         Swal.fire({
-                            html: `<h4>Hãy nhập       mã xác nhận gồm 4 chữ số được gửi đến:</h4>
-                <h4 style="color: #4caf50">${email}</h4>`,
+                            html: `<h4>Hãy nhập mã xác nhận gồm 4 chữ số được gửi đến:</h4>
+                                    <h4 style="color: #4caf50 ; text-align:center">${email}</h4>`,
                             input: 'number',
                             showCancelButton: true,
                             confirmButtonText: 'Xác nhận',
@@ -114,11 +122,14 @@ function RegisterForm() {
                             allowOutsideClick: false,
                             preConfirm: (code) => {
                                 return axios
-                                    .post('/auth/verify-otp', {
-                                        username: username,
-                                        email,
+                                    .post('/users/register', {
                                         otp: code,
-                                        password: password,
+                                        name: username,
+                                        birthday: birthday,
+                                        phone: phone,
+                                        pass: password,
+                                        email: email,
+                                        
                                     })
                                     .then((res) => {
                                         console.log(res);
@@ -127,7 +138,7 @@ function RegisterForm() {
                                         } else {
                                             toast.success('Đăng kí thành công!');
                                             setTimeout(() => {
-                                                navigate('/');
+                                                navigate('/login');
                                             }, 2000);
                                         }
                                     })
@@ -194,7 +205,7 @@ function RegisterForm() {
                 {errors['phone'] !== '' && <span className="error">{errors['phone']}</span>}
             </div>
             <div className="form-group">
-                <label className="form-label">Số điện thoại</label>
+                <label className="form-label">Ngày Sinh</label>
                 <input
                     id="birthday"
                     name="birthday"
