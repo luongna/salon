@@ -22,8 +22,9 @@ import AccessDeny from '~/pages/Admin/Status/accessDeny';
 import NotFound from '~/pages/Admin/Status/NotFound';
 import MailPage from '~/pages/ForgotPass/mailPage';
 import ForgotPage from '~/pages/ForgotPass/forgotPage';
-
 import Profile from '~/pages/Profile';
+import DataService from '~/pages/Admin/scenes/service'
+
 
 // Public routes
 const publicRoutes = [
@@ -36,6 +37,7 @@ const publicRoutes = [
     { path: '/services/:id', component: ServiceDetail },
     { path: '/staff', component: Staff },
     { path: '/branch', component: Branch, admin: true },
+    { path: '/dataService', component: DataService, admin: true },
     { path: '/formBranch', component: FormBranch, admin: true },
     { path: '/calendar', component: Calendar, admin: true },
     { path: '/form', component: Form, admin: true },
@@ -49,8 +51,7 @@ const publicRoutes = [
     { path: '/profile', component: Profile },
     { path: '/mail', component: MailPage,layout: null },
     { path: '/reset', component: ForgotPage,layout: null },
-    { path: '/mail', component: MailPage,layout: null },
-    { path: '/reset', component: ForgotPage,layout: null },
+
 
 ];
 //dddd
