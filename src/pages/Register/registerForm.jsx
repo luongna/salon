@@ -85,7 +85,9 @@ function RegisterForm() {
                 setErrors((errors) => ({ ...errors, confirmPassword: '' }));
             }
         }
+
         return formIsValid
+
     };
 
     const handleSubmit = (e) => {

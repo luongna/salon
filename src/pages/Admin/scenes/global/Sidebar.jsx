@@ -11,6 +11,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ApartmentIcon from '@mui/icons-material/Apartment';
+import { useSelector } from "react-redux";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -34,7 +35,7 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-
+  const user = useSelector((state) => state.auth.login?.currenUser);
   return (
     <Box
       sx={{
@@ -90,7 +91,7 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`../../assets/user.png`}
+                  src={user.img}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -101,10 +102,10 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Ed Roh
+                  {user.name}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  VP Fancy Admin
+                  Admin
                 </Typography>
               </Box>
             </Box>

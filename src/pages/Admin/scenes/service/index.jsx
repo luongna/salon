@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box, Button, useTheme } from '@mui/material';
 import { DataGrid, viVN } from '@mui/x-data-grid';
 import { tokens } from '~/utils/theme/theme';
 import axios from '~/utils/api/axios';
@@ -10,15 +10,16 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Link } from 'react-router-dom';
 import ConfirmBox from '../../components/ConfirmBox';
 import { ToastContainer, toast } from 'react-toastify';
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import 'react-toastify/dist/ReactToastify.css';
-const Branch = () => {
+const Service = () => {
     const [teamData, setTeamData] = useState([]);
     const [open, setOpen] = useState(false);
     const [deleteData, setDeleteData] = useState(null);
 
     useEffect(() => {
         axios
-            .get(`/branch`)
+            .get(`/service`)
             .then((res) => {
                 const branch = res.data;
                 setTeamData(branch);
@@ -28,7 +29,7 @@ const Branch = () => {
 
     function deleteUser() {
         axios
-            .delete(`/branch/${deleteData}`)
+            .delete(`/service/${deleteData}`)
             .then((res) => {
                 setOpen(false);
                 setTeamData((prevData) => prevData.filter((item) => item.id !== deleteData));
@@ -46,7 +47,8 @@ const Branch = () => {
             .catch((err) => {
                 console.log(err);
                 if (err.response.status === 404) {
-                    toast.warning('Không tìm thấy chi nhánh', {
+                    setOpen(false);
+                    toast.warning('Không tìm thấy dịch vụ', {
                         position: 'top-right',
                         autoClose: 5000,
                         hideProgressBar: false,
@@ -75,12 +77,20 @@ const Branch = () => {
             flex: 1,
         },
         {
-            field: 'address',
-            headerName: 'Địa chỉ',
+            field: 'price',
+            headerName: 'Giá',
             type: 'text',
             headerAlign: 'left',
             align: 'left',
             flex: 1,
+        },
+        {
+            field: 'description',
+            headerName: 'Mô tả',
+            type: 'text',
+            headerAlign: 'left',
+            align: 'left',
+            flex: 2,
         },
         {
             field: 'status',
@@ -90,12 +100,8 @@ const Branch = () => {
             align: 'left',
             flex: 1,
             renderCell: ({ row: { status } }) => {
-                return (
-                    <span>
-                        {status === 0 ?('Đóng cửa'):('Mở cửa')}
-                    </span>
-                );
-            }
+                return <span>{status === 0 ? 'Không hoạt động' : 'Hoạt động'}</span>;
+            },
         },
 
         {
@@ -105,7 +111,7 @@ const Branch = () => {
             renderCell: ({ row: { id } }) => {
                 return (
                     <Box display="flex" justifyContent="center">
-                        <Link to={`/editBranch/${id}`}>
+                        <Link to={`/editService/${id}`}>
                             <IconButton aria-label="Edit" size="small">
                                 <EditOutlinedIcon />
                             </IconButton>
@@ -129,7 +135,21 @@ const Branch = () => {
     return (
         <>
             <Box m="20px">
-                <Header title="Người dùng" subtitle="Quản lý người dùng" />
+                <Header title="Dịch vụ" subtitle="Quản lý dịch vụ" />
+                <Box>
+                    <Button
+                        sx={{
+                            backgroundColor: colors.blueAccent[700],
+                            color: colors.grey[100],
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            padding: '10px 20px',
+                        }}
+                    >
+                        <DownloadOutlinedIcon sx={{ mr: '10px' }} />
+                        Download Reports
+                    </Button>
+                </Box>
                 <Box
                     m="40px 0 0 0"
                     height="75vh"
@@ -169,7 +189,7 @@ const Branch = () => {
             <ConfirmBox
                 open={open}
                 closeDialog={() => setOpen(false)}
-                title={'Bạn có chắc muốn xóa chi nhánh!'}
+                title={'Bạn có chắc muốn xóa dịch vụ!'}
                 deleteFunction={deleteUser}
             />
             <ToastContainer />
@@ -177,4 +197,4 @@ const Branch = () => {
     );
 };
 
-export default Branch;
+export default Service;

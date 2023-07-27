@@ -15,18 +15,26 @@
 }
 
 .breadcrumbs {
-    color: rgb(246, 109, 109);
+    color: rgb(246, 109, 109) !important;
     margin-top: 14px;
 }
 
 .breadcrumb-link {
     text-decoration: none;
-    color: rgb(246, 109, 109);
+    color: rgb(246, 109, 109) !important;
     font-size: 16px;
 }
 
-.breadcrumbs:hover, .breadcrumb-link:hover {
-    color: rgb(246, 109, 109);
+.breadcrumb-text {
+    text-decoration: none;
+    pointer-events: none;
+    color: rgb(246, 109, 109) !important;
+    font-size: 16px;
+}
+
+.breadcrumbs:hover,
+.breadcrumb-link:hover {
+    color: #fff !important;
     /* text-decoration: underline; */
 }
 
@@ -59,7 +67,6 @@
     text-decoration: none;
 }
 
-
 @media screen and (min-width: 769px) {
     .header {
         aspect-ratio: unset;
@@ -83,5 +90,11 @@
 
     .service-list {
         grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .breadcrumbs {
+        display: block !important;
     }
 }
