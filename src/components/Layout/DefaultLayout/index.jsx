@@ -15,7 +15,7 @@ function DefaultLayout({ children }) {
             <Footer></Footer>
             {/* </div>
             </div> */}
-            <Message />
+            {/* <Message /> */}
         </div>
     );
 }
