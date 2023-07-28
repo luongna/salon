@@ -97,6 +97,7 @@ function RegisterForm() {
         if (validateForm) {
             
             axios.post('/users/mail', {
+                    otp :'12',
                     name: username,
                     birthday: birthday,
                     phone: phone,
@@ -104,9 +105,9 @@ function RegisterForm() {
                     email: email,   
                 })
                 .then((response) => {
-                    console.log("aaaaa")
+                    console.log(response.data)
                     dispath(loginSuccess(response.data));
-                    if (response.data === 'Email is already existed') {
+                    if (response.data === 'Email is already existed'|| response.data === 'Phone is already existed') {
                         setErrors((errors) => ({ ...errors, email: 'Email đã tồn tại!' }));
                     } else {
                         Swal.fire({
