@@ -16,6 +16,7 @@ import Dashboard from '~/pages/Admin/scenes/dashboard/index';
 import FormBranch from '~/pages/Admin/scenes/form/branch';
 import BookServiceContent from '~/pages/BookServiceContent';
 import Service from '~/pages/Service';
+import ServiceEx from '~/pages/ServiceEx/ServiceEx';
 import ServiceDetail from '~/pages/ServiceDetail';
 import Staff from '~/pages/Staff';
 import AccessDeny from '~/pages/Admin/Status/accessDeny';
@@ -34,6 +35,7 @@ const publicRoutes = [
     { path: '/login', component: Login, layout: null },
     { path: '/register', component: Register, layout: null },
     { path: '/service', component: Service },
+    { path: '/serviceExample', component: ServiceEx },
     { path: '/services/:id', component: ServiceDetail },
     { path: '/staff', component: Staff },
     { path: '/branch', component: Branch, admin: true },
