@@ -8,13 +8,13 @@ import SearchService from '~/components/Search';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
-
 function Service() {
     const [services, setServices] = useState([]);
-  
+
     useEffect(() => {
         // Fetch data from the API when the component mounts
-        axios.get('http://localhost:8080/service')
+        axios
+            .get('http://localhost:8080/service')
             .then((response) => {
                 setServices(response.data);
             })
@@ -70,16 +70,18 @@ function Service() {
                     giới.
                 </p>
                 <div className="service-list">
-                {currentServices.map((service) => (
-                    <ServiceItem
-                        key={service.id}
-                        id={service.id}
-                        title={service.name}
-                        imgUrl={service.img}
-                        onClick={() => { /* Handle click event here if needed */ }}
-                    />
-                ))}
-            </div>
+                    {currentServices.map((service) => (
+                        <ServiceItem
+                            key={service.id}
+                            id={service.id}
+                            title={service.name}
+                            imgUrl={service.img}
+                            onClick={() => {
+                                /* Handle click event here if needed */
+                            }}
+                        />
+                    ))}
+                </div>
                 <div className="paginate-wrapper">
                     <ReactPaginate
                         previousLabel={<MdKeyboardArrowLeft size={24} />}

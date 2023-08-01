@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
-  const navigate = useNavigate(); 
+    const navigate = useNavigate();
     return (
         <div className="service-wrapper" onClick={onClick}>
             <style>
