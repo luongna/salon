@@ -55,6 +55,9 @@ function Header() {
                     <Link to={'/service'}>
                         <li className={cx('element', currentURL === '/service' && 'header-active')}>dịch vụ</li>
                     </Link>
+                    <Link to={'/serviceExample'}>
+                        <li className={cx('element', currentURL === '/serviceExample' && 'header-active')}>Mẫu dịch vụ</li>
+                    </Link>
                     <li className={cx('element')}>Contact</li>
                     {user && isAdmin(user.accessToken) && (
                         <Link to={`/dashboard`}>

@@ -5,31 +5,41 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Button } from '@mui/material';
 import { Breadcrumbs } from '../Breadcrumbs';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+
 function ServiceDetail() {
     const navigate = useNavigate();
+    const { id } = useParams();
+
     useEffect(() => {
         window.scrollTo(0, 0);
+        fetchServiceDetail();
     }, []);
-    const images = [
-        'https://product.hstatic.net/1000181446/product/dv3_large.png',
-        'https://product.hstatic.net/1000181446/product/hairstyle2_compact.png',
-        'https://product.hstatic.net/1000181446/product/dv3_large.png',
-        'https://product.hstatic.net/1000181446/product/hairstyle2_compact.png',
-        'https://product.hstatic.net/1000181446/product/dv3_large.png',
-        'https://product.hstatic.net/1000181446/product/hairstyle2_compact.png',
-        'https://product.hstatic.net/1000181446/product/dv3_large.png',
-    ];
 
+    const [serviceDetail, setServiceDetail] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const containerRef = useRef(null);
 
+    const fetchServiceDetail = () => {
+        axios
+            .get(`http://localhost:8080/service/detail/${id}`)
+            .then((response) => {
+                setServiceDetail(response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching service detail:', error);
+            });
+    };
+
+    const { imgDetails } = serviceDetail || {};
+
     const handlePrevClick = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+        setCurrentIndex((prevIndex) => (prevIndex === 0 ? imgDetails.length - 1 : prevIndex - 1));
     };
 
     const handleNextClick = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+        setCurrentIndex((prevIndex) => (prevIndex === imgDetails.length - 1 ? 0 : prevIndex + 1));
     };
 
     const handleItemClick = (index) => {
@@ -46,6 +56,11 @@ function ServiceDetail() {
             }
         }
     };
+
+    if (!serviceDetail) {
+        return <div>Loading...</div>; // You can render a loading indicator while waiting for data to be fetched
+    }
+
     return (
         <>
             <section
@@ -67,8 +82,8 @@ function ServiceDetail() {
             </section>
             <div className="service-container">
                 <div className="service-content">
-                <div className="service-content__image">
-                        <img className="service-image" src={images[currentIndex]} alt={` ${currentIndex + 1}`} />
+                    <div className="service-content__image">
+                        <img className="service-image" src={serviceDetail.img} alt={serviceDetail.name} />
                     </div>
                     <div className="list-images">
                         <button className="left-button" onClick={handlePrevClick}>
@@ -84,11 +99,11 @@ function ServiceDetail() {
                                 overflowX: 'scroll',
                             }}
                         >
-                            {images.map((image, index) => (
+                            {imgDetails.map((imgDetail, index) => (
                                 <img
                                     key={index}
-                                    src={image}
-                                    alt={` ${index + 1}`}
+                                    src={imgDetail.img}
+                                    alt={`Image ${index + 1}`}
                                     style={{
                                         width: '150px',
                                         height: '100px',
@@ -105,16 +120,13 @@ function ServiceDetail() {
                         </button>
                     </div>
                     <div>
-                        <h1 className="service-title">CẠO MẶT ÊM ÁI - GỘI XẢ KỸ CÀNG</h1>
-                        <p>
-                            Cạo mặt êm ái giúp da sáng mịn. Gội xả kỹ càng sau cắt để bạn luôn hoàn hảo trước mỗi buổi
-                            hẹn quan trọng. Không lo tóc con bám dính nhờ giấy cuốn cổ đặc biệt từ Suplo
-                        </p>
+                        <h1 className="service-title">{serviceDetail.name}</h1>
+                        <p>{serviceDetail.description}</p>
                     </div>
                 </div>
                 <div className="right-sider-bar">
                     <div style={{ padding: '12px' }}>
-                    <h2
+                        <h2
                             style={{
                                 display: 'flex',
                                 justifyContent: 'center',
@@ -125,16 +137,11 @@ function ServiceDetail() {
                             THÔNG TIN DỊCH VỤ
                         </h2>
                         <h3>Tên:</h3>
-                        <p>CẠO MẶT ÊM ÁI - GỘI XẢ KỸ CÀNG</p>
+                        <p>{serviceDetail.name}</p>
                         <h3>Mô tả:</h3>
-                        <p>
-                            Cạo mặt êm ái giúp da sáng mịn. Gội xả kỹ càng sau cắt để bạn luôn hoàn hảo trước mỗi buổi
-                            hẹn quan trọng. Không lo tóc con bám dính nhờ giấy cuốn cổ đặc biệt từ Suplo Cạo mặt êm ái
-                            giúp da sáng mịn. Gội xả kỹ càng sau cắt để bạn luôn hoàn hảo trước mỗi buổi hẹn quan trọng.
-                            Không lo tóc con bám dính nhờ giấy cuốn cổ đặc biệt từ Suplo
-                        </p>
+                        <p>{serviceDetail.description}</p>
                         <h3>Giá:</h3>
-                        <p>50,000₫</p>
+                        <p>{serviceDetail.price}₫</p>
                     </div>
                     <Button className="add-cart-button" onClick={() => navigate('/cart')}>
                         <AddShoppingCartIcon className="add-cart-icon" />

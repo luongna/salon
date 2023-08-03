@@ -64,7 +64,7 @@ function Cart() {
     useEffect(() => {
         const newTotalPrice = jsonData.reduce((total, element) => total + element.price, 0);
         setTotalPrice(newTotalPrice);
-    },[jsonData]);
+    }, [jsonData]);
     const handleOrder = () => {
         console.log('Selected titles:');
     };
