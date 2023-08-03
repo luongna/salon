@@ -5,7 +5,8 @@ import { Breadcrumbs } from '~/pages/Breadcrumbs';
 import { ServiceItem } from '~/pages/ServiceItem';
 import './Service.css';
 import SearchService from '~/components/Search';
-import axios from 'axios';
+import { tokens } from '~/utils/theme/theme';
+import axios from '~/utils/api/axios';
 import { useState, useEffect } from 'react';
 
 function Service() {
@@ -14,7 +15,7 @@ function Service() {
     useEffect(() => {
         // Fetch data from the API when the component mounts
         axios
-            .get('http://localhost:8080/service')
+            .get(`/service`)
             .then((response) => {
                 setServices(response.data);
             })
