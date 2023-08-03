@@ -22,7 +22,7 @@ const LoginForm = (onClose) => {
 
         if (!phone) {
             formIsValid = false;
-            setErrors((errors) => ({ ...errors, phone: 'Vui lòng nhập email!' }));
+            setErrors((errors) => ({ ...errors, phone: 'Vui lòng nhập số điện thoại!' }));
         } else {
             const regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
             if (!regexPhoneNumber.test(phone)) {
@@ -70,7 +70,7 @@ const LoginForm = (onClose) => {
                         });
 
                         dispath(loginSuccess(response.data));
-                        navigate('/');
+                        navigate(-1);
                         // const { user, accessToken } = response.data;
                         // if (user.id === 1) {
                         // setUserInfo(response.data);
@@ -84,7 +84,7 @@ const LoginForm = (onClose) => {
                     }
                 })
                 .catch((err) => {
-                    document.getElementById('f').innerText = `Tài khoản email hoặc mật khẩu không đúng!`;
+                    document.getElementById('f').innerText = `Số điện thoại hoặc mật khẩu không đúng!`;
                     console.log('error', err);
                     dispath(loginFailed());
                 });
