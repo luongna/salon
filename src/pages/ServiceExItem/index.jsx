@@ -1,11 +1,8 @@
 import PropTypes from 'prop-types';
-import { Button } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
 
 export const ServiceExItem = ({ id, title, imgUrl, onClick }) => {
-  const navigate = useNavigate(); 
     return (
-        <div className="service-wrapper" onClick={onClick}>
+        <div className="service-wrapper">
             <style>
                 {`
             .service-wrapper {
@@ -70,10 +67,10 @@ export const ServiceExItem = ({ id, title, imgUrl, onClick }) => {
             }
           `}
             </style>
-            <Link to={`/services/${id}`} className="item">
+            <div className="item">
                 <img className="service-image" src={imgUrl} alt="service" />
                 <h3 className="service-title">{title}</h3>
-            </Link>
+            </div>
         </div>
     );
 };
