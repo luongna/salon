@@ -8,10 +8,12 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import styles from './Cart.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSelector } from 'react-redux';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import staffNghia from '~/assets/images/n.jpg';
 import staffLuong from '~/assets/images/luong.jpg';
 import staffdube from '~/assets/images/dube.jpg';
+import axios from '~/utils/api/axios'
 const cx = classNames.bind(styles);
 
 function Cart() {
@@ -52,6 +54,7 @@ function Cart() {
     );
     const [jsonData, setJsonData] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const user = useSelector((state) => state.auth.login?.currenUser);
     const deleteElement = (index) => {
         const updatedElements = [...jsonData];
         updatedElements.splice(index, 1);
@@ -66,8 +69,18 @@ function Cart() {
         console.log('Selected titles:');
     };
     useEffect(() => {
-        setJsonData(data);
-    }, [data]);
+        axios
+        .post(`/booking/listCart`,{
+            serviceID :1,
+            phone :user.phone, 
+          })
+        .then((res) => {
+            const branch = res.data;
+            console.log(branch)
+           setJsonData(branch);
+        })
+        .catch((error) => console.log(error));
+    }, []);
 
     //BookServices
     const [branches] = useState([
