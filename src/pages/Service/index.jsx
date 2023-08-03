@@ -5,9 +5,9 @@ import { Breadcrumbs } from '~/pages/Breadcrumbs';
 import { ServiceItem } from '~/pages/ServiceItem';
 import './Service.css';
 import SearchService from '~/components/Search';
-import { tokens } from '~/utils/theme/theme';
 import axios from '~/utils/api/axios';
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 function Service() {
     const [services, setServices] = useState([]);
@@ -35,6 +35,26 @@ function Service() {
     const offset = currentPage * itemsPerPage;
     const currentServices = services.slice(offset, offset + itemsPerPage);
 
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const searchQuery = searchParams.get('search') || '';
+
+    useEffect(() => {
+        // Fetch data from the API when the component mounts
+        axios
+            .get(`/service`)
+            .then((response) => {
+                // Filter the services based on the search query
+                const filteredServices = response.data.filter((service) =>
+                    service.name.toLowerCase().includes(searchQuery.toLowerCase()),
+                );
+                setServices(filteredServices);
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+    }, [searchQuery]);
+
     const handlePageChange = (selectedPage) => {
         setCurrentPage(selectedPage.selected);
     };
@@ -42,6 +62,10 @@ function Service() {
     // const getServiceById = (id) => {
     //     return services.find((service) => service.id === id);
     // };
+
+    const handleSearch = (searchResults) => {
+        setServices(searchResults);
+    };
 
     return (
         <div>
@@ -62,7 +86,7 @@ function Service() {
                 </Breadcrumbs>
             </section>
             <section className="body">
-                <SearchService></SearchService>
+                <SearchService onSearch={handleSearch} />
                 <h2 className="heading">TRỞ THÀNH QUÝ ÔNG LỊCH LÃM CÙNG SUPLO</h2>
                 <p className="sub-heading">
                     Suplo hạnh phúc khi mỗi ngày đem đến cho phái mạnh toàn cầu sự tự tin tỏa sáng, sức khoẻ, niềm vui

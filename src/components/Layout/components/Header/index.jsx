@@ -14,11 +14,13 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import Tippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
+import axios from '~/utils/api/axios';
 
 const cx = classNames.bind(styles);
 function Header() {
     const [status, setStatus] = useState(false);
     const [isFixed, setIsFixed] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
     const location = useLocation();
     const currentURL = location.pathname;
     const dispatch = useDispatch();
@@ -44,6 +46,24 @@ function Header() {
     const handleLogout = () => {
         dispatch(logoutSuccess());
     };
+
+    const handleSearchChange = (e) => {
+        setSearchValue(e.target.value);
+    };
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        if (searchValue.trim() !== '') {
+            // Encode the searchValue to handle special characters in the URL
+            const encodedSearchValue = encodeURIComponent(searchValue);
+            // Navigate to the /service page with the search query as a URL parameter
+            window.location.href = `/service?search=${encodedSearchValue}`;
+        } else {
+            // Handle the case when the search input is empty
+            console.log('Please enter a search term.');
+        }
+    };
+
     return (
         <header className={cx('wrapper', isFixed ? 'fixed-header' : '')}>
             <img src={logo} alt="logo" className={cx('logo')} />
@@ -56,7 +76,9 @@ function Header() {
                         <li className={cx('element', currentURL === '/service' && 'header-active')}>dịch vụ</li>
                     </Link>
                     <Link to={'/serviceExample'}>
-                        <li className={cx('element', currentURL === '/serviceExample' && 'header-active')}>Mẫu dịch vụ</li>
+                        <li className={cx('element', currentURL === '/serviceExample' && 'header-active')}>
+                            Mẫu dịch vụ
+                        </li>
                     </Link>
                     <li className={cx('element')}>Contact</li>
                     {user && isAdmin(user.accessToken) && (
@@ -80,24 +102,19 @@ function Header() {
                 ) : (
                     <div className={cx('actions', 'actions-mobile')}>
                         <div className={cx('search')}>
-                            <Tippy
-                                hideOnClick={true}
-                                trigger="click"
-                                placement="bottom"
-                                interactive
-                                render={(attrs) => (
-                                    <>
-                                        <input placeholder="Tìm kiếm dịch vụ" />
-                                        <button className={cx('search-btn')}>
-                                            <FontAwesomeIcon icon={faSearch} />
-                                        </button>
-                                    </>
-                                )}
-                            >
-                                <button className={cx('search-btn')}>
+                            <form onSubmit={handleSearchSubmit}>
+                                {' '}
+                                {/* Add form element with onSubmit event */}
+                                <input
+                                    type="text"
+                                    placeholder="Tìm kiếm dịch vụ"
+                                    value={searchValue} // Bind the input value to the searchValue state
+                                    onChange={handleSearchChange} // Handle input changes
+                                />
+                                <button type="submit" className={cx('search-btn')}>
                                     <FontAwesomeIcon icon={faSearch} />
                                 </button>
-                            </Tippy>
+                            </form>
                         </div>
                         <Badge
                             badgeContent={4}
