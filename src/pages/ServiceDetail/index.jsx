@@ -6,7 +6,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Button } from '@mui/material';
 import { Breadcrumbs } from '../Breadcrumbs';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import axios from '~/utils/api/axios';
 
 function ServiceDetail() {
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ function ServiceDetail() {
 
     const fetchServiceDetail = () => {
         axios
-            .get(`http://localhost:8080/service/detail/${id}`)
+            .get(`/service/detail/${id}`)
             .then((response) => {
                 setServiceDetail(response.data);
             })
