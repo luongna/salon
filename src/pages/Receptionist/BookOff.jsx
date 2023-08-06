@@ -10,15 +10,17 @@ import {
     MenuItem,
     Paper,
     TextField,
+    useMediaQuery,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
 import axios from '~/utils/api/axios';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import Header from '../../components/Header';
+import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import * as React from 'react';
+import { useEffect } from 'react';
+
 function not(a, b) {
     return a.filter((value) => b.indexOf(value) === -1);
 }
@@ -27,127 +29,44 @@ function intersection(a, b) {
     return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-const Form = () => {
+function BookOff() {
     const isNonMobile = useMediaQuery('(min-width:600px)');
-    const [initialValues, setInitialValues] = useState();
-    const [receptionistRole, setReceptionistRole] = useState(false);
-    const [branchData, setBranchData] = useState([]);
-    let id = useParams();
-    const navigate = useNavigate();
-    const handleFormSubmit = (values) => {
-        const formData = {
-            id: values.id,
-            name: values.name,
-            email: values.email,
-            phone: values.phone,
-            birthday: values.birthday,
-            branch: values.branch,
-            role: right,
-        };
-        axios
-            .put(`/auth/updateAdmin`, formData)
-            .then((res) => {
-                switch (res.data) {
-                    case 'phone':
-                        toast.warning('Số điện thoại đã tồn tại!', {
-                            position: 'top-right',
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: 'light',
-                        });
-                        break;
-                    case 'email':
-                        toast.warning('Email đã tồn tại!', {
-                            position: 'top-right',
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: 'light',
-                        });
-                        break;
-                    case 'id':
-                        toast.warning('ID không tồn tại!', {
-                            position: 'top-right',
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: 'light',
-                        });
-                        break;
-                    default:
-                        navigate('/dataUser');
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
-
+    const [totalPrice, setTotalPrice] = useState(0);
     const [checked, setChecked] = useState([]);
     const [left, setLeft] = useState([]);
     const [right, setRight] = useState([]);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
+    const [branchData, setBranchData] = useState([]);
 
     useEffect(() => {
-        setReceptionistRole(!right.some((role) => role.name === 'ROLE_RECEPTIONIST'));
+        const newTotalPrice = right.reduce((total, element) => total + element.price, 0);
+        setTotalPrice(newTotalPrice);
     }, [right]);
 
     useEffect(() => {
         axios
-            .get(`/auth/detail/${id.id}`)
+            .get(`/service`)
             .then((res) => {
-                const user = res.data;
-                setRight(user.roles);
-                if (user.branch) {
-                    let idBranch = user.branch?.id;
-                    user.branch = idBranch;
-                }
-                setInitialValues(user);
-                axios
-                    .get(`/auth/role`)
-                    .then((res) => {
-                        const allRoles = res.data;
-                        const userRoles = user.roles;
-                        const leftRoles = allRoles.filter(
-                            (role) => !userRoles.some((userRole) => userRole.id === role.id),
-                        );
-                        setLeft(leftRoles);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        if (error.response.status === 404) {
-                            navigate('/404');
-                        }
-                    });
+                const service = res.data;
+                const modifiedData = service.map((item) => ({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                }));
+                setLeft(modifiedData);
             })
-            .catch((error) => {
-                console.log(error);
-                if (error.response.status === 404) {
-                    navigate('/404');
-                }
-            });
-    }, [id.id, navigate]);
+            .catch((error) => console.log(error));
 
-    useEffect(() => {
         axios
             .get(`/branch`)
             .then((res) => {
-                const branch = res.data;
-                setBranchData(branch);
+                setBranchData(res.data);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                console.log(error);
+            });
     }, []);
 
     const handleToggle = (value) => () => {
@@ -185,8 +104,13 @@ const Form = () => {
         setRight([]);
     };
 
+    const handleFormSubmit = (values) => {
+        console.log(right);
+        console.log(values);
+    };
+
     const customList = (items) => (
-        <Paper sx={{ width: 300, height: 300, overflow: 'auto' }}>
+        <Paper sx={{ width: 300, height: 430, overflow: 'auto' }}>
             <List dense component="div" role="list">
                 {items.map((value) => {
                     const labelId = `transfer-list-item-${value.id}-label`;
@@ -205,7 +129,7 @@ const Form = () => {
                             </ListItemIcon>
                             <ListItemText
                                 id={labelId}
-                                primary={` ${value.name}`}
+                                primary={`Dịch vụ ${value.name}`}
                                 sx={{
                                     '& span': {
                                         fontFamily: 'Lora, serif',
@@ -222,9 +146,8 @@ const Form = () => {
 
     return (
         <>
-            <Box m="20px">
-                <Header title="Cập nhật người dùng" />
-                {initialValues && (
+            <div className="container">
+                <Box m="20px" sx={{ fontFamily: 'Lora, serif' }}>
                     <Formik onSubmit={handleFormSubmit} initialValues={initialValues} validationSchema={checkoutSchema}>
                         {({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => (
                             <form onSubmit={handleSubmit}>
@@ -240,33 +163,6 @@ const Form = () => {
                                         fullWidth
                                         variant="filled"
                                         type="text"
-                                        label="Tên"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        value={values.name}
-                                        name="name"
-                                        error={!!touched.name && !!errors.name}
-                                        helperText={touched.name && errors.name}
-                                        sx={{ gridColumn: 'span 4' }}
-                                    />
-
-                                    <TextField
-                                        fullWidth
-                                        variant="filled"
-                                        type="text"
-                                        label="Email"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        value={values.email}
-                                        name="email"
-                                        error={!!touched.email && !!errors.email}
-                                        helperText={touched.email && errors.email}
-                                        sx={{ gridColumn: 'span 4' }}
-                                    />
-                                    <TextField
-                                        fullWidth
-                                        variant="filled"
-                                        type="text"
                                         label="Số điện thoại"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
@@ -274,50 +170,83 @@ const Form = () => {
                                         name="phone"
                                         error={!!touched.phone && !!errors.phone}
                                         helperText={touched.phone && errors.phone}
-                                        sx={{ gridColumn: 'span 4' }}
+                                        sx={{
+                                            gridColumn: 'span 4',
+                                            fontSize: '26px',
+
+                                            '& label': {
+                                                fontFamily: 'Lora, serif',
+                                                fontSize: '18px',
+                                            },
+                                            '& input': {
+                                                fontFamily: 'Lora, serif',
+                                                fontSize: '16px',
+                                            },
+                                            '& p': {
+                                                fontFamily: 'Lora, serif',
+                                                fontSize: '12px',
+                                            },
+                                        }}
                                     />
                                     <TextField
                                         fullWidth
                                         variant="filled"
-                                        type="date"
-                                        label="Ngày sinh"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        value={values.birthday}
-                                        name="birthday"
-                                        error={!!touched.birthday && !!errors.birthday}
-                                        helperText={touched.birthday && errors.birthday}
-                                        sx={{ gridColumn: 'span 4' }}
-                                    />
-                                    <TextField
-                                        fullWidth
-                                        variant="filled"
-                                        // type="text"
-                                        disabled={receptionistRole}
                                         select
-                                        label="Chi nhánh"
+                                        label="Chọn chi nhánh"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={values.branch || 0}
+                                        value={values.branch}
                                         name="branch"
-                                        sx={{ gridColumn: 'span 4' }}
+                                        error={!!touched.branch && !!errors.branch}
+                                        helperText={touched.branch && errors.branch}
+                                        sx={{
+                                            gridColumn: 'span 4',
+                                            fontSize: '26px',
+
+                                            '& label': {
+                                                fontFamily: 'Lora, serif',
+                                                fontSize: '18px',
+                                            },
+                                            '& input': {
+                                                fontFamily: 'Lora, serif',
+                                                fontSize: '16px',
+                                            },
+                                            '& p': {
+                                                fontFamily: 'Lora, serif',
+                                                fontSize: '12px',
+                                            },
+                                            '& div': {
+                                                fontFamily: 'Lora, serif',
+                                                fontSize: '12px',
+                                            },
+                                        }}
                                     >
-                                        <MenuItem value={0}>Chọn chi nhánh</MenuItem>
-                                        {branchData.map((values) => (
-                                            <MenuItem key={values.id} value={values.id}>
-                                                {values.name}
-                                            </MenuItem>
-                                        ))}
+                                        <MenuItem
+                                            key={-1}
+                                            value={'none'}
+                                            sx={{ fontFamily: 'Lora, serif', fontSize: '12px' }}
+                                        >
+                                            Chọn chi nhánh
+                                        </MenuItem>
+                                        {branchData.map((value) => {
+                                            return (
+                                                <MenuItem
+                                                    key={value.id}
+                                                    value={value.id}
+                                                    sx={{ fontFamily: 'Lora, serif', fontSize: '12px' }}
+                                                >
+                                                    {value.name}
+                                                </MenuItem>
+                                            );
+                                        })}
                                     </TextField>
                                 </Box>
-
                                 <Grid
                                     container
                                     spacing={2}
                                     justifyContent="center"
                                     alignItems="center"
-
-                                    // style={{ marginTop: '20px' }}
+                                    style={{ marginTop: '20px' }}
                                 >
                                     <Grid item>{customList(left)}</Grid>
                                     <Grid item>
@@ -366,38 +295,32 @@ const Form = () => {
                                     </Grid>
                                     <Grid item>{customList(right)}</Grid>
                                 </Grid>
-
+                                <div style={{ textAlign: 'end' }}>
+                                    Tổng tiền: <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
+                                </div>
                                 <Box display="flex" justifyContent="end" mt="20px">
                                     <Button type="submit" color="secondary" variant="contained">
-                                        Lưu
+                                        Tạo dịch vụ
                                     </Button>
-                                    <Link to={'/dataUser'}>
-                                        <Button type="submit" color="warning" variant="contained">
-                                            Hủy
-                                        </Button>
-                                    </Link>
                                 </Box>
                             </form>
                         )}
                     </Formik>
-                )}
-            </Box>
+                </Box>
+            </div>
             <ToastContainer />
         </>
     );
-};
-
+}
 const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
 const checkoutSchema = yup.object().shape({
-    name: yup.string().required('Không được bỏ trống'),
-    email: yup.string().email('Không đúng định dạng email').required('Không được bỏ trống'),
-    phone: yup.string().matches(phoneRegExp, 'Không đúng định dạng số điện thoại').required('Không được bỏ trống'),
-    birthday: yup
-        .date()
-        .max(new Date(), 'Ngày phải nhỏ hơn hoặc bằng ngày hiện tại')
-        .min(new Date('1930-01-01'), 'Ngày không được nhỏ hơn năm 1930')
-        .required('Không được bỏ trống'),
+    phone: yup.string().matches(phoneRegExp, 'Số điện thoại không hợp lệ').required('Không được bỏ trống'),
+    branch: yup.mixed().test('is-not-none', 'Vui lòng chọn chi nhánh', (value) => value !== 'none'),
 });
-
-export default Form;
+const initialValues = {
+    // name: '',
+    // price: '',
+    branch: 'none',
+    phone: '',
+};
+export default BookOff;

@@ -24,8 +24,9 @@ import MailPage from '~/pages/ForgotPass/mailPage';
 import ForgotPage from '~/pages/ForgotPass/forgotPage';
 import Profile from '~/pages/Profile';
 import DataService from '~/pages/Admin/scenes/service'
-
-
+import BookOff from '~/pages/Receptionist/BookOff';
+import DataUser from '~/pages/Admin/scenes/team'
+import AcceptBooking from '~/pages/Receptionist/AcceptBooking';
 // Public routes
 const publicRoutes = [
     { path: '/', component: Home },
@@ -51,8 +52,9 @@ const publicRoutes = [
     { path: '/profile', component: Profile },
     { path: '/mail', component: MailPage,layout: null },
     { path: '/reset', component: ForgotPage,layout: null },
-
-
+    { path: '/bookOff', component: BookOff },
+    { path: '/dataUser', component: DataUser , admin: true},
+    { path: '/accept', component: AcceptBooking },
 ];
 //dddd
 

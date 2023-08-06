@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box, useTheme } from '@mui/material';
 import { DataGrid, viVN } from '@mui/x-data-grid';
-import { tokens } from '../../theme';
-import { mockDataTeam } from '../../data/mockData';
+import { tokens } from '~/utils/theme/theme';
+import axios from '~/utils/api/axios';
 import Header from '../../components/Header';
 import { IconButton } from '@mui/material';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -13,7 +13,13 @@ const Team = () => {
     const [teamData, setTeamData] = useState([]);
 
     useEffect(() => {
-        setTeamData(mockDataTeam);
+        axios
+            .get(`/auth`)
+            .then((res) => {
+                const user = res.data;
+                setTeamData(user);
+            })
+            .catch((error) => console.log(error));
     }, []);
 
     const handleDelete = (id) => {
@@ -30,11 +36,12 @@ const Team = () => {
             flex: 1,
         },
         {
-            field: 'age',
+            field: 'birthday',
             headerName: 'Ngày sinh',
             type: 'number',
             headerAlign: 'left',
             align: 'left',
+            flex: 1,
         },
         {
             field: 'phone',
@@ -47,9 +54,18 @@ const Team = () => {
             flex: 1,
         },
         {
-            field: 'access',
+            field: 'roles',
             headerName: 'Role',
             flex: 1,
+            renderCell: ({ row }) => {
+                return (
+                    <div style={{wordWrap:'break-word'}}>
+                        {row.roles.map((role) => (
+                            <div key={role.id}>{role.name},</div>
+                        ))}
+                    </div>
+                );
+            },
         },
         {
             field: 'actions',
@@ -115,6 +131,7 @@ const Team = () => {
                     rows={teamData}
                     columns={columns}
                     localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
+                    sx={{wordWrap: 'break-word'}}
                 />
             </Box>
         </Box>

@@ -6,6 +6,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Button } from '@mui/material';
 import { Breadcrumbs } from '../Breadcrumbs';
 import { Link, useNavigate } from 'react-router-dom';
+import Comments from '~/components/Comment/Comments';
 function ServiceDetail() {
     const navigate = useNavigate();
     useEffect(() => {
@@ -67,7 +68,7 @@ function ServiceDetail() {
             </section>
             <div className="service-container">
                 <div className="service-content">
-                <div className="service-content__image">
+                    <div className="service-content__image">
                         <img className="service-image" src={images[currentIndex]} alt={` ${currentIndex + 1}`} />
                     </div>
                     <div className="list-images">
@@ -114,7 +115,7 @@ function ServiceDetail() {
                 </div>
                 <div className="right-sider-bar">
                     <div style={{ padding: '12px' }}>
-                    <h2
+                        <h2
                             style={{
                                 display: 'flex',
                                 justifyContent: 'center',
@@ -141,6 +142,8 @@ function ServiceDetail() {
                     </Button>
                 </div>
             </div>
+            <div style={{width: '80%'}}><Comments commentsUrl="http://localhost:3004/comments" currentUserId="1" /></div>
+            
         </>
     );
 }

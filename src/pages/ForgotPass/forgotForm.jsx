@@ -2,10 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from '~/utils/api/axios';
 import { Link } from 'react-router-dom';
-import { faL } from '@fortawesome/free-solid-svg-icons'
 import { useEmailStore } from '~/utils/store/email';
-import Swal from 'sweetalert2'
-import { Password } from '@mui/icons-material';
 
 
 const ForgotForm =() =>{

@@ -12,6 +12,7 @@ import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ApartmentIcon from '@mui/icons-material/Apartment';
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import { useSelector } from "react-redux";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -135,13 +136,13 @@ const Sidebar = () => {
             >
               Data
             </Typography>
-            {/* <Item
+            <Item
               title="Người dùng"
-              to="/team"
+              to="/dataUser"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            /> */}
+            />
              <Item
               title="Chi nhánh"
               to="/branch"

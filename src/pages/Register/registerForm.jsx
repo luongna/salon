@@ -4,8 +4,6 @@ import {  toast } from 'react-toastify';
 import './registerForm.scss';
 import Swal from 'sweetalert2'
 import axios from '~/utils/api/axios';
-import { loginStart, loginFailed, loginSuccess } from '~/utils/store/authSlice';
-import { useDispatch } from 'react-redux';
 
 function RegisterForm() {
     const [username, setUsername] = useState('');
@@ -16,7 +14,6 @@ function RegisterForm() {
     const [errors, setErrors] = useState({});
     const [birthday, setBirthday] = useState('');
     const navigate = useNavigate();
-    const dispath = useDispatch();
     const handleInputChange = (e) => {
         const { id, value } = e.target;
 
@@ -106,7 +103,6 @@ function RegisterForm() {
                 })
                 .then((response) => {
                     console.log(response.data)
-                    dispath(loginSuccess(response.data));
                     if (response.data === 'Email is already existed'|| response.data === 'Phone is already existed') {
                         setErrors((errors) => ({ ...errors, email: 'Email đã tồn tại!' }));
                     } else {
