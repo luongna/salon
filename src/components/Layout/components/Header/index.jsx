@@ -14,13 +14,13 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import Tippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
-import axios from '~/utils/api/axios';
 
 const cx = classNames.bind(styles);
 function Header() {
     const [status, setStatus] = useState(false);
     const [isFixed, setIsFixed] = useState(false);
     const [searchValue, setSearchValue] = useState('');
+    const [isSearchVisible, setIsSearchVisible] = useState(false);
     const location = useLocation();
     const currentURL = location.pathname;
     const dispatch = useDispatch();
@@ -42,6 +42,11 @@ function Header() {
             window.removeEventListener('scroll', handleScroll);
         };
     }, [isFixed]);
+
+    const handleToggleSearch = () => {
+        // Toggle the visibility of the search input when the search button is clicked
+        setIsSearchVisible(!isSearchVisible);
+    };
 
     const handleLogout = () => {
         dispatch(logoutSuccess());
@@ -102,16 +107,18 @@ function Header() {
                 ) : (
                     <div className={cx('actions', 'actions-mobile')}>
                         <div className={cx('search')}>
+                            {/* Render the search input and button */}
                             <form onSubmit={handleSearchSubmit}>
-                                {' '}
-                                {/* Add form element with onSubmit event */}
-                                <input
-                                    type="text"
-                                    placeholder="Tìm kiếm dịch vụ"
-                                    value={searchValue} // Bind the input value to the searchValue state
-                                    onChange={handleSearchChange} // Handle input changes
-                                />
-                                <button type="submit" className={cx('search-btn')}>
+                                {isSearchVisible && (
+                                    <input
+                                        type="text"
+                                        placeholder="Tìm kiếm dịch vụ"
+                                        value={searchValue}
+                                        onChange={handleSearchChange}
+                                        className={cx('search-input', isSearchVisible ? 'search-input-visible' : '')}
+                                    />
+                                )}
+                                <button type="submit" className={cx('search-btn')} onClick={handleToggleSearch}>
                                     <FontAwesomeIcon icon={faSearch} />
                                 </button>
                             </form>

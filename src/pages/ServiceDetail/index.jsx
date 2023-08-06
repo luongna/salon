@@ -1,5 +1,5 @@
 import './ServiceDetail.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -32,14 +32,17 @@ function ServiceDetail() {
             });
     };
 
-    const { imgDetails } = serviceDetail || {};
+    const listImgs = useMemo(() => {
+        const listImages = (serviceDetail?.imgDetails || []).map((item) => item.img);
+        return [serviceDetail?.img, ...listImages];
+    }, [serviceDetail]);
 
     const handlePrevClick = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === 0 ? imgDetails.length - 1 : prevIndex - 1));
+        setCurrentIndex((prevIndex) => (prevIndex === 0 ? listImgs.length - 1 : prevIndex - 1));
     };
 
     const handleNextClick = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === imgDetails.length - 1 ? 0 : prevIndex + 1));
+        setCurrentIndex((prevIndex) => (prevIndex === listImgs.length - 1 ? 0 : prevIndex + 1));
     };
 
     const handleItemClick = (index) => {
@@ -77,13 +80,13 @@ function ServiceDetail() {
                     <Link className="breadcrumb-link" to="/service">
                         Các dịch vụ
                     </Link>
-                    <Link className="breadcrumb-text">CẠO MẶT ÊM ÁI - GỘI XẢ KỸ CÀNG</Link>
+                    <Link className="breadcrumb-text">{serviceDetail.name}</Link>
                 </Breadcrumbs>
             </section>
             <div className="service-container">
                 <div className="service-content">
                     <div className="service-content__image">
-                        <img className="service-image" src={serviceDetail.img} alt={serviceDetail.name} />
+                        <img className="service-image" src={listImgs[currentIndex]} alt={`Image ${currentIndex + 1}`} />
                     </div>
                     <div className="list-images">
                         <button className="left-button" onClick={handlePrevClick}>
@@ -99,10 +102,10 @@ function ServiceDetail() {
                                 overflowX: 'scroll',
                             }}
                         >
-                            {imgDetails.map((imgDetail, index) => (
+                            {listImgs?.map((imgDetail, index) => (
                                 <img
                                     key={index}
-                                    src={imgDetail.img}
+                                    src={imgDetail}
                                     alt={`Image ${index + 1}`}
                                     style={{
                                         width: '150px',
@@ -120,8 +123,8 @@ function ServiceDetail() {
                         </button>
                     </div>
                     <div>
-                        <h1 className="service-title">{serviceDetail.name}</h1>
-                        <p>{serviceDetail.description}</p>
+                        <h1 className="service-title">{serviceDetail?.name}</h1>
+                        <p>{serviceDetail?.description}</p>
                     </div>
                 </div>
                 <div className="right-sider-bar">
@@ -137,11 +140,11 @@ function ServiceDetail() {
                             THÔNG TIN DỊCH VỤ
                         </h2>
                         <h3>Tên:</h3>
-                        <p>{serviceDetail.name}</p>
+                        <p>{serviceDetail?.name}</p>
                         <h3>Mô tả:</h3>
-                        <p>{serviceDetail.description}</p>
+                        <p>{serviceDetail?.description}</p>
                         <h3>Giá:</h3>
-                        <p>{serviceDetail.price}₫</p>
+                        <p>{serviceDetail?.price}₫</p>
                     </div>
                     <Button className="add-cart-button" onClick={() => navigate('/cart')}>
                         <AddShoppingCartIcon className="add-cart-icon" />
