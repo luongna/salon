@@ -17,7 +17,7 @@
         .service-image {
             width: 56vw;
             height: 56vh;
-            object-fit: fill;
+            object-fit: contain;
             &:hover {
                 transform: scale(1.1);
                 transition: all 0.5s ease;
@@ -46,7 +46,7 @@
         }
     }
     .right-sider-bar {
-        width: 24vw;
+        width: 21vw;
         height: max-content;
         background-color: #fbfbf1;
         position: relative;

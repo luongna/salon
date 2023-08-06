@@ -1,44 +1,8 @@
 import PropTypes from 'prop-types';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { Button } from '@mui/material';
-import { Link, useNavigate} from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
-import axios from '~/utils/api/axios';
 
-export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
-
-  const navigate = useNavigate(); 
-  const user = useSelector((state) => state.auth.login?.currenUser);
- const HandleAddToCart =(e)=> {
-  e.preventDefault();
-  console.log(11111)
-    if(user === null){
-      
-     navigate('/login')
-     
-    }
-    else{
-      axios.post('/booking/addToCart',{
-        serviceID :id,
-        phone :user.phone, 
-      }
-      
-      ).then(() => {
-      Swal.fire({
-        html: `<h4>Thêm vào giỏ hàng thành công!</h4>`,
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1100,
-    });
-       
-    console.log(id ,user.phone)
-  })
-}
- }
-
+export const ServiceExItem = ({ id, title, imgUrl, onClick }) => {
     return (
-        <div className="service-wrapper" onClick={onClick}>
+        <div className="service-wrapper">
             <style>
                 {`
             .service-wrapper {
@@ -103,19 +67,16 @@ export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
             }
           `}
             </style>
-            <Link to={`/services/${id}`} className="item">
+            <div className="item">
                 <img className="service-image" src={imgUrl} alt="service" />
                 <h3 className="service-title">{title}</h3>
-            </Link>
-            <Button className="add-cart-button" >
-                <AddShoppingCartIcon className="add-cart-icon" onClick={(e) =>HandleAddToCart(e)}/>
-            </Button>
+            </div>
         </div>
     );
 };
 
-ServiceItem.propTypes = {
+ServiceExItem.propTypes = {
     title: PropTypes.string,
     imgUrl: PropTypes.string,
     onClick: PropTypes.func,
-}
+};

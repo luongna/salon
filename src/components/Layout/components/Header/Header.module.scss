@@ -61,11 +61,11 @@
         height: 100%;
         list-style-type: none;
         text-align: center;
-        li{
+        li {
             height: 40px;
             cursor: pointer;
             line-height: 40px;
-            &:hover{
+            &:hover {
                 border-radius: 13px;
                 background-color: rgb(205, 197, 197);
             }
@@ -105,18 +105,19 @@
 }
 
 .search {
-    input{
+    input {
         width: 250px;
         padding: 10px;
         border-radius: 13px;
         border-radius: 13px;
     }
-    .search-btn{
+    .search-btn {
         width: 40px;
         height: 40px;
         cursor: pointer;
         border-radius: 13px;
         border-radius: 13px;
+        margin-right: 10px;
     }
 }
 
@@ -139,13 +140,13 @@
         transition: 0.3s ease-in-out;
     }
 
-    .actions-mobile{
+    .actions-mobile {
         display: none;
     }
 
     .mobile {
         display: flex;
-        div{
+        div {
             margin-right: 10px;
         }
     }
@@ -164,6 +165,4 @@
             margin-left: 0;
         }
     }
-
- 
 }
