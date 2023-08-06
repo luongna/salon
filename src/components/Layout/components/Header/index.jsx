@@ -78,7 +78,7 @@ function Header() {
                         <li className={cx('element', currentURL === '/' && 'header-active')}>trang chủ</li>
                     </Link>
                     <Link to={'/service'}>
-                        <li className={cx('element', currentURL === '/service' && 'header-active')}>dịch vụ</li>
+                        <li className={cx('element', currentURL.includes('/service')  && 'header-active')}>dịch vụ</li>
                     </Link>
                     <Link to={'/serviceExample'}>
                         <li className={cx('element', currentURL === '/serviceExample' && 'header-active')}>

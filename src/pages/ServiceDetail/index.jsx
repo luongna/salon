@@ -5,9 +5,9 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Button } from '@mui/material';
 import { Breadcrumbs } from '../Breadcrumbs';
+import Comments from '~/components/Comment/Comments';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from '~/utils/api/axios';
-
 function ServiceDetail() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -151,6 +151,8 @@ function ServiceDetail() {
                     </Button>
                 </div>
             </div>
+            <div style={{width: '80%'}}><Comments commentsUrl="http://localhost:3004/comments" currentUserId="1" /></div>
+            
         </>
     );
 }
