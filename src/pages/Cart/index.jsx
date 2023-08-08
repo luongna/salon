@@ -10,10 +10,7 @@ import styles from './Cart.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector } from 'react-redux';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import staffNghia from '~/assets/images/n.jpg';
-import staffLuong from '~/assets/images/luong.jpg';
-import staffdube from '~/assets/images/dube.jpg';
-import axios from '~/utils/api/axios'
+import axios from '~/utils/api/axios';
 const cx = classNames.bind(styles);
 
 function Cart() {
@@ -53,6 +50,8 @@ function Cart() {
         [],
     );
     const [jsonData, setJsonData] = useState([]);
+    const [staffs, setStaffs] = useState([]);
+    const [times, setTimes] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const user = useSelector((state) => state.auth.login?.currenUser);
     const deleteElement = (index) => {
@@ -66,7 +65,7 @@ function Cart() {
         setTotalPrice(newTotalPrice);
     }, [jsonData]);
     const handleOrder = () => {
-        console.log('Selected titles:');
+        // console.log('Selected titles:');
     };
     useEffect(() => {
         axios
@@ -76,47 +75,67 @@ function Cart() {
           })
         .then((res) => {
             const branch = res.data;
-            console.log(branch)
+            // console.log(branch)
            setJsonData(branch);
         })
         .catch((error) => console.log(error));
     }, []);
+    //staff
+    useEffect(() => {
+        axios
+        .get(`/booking/listStaff`)
+        .then((res) => {
+            const staffs = res.data;
+            // console.log(staffs);
+           setStaffs(staffs)
+        })
+        .catch((error) => console.log(error));
 
+    }, []);
+    //branch
+    useEffect(() => {
+        axios
+            .get(`/branch`)
+            .then((res) => {
+                const branch = res.data;
+                setBranches(branch);
+            })
+            .catch((error) => console.log(error));
+    }, []);
     //BookServices
-    const [branches] = useState([
-        {
-            id: 1,
-            address: 'Khu đô thị FPT, Ngũ Hành Sơn, TP Đà Nẵng',
-            position: '15.977456962147246, 108.2627979201717',
-        },
-        {
-            id: 2,
-            address: '123 Phạm Như Xương, Liên Chiểu, TP Đà Nẵng',
-            position: '16.06456047137082, 108.15191449651242',
-        },
-        {
-            id: 3,
-            address: '36 Trần Văn Ơn, TP Huế, Thừa Thiên Huế',
-            position: '16.465680902969627, 107.60516250808173',
-        },
-        {
-            id: 4,
-            address: '150 Trần Thánh Tông, Hội An, Quảng Nam',
-            position: '15.888565750138024, 108.34642808301683',
-        },
-        {
-            id: 5,
-            address: 'Thị trấn Chợ Chùa, Quảng Ngãi',
-            position: '15.03934538342154, 108.77545294091901',
-        },
+    const [branches,setBranches] = useState([
+        // {
+        //     id: 1,
+        //     address: 'Khu đô thị FPT, Ngũ Hành Sơn, TP Đà Nẵng',
+        //     position: '15.977456962147246, 108.2627979201717',
+        // },
+        // {
+        //     id: 2,
+        //     address: '123 Phạm Như Xương, Liên Chiểu, TP Đà Nẵng',
+        //     position: '16.06456047137082, 108.15191449651242',
+        // },
+        // {
+        //     id: 3,
+        //     address: '36 Trần Văn Ơn, TP Huế, Thừa Thiên Huế',
+        //     position: '16.465680902969627, 107.60516250808173',
+        // },
+        // {
+        //     id: 4,
+        //     address: '150 Trần Thánh Tông, Hội An, Quảng Nam',
+        //     position: '15.888565750138024, 108.34642808301683',
+        // },
+        // {
+        //     id: 5,
+        //     address: 'Thị trấn Chợ Chùa, Quảng Ngãi',
+        //     position: '15.03934538342154, 108.77545294091901',
+        // },
     ]);
 
     const [dates, setDates] = useState([]);
-
     const handleClick = (daysToAdd) => {
         return new Promise((resolve) => {
-            const nextDay = moment().add(daysToAdd, 'days').format('DD/MM');
-            console.log('Next day:', nextDay);
+            const nextDay = moment().add(daysToAdd, 'days').format('DD/MM/YYYY');
+            // console.log('Next day:', nextDay);
             // Thực hiện các hành động khác với nextDay
             resolve(nextDay);
         });
@@ -134,68 +153,68 @@ function Cart() {
         fetchDates();
     }, []);
 
-    const [times] = useState([
-        // '8:00', '9:30', '11:00', '13:00', '14:30', '16:00'
-        {
-            id: 1,
-            time: '8:00',
-        },
-        {
-            id: 2,
-            time: '9:30',
-        },
-        {
-            id: 3,
-            time: '11:00',
-        },
-        {
-            id: 4,
-            time: '13:00',
-        },
-        {
-            id: 5,
-            time: '14:30',
-        },
-        {
-            id: 6,
-            time: '16:00',
-        },
-    ]);
+    // const [times] = useState([
+    //     // '8:00', '9:30', '11:00', '13:00', '14:30', '16:00'
+    //     {
+    //         id: 1,
+    //         time: '8:00',
+    //     },
+    //     {
+    //         id: 2,
+    //         time: '9:30',
+    //     },
+    //     {
+    //         id: 3,
+    //         time: '11:00',
+    //     },
+    //     {
+    //         id: 4,
+    //         time: '13:00',
+    //     },
+    //     {
+    //         id: 5,
+    //         time: '14:30',
+    //     },
+    //     {
+    //         id: 6,
+    //         time: '16:00',
+    //     },
+    // ]);
 
-    const [staffs] = useState([
-        {
-            id: 1,
-            name: 'Lê Quý Nghĩa',
-            avatar: staffNghia,
-            position: 'Salon staff',
-            phone: '0969140342',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-            id: 2,
-            name: 'Ngô Anh Lượng',
-            avatar: staffLuong,
-            position: 'Salon staff',
-            phone: '0123456789',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-            id: 3,
-            name: 'Hoàng Hồng Phúc',
-            avatar: staffdube,
-            position: 'Salon staff',
-            phone: '0123456789',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-            id: 4,
-            name: 'Nguyễn Hữu Phước',
-            avatar: staffdube,
-            position: 'Salon staff',
-            phone: '0123456789',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-    ]);
+    // const [staffs] = useState([
+    //     {
+    //         id: 1,
+    //         name: 'Lê Quý Nghĩa',
+    //         avatar: staffNghia,
+    //         position: 'Salon staff',
+    //         phone: '0969140342',
+    //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    //     },
+    //     {
+    //         id: 2,
+    //         name: 'Ngô Anh Lượng',
+    //         avatar: staffLuong,
+    //         position: 'Salon staff',
+    //         phone: '0123456789',
+    //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    //     },
+    //     {
+    //         id: 3,
+    //         name: 'Hoàng Hồng Phúc',
+    //         avatar: staffdube,
+    //         position: 'Salon staff',
+    //         phone: '0123456789',
+    //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    //     },
+    //     {
+    //         id: 4,
+    //         name: 'Nguyễn Hữu Phước',
+    //         avatar: staffdube,
+    //         position: 'Salon staff',
+    //         phone: '0123456789',
+    //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    //     },
+    // ]);
 
     const [active, setActive] = useState(false);
     const [selectedBranchId, setSelectedBranchId] = useState(null);
@@ -218,19 +237,46 @@ function Cart() {
         const selectedID = parseInt(event.target.value);
         const selected = branches.find((branch) => branch.id === selectedID);
         setSelectedBranchId(selected);
+        console.log(selected)
     };
     const handleDateClick = (id) => {
-        setSelectedDateId(id);
+         setSelectedDateId(id);
+      
+            axios
+            .post(`/booking/listTime`,{
+                staffId :selectedStaff.id,
+                date:dates[id-1].date,
+            })
+            .then((res) => {
+                const time = res.data;
+               setTimes(time)
+            })
+            .catch((error) => console.log(error));
+       
+
     };
     const handleTimesClick = (id) => {
         setSelectedTimeId(id);
     };
 
     const handleSubmit = (e) => {
+        
         e.preventDefault();
+        console.log(selectedStaff.id ,dates )
         if (selectedBranchId && selectedStaff && selectedDateId && selectedTimeId) {
-            toast.success('Bạn đã đặt lịch thành công', {
-                position: toast.POSITION.TOP_RIGHT,
+            axios
+            .post(`/booking/book`,{
+                date:dates[selectedDateId-1].date,
+                totalPrice:totalPrice,
+                nhanvien:selectedStaff.id,
+                user :user.phone,
+                time :selectedTimeId,
+                branch:selectedBranchId.id
+            }).then((res)=>{
+                toast.success('Bạn đã đặt lịch thành công', {
+                    position: toast.POSITION.TOP_RIGHT,
+            }) 
+            
             });
         } else {
             toast.error('Vui lòng chọn đầy đủ các mục !!!', {
@@ -361,6 +407,9 @@ function Cart() {
                                     ))}
                                 </div>
                             </div>
+                            <div className={cx('total-price')}>
+                        Tổng tiền: <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
+                    </div>
                             <button className={cx('submit-booking')} type="submit" onClick={handleSubmit}>
                                 ĐẶT LỊCH
                             </button>
@@ -371,7 +420,7 @@ function Cart() {
                                 <h3>THÔNG TIN NHÂN VIÊN BẠN ĐÃ CHỌN</h3>
                                 {selectedStaff && (
                                     <div>
-                                        <img src={selectedStaff.avatar} alt="avatar" />
+                                        <img src={selectedStaff.img} alt="img" />
                                         <div>
                                             <p>
                                                 <strong>{selectedStaff.name}</strong> - {selectedStaff.position}
@@ -384,7 +433,7 @@ function Cart() {
                             </div>
                             <MapContainer
                                 center={position}
-                                zoom={15}
+                                zoom={5}
                                 scrollWheelZoom={false}
                                 style={{ height: '48%', width: '100%', bottom: '0' }}
                             >
@@ -392,11 +441,12 @@ function Cart() {
                                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 />
-                                <Marker position={position}>
+                                {selectedBranchId && ( <Marker position={{lat:selectedBranchId.lat,lng:selectedBranchId.lng}}>
                                     <Popup>
                                         A pretty CSS3 popup. <br /> Easily customizable.
                                     </Popup>
-                                </Marker>
+                                </Marker>)}
+                               
                             </MapContainer>
                         </div>
                     </div>
