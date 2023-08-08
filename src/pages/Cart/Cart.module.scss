@@ -96,14 +96,16 @@
     }
     .date-time {
         display: flex;
-        justify-content: space-between;
+        flex-wrap: wrap;
+        justify-content: flex-start;
         button {
-            width: 60px;
+            min-width: 100px;
             height: 25px;
             border: transparent;
             border-radius: 3px;
             margin-bottom: 15px;
             text-align: center;
+            margin-right: 20px;
             background-color: rgb(246, 109, 109);
             color: #000;
             // cursor: not-allowed;
