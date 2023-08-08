@@ -24,29 +24,51 @@ const Comment = ({
     activeComment.id === comment.id &&
     activeComment.type === "replying";
   const canDelete =
-    currentUserId === comment.userId ;
+    currentUserId === comment.user_id ;
   const canReply = Boolean(currentUserId);
-  const canEdit = currentUserId === comment.userId ;
+  const canEdit = currentUserId === comment.user_id ;
   const replyId =  comment.id;
-  const createdAt = new Date(comment.createdAt).toLocaleDateString();
+  function formatTimeAgo(commentDate) {
+    const commentTime = new Date(commentDate).getTime();
+    const currentTime = new Date().getTime();
+    const timeDifferenceInSeconds = Math.floor((currentTime - commentTime) / 1000);
+  
+    if (timeDifferenceInSeconds < 60) {
+      return 'vài giây trước';
+    } else if (timeDifferenceInSeconds < 3600) {
+      const minutesAgo = Math.floor(timeDifferenceInSeconds / 60);
+      return `${minutesAgo} phút trước`;
+    } else if (timeDifferenceInSeconds < 86400) {
+      const hoursAgo = Math.floor(timeDifferenceInSeconds / 3600);
+      return `${hoursAgo} giờ trước`;
+    } else if (timeDifferenceInSeconds < 604800) {
+      const daysAgo = Math.floor(timeDifferenceInSeconds / 86400);
+      return `${daysAgo} ngày trước`;
+    } else {
+      // Thời gian lớn hơn 7 ngày, hiển thị thời gian đầy đủ
+      const createdAt = new Date(commentDate).toLocaleString(); // Định dạng thời gian đầy đủ
+      return createdAt;
+    }
+  }
+  const createdAt = formatTimeAgo(comment.date);
 
   return (
-    <div key={comment.id} className={cx('comment')} >
+    <div key={ comment.id} className={cx('comment')} >
       <div className= {cx('comment-image-container')}>
-        <img src={avatar} alt="avatar comment"/>
+        <img src={comment.img ? comment.img :avatar} alt="avatar comment"/>
       </div>
       
       <div className={cx('comment-right-part')}>
         <div className={cx('comment-content')}>
-          <div className={cx('comment-author')}>{comment.username}</div>
+          <div className={cx('comment-author')}>{comment.name}</div>
           <div>{createdAt}</div>
         </div>
-        {!isEditing && <div className={cx('comment-text')}>{comment.body}</div>}
+        {!isEditing && <div className={cx('comment-text')}>{comment.text}</div>}
         {isEditing && (
           <CommentForm
-            submitLabel="Update"
+            submitLabel="Cập nhật"
             hasCancelButton
-            initialText={comment.body}
+            initialText={comment.text}
             handleSubmit={(text) => updateComment(text, comment.id)}
             handleCancel={() => {
               setActiveComment(null);
@@ -61,7 +83,7 @@ const Comment = ({
                 setActiveComment({ id: comment.id, type: "replying" })
               }
             >
-              Reply
+              Trả lời
             </div>
           )}
           {canEdit && (
@@ -71,7 +93,7 @@ const Comment = ({
                 setActiveComment({ id: comment.id, type: "editing" })
               }
             >
-              Edit
+              Chỉnh sửa
             </div>
           )}
           {canDelete && (
@@ -79,13 +101,13 @@ const Comment = ({
               className={cx('comment-action')}
               onClick={() => deleteComment(comment.id)}
             >
-              Delete
+              Xóa
             </div>
           )}
         </div>
         {isReplying && (
           <CommentForm
-            submitLabel="Reply"
+            submitLabel="Trả lời"
             handleSubmit={(text) => addComment(text, replyId)}
           />
         )}

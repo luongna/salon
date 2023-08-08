@@ -5,7 +5,7 @@ import { faBars, faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import logo from '~/assets/images/logo2.png';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { logoutSuccess } from '~/utils/store/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import isAdmin from '~/utils/jwt';
@@ -24,6 +24,8 @@ function Header() {
     const location = useLocation();
     const currentURL = location.pathname;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const user = useSelector((state) => state.auth.login?.currenUser);
     useEffect(() => {
         const handleScroll = () => {
@@ -62,7 +64,7 @@ function Header() {
             // Encode the searchValue to handle special characters in the URL
             const encodedSearchValue = encodeURIComponent(searchValue);
             // Navigate to the /service page with the search query as a URL parameter
-            window.location.href = `/service?search=${encodedSearchValue}`;
+            navigate(`/service?search=${encodedSearchValue}`);
         } else {
             // Handle the case when the search input is empty
             console.log('Please enter a search term.');
@@ -78,7 +80,7 @@ function Header() {
                         <li className={cx('element', currentURL === '/' && 'header-active')}>trang chủ</li>
                     </Link>
                     <Link to={'/service'}>
-                        <li className={cx('element', currentURL.includes('/service')  && 'header-active')}>dịch vụ</li>
+                        <li className={cx('element', currentURL.includes('/service') && 'header-active')}>dịch vụ</li>
                     </Link>
                     <Link to={'/serviceExample'}>
                         <li className={cx('element', currentURL === '/serviceExample' && 'header-active')}>

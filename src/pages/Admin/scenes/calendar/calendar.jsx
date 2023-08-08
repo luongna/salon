@@ -6,34 +6,54 @@ import listPlugin from '@fullcalendar/list';
 import { Box } from '@mui/material';
 import Header from '../../components/Header';
 import viLocale from '@fullcalendar/core/locales/vi';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from '~/utils/api/axios';
 const Calendar = () => {
-    const handleViewChange = (view) => {
-        console.log(view);
-    };
     const [branchData, setBranchData] = useState([]);
+    const [selectedRange, setSelectedRange] = useState(null);
+
     useEffect(() => {
         axios
             .get(`/branch`)
             .then((res) => {
-              setBranchData(res.data)
+                setBranchData(res.data);
+                console.log(res.data);
             })
             .catch((error) => {
                 console.log(error);
             });
     }, []);
+
+    useEffect(() => {
+        if (selectedRange) {
+            console.log(selectedRange);
+        }
+    }, [selectedRange]);
+    const handleDatesSet = (dateInfo) => {
+        if (
+            !selectedRange ||
+            selectedRange.startStr !== dateInfo.startStr ||
+            selectedRange.endStr !== dateInfo.endStr
+        ) {
+            setSelectedRange({
+                startStr: dateInfo.startStr,
+                endStr: dateInfo.endStr,
+            });
+        }
+    };
+
     return (
         <Box m="20px">
             <Header title="Lịch" subtitle="Lịch làm việc đầy đủ" />
             <div>
                 <label htmlFor="branch">Chọn chi nhánh</label>
                 <select name="branch" id="branch" style={{ width: '200px' }}>
-                <option  value='none'>Chọn chi nhánh</option>
-                  {branchData.map((element, index) => (
-                    <option key={index} value={element.id}>{element.name}</option>
-                  ))}
-                   
+                    <option value="none">Chọn chi nhánh</option>
+                    {branchData.map((element, index) => (
+                        <option key={index} value={element.id}>
+                            {element.name}
+                        </option>
+                    ))}
                 </select>
             </div>
             <Box display="flex" justifyContent="space-between">
@@ -44,7 +64,7 @@ const Calendar = () => {
                         headerToolbar={{
                             left: 'prev,next today',
                             center: 'title',
-                            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth',
+                            right: 'dayGridMonth,timeGridWeek,timeGridDay',
                         }}
                         initialView="dayGridMonth"
                         editable={true}
@@ -53,7 +73,7 @@ const Calendar = () => {
                         dayMaxEvents={true}
                         // dateClick={handleDateClick}
                         //  select={handleDateClick}
-                        datesSet={handleViewChange}
+                        datesSet={handleDatesSet}
                         // eventClick={handleEventClick}
                         locales={[viLocale]}
                         locale="vi"
