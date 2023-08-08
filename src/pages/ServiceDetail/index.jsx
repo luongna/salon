@@ -8,20 +8,12 @@ import { Breadcrumbs } from '../Breadcrumbs';
 import Comments from '~/components/Comment/Comments';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from '~/utils/api/axios';
+
 function ServiceDetail() {
     const navigate = useNavigate();
     const { id } = useParams();
-
     useEffect(() => {
         window.scrollTo(0, 0);
-        fetchServiceDetail();
-    }, []);
-
-    const [serviceDetail, setServiceDetail] = useState(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const containerRef = useRef(null);
-
-    const fetchServiceDetail = () => {
         axios
             .get(`/service/detail/${id}`)
             .then((response) => {
@@ -30,7 +22,11 @@ function ServiceDetail() {
             .catch((error) => {
                 console.error('Error fetching service detail:', error);
             });
-    };
+    }, [id]);
+
+    const [serviceDetail, setServiceDetail] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const containerRef = useRef(null);
 
     const listImgs = useMemo(() => {
         const listImages = (serviceDetail?.imgDetails || []).map((item) => item.img);
@@ -86,7 +82,7 @@ function ServiceDetail() {
             <div className="service-container">
                 <div className="service-content">
                     <div className="service-content__image">
-                        <img className="service-image" src={listImgs[currentIndex]} alt={`Image ${currentIndex + 1}`} />
+                        <img className="service-image" src={listImgs[currentIndex]} alt={` ${currentIndex + 1}`} />
                     </div>
                     <div className="list-images">
                         <button className="left-button" onClick={handlePrevClick}>
@@ -106,7 +102,7 @@ function ServiceDetail() {
                                 <img
                                     key={index}
                                     src={imgDetail}
-                                    alt={`Image ${index + 1}`}
+                                    alt={` ${index + 1}`}
                                     style={{
                                         width: '150px',
                                         height: '100px',
@@ -151,8 +147,9 @@ function ServiceDetail() {
                     </Button>
                 </div>
             </div>
-            <div style={{width: '80%'}}><Comments commentsUrl="http://localhost:3004/comments" currentUserId="1" /></div>
-            
+            <div style={{ width: '80%' }}>
+                <Comments  serviceID={id} />
+            </div>
         </>
     );
 }

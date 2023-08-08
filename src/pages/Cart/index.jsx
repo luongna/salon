@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import classNames from 'classnames/bind';
 import moment from 'moment';
@@ -14,41 +14,7 @@ import axios from '~/utils/api/axios';
 const cx = classNames.bind(styles);
 
 function Cart() {
-    const data = useMemo(
-        () => [
-            {
-                ud: 1,
-                img: 'https://cdn.pixabay.com/photo/2023/05/23/10/45/girl-8012460_1280.jpg',
-                tittle: 'đàu cắt moi',
-                price: 100000,
-            },
-            {
-                ud: 2,
-                img: 'https://cdn.pixabay.com/photo/2023/05/23/10/45/girl-8012460_1280.jpg',
-                tittle: 'đàu cắt moi',
-                price: 100,
-            },
-            {
-                ud: 3,
-                img: 'https://cdn.pixabay.com/photo/2023/05/23/10/45/girl-8012460_1280.jpg',
-                tittle: 'đàu cắt moi',
-                price: 100,
-            },
-            {
-                ud: 4,
-                img: 'https://cdn.pixabay.com/photo/2023/05/23/10/45/girl-8012460_1280.jpg',
-                tittle: 'đàu cắt moi',
-                price: 100,
-            },
-            {
-                ud: 5,
-                img: 'https://cdn.pixabay.com/photo/2023/05/23/10/45/girl-8012460_1280.jpg',
-                tittle: 'đàu cắt moi',
-                price: 100,
-            },
-        ],
-        [],
-    );
+  
     const [jsonData, setJsonData] = useState([]);
     const [staffs, setStaffs] = useState([]);
     const [times, setTimes] = useState([]);
@@ -90,7 +56,6 @@ function Cart() {
            setStaffs(staffs)
         })
         .catch((error) => console.log(error));
-
     }, []);
     //branch
     useEffect(() => {
