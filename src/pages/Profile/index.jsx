@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loginStart, loginFailed, loginSuccess } from '~/utils/store/authSlice';
 import { useDispatch } from 'react-redux';
-import avatarDefault from '~/pages/Profile'
+import avatarDefault from '~/pages/Profile';
 function Profile() {
     const user = useSelector((state) => state.auth.login?.currenUser);
     const [isEditProfile, setIsEditProfile] = useState(false);
@@ -148,9 +148,15 @@ function Profile() {
                                     <div className="row align-items-center">
                                         <div className="col-lg-6 mb-4 mb-lg-0">
                                             <img
-                                                src={isEditImg && imageBase64 ? imageBase64 : user.img ? user.img : avatarDefault}
+                                                src={
+                                                    isEditImg && imageBase64
+                                                        ? imageBase64
+                                                        : user.img
+                                                        ? user.img
+                                                        : avatarDefault
+                                                }
                                                 alt="avatar"
-                                                style={{ width: '400px', height: '400px', borderRadius:'13px' }}
+                                                style={{ width: '400px', height: '400px', borderRadius: '13px' }}
                                             />
                                         </div>
                                         <div className="col-lg-6 px-xl-10">

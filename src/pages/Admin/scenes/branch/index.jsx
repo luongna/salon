@@ -90,12 +90,8 @@ const Branch = () => {
             align: 'left',
             flex: 1,
             renderCell: ({ row: { status } }) => {
-                return (
-                    <span>
-                        {status === 0 ?('Đóng cửa'):('Mở cửa')}
-                    </span>
-                );
-            }
+                return <span>{status === 0 ? 'Đóng cửa' : 'Mở cửa'}</span>;
+            },
         },
 
         {

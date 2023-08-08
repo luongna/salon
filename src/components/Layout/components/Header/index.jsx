@@ -155,7 +155,9 @@ function Header() {
                                         <Link to={'/profile'}>
                                             <li>Hồ sơ</li>
                                         </Link>
-                                        <li>Lịch sử</li>
+                                        <Link to={'/user-history'}>
+                                            <li>Lịch sử</li>
+                                        </Link>
                                         <li onClick={handleLogout}>Đăng xuất</li>
                                     </ul>
                                 </div>
