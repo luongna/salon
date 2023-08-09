@@ -1,4 +1,5 @@
 import RegisterForm from './registerForm';
+import logo from '~/assets/images/logo2.png';
 
 const RegisterPage = () => {
     return (
@@ -6,11 +7,7 @@ const RegisterPage = () => {
             <div className="container-fluid h-custom">
                 <div className="row d-flex justify-content-center align-items-center h-100">
                     <div className="col-md-9 col-lg-6 col-xl-5 back">
-                        <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-                            className="img-fluid"
-                            alt="Sample "
-                        />
+                        <img src={logo} className="img-fluid" alt="Sample " />
                     </div>
                     <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                         <RegisterForm />

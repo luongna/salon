@@ -70,7 +70,7 @@ const LoginForm = (onClose) => {
                         });
 
                         dispath(loginSuccess(response.data));
-                        navigate(-1);
+                        navigate('/');
                         // const { user, accessToken } = response.data;
                         // if (user.id === 1) {
                         // setUserInfo(response.data);
@@ -93,35 +93,19 @@ const LoginForm = (onClose) => {
     return (
         <div className="form">
             <form onSubmit={handleSubmit}>
-                <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-                    <p className="lead fw-normal mb-0 me-3">Sign in with</p>
-                    <button type="button" className="btn btn-primary btn-floating mx-1">
-                        <i className="fab fa-facebook-f"></i>
-                    </button>
-
-                    <button type="button" className="btn btn-primary btn-floating mx-1">
-                        <i className="fab fa-twitter"></i>
-                    </button>
-
-                    <button type="button" className="btn btn-primary btn-floating mx-1">
-                        <i className="fab fa-linkedin-in"></i>
-                    </button>
+                <div className="form-header">
+                    <h3 className="form-heading">Đăng nhập</h3>
                 </div>
-
-                <div className="divider d-flex align-items-center my-4">
-                    <p className="text-center fw-bold mx-3 mb-0">Or</p>
-                </div>
-                <p id="f"></p>
-                <div className="form-outline mb-4">
-                    <label className="label" for="form3Example3">
-                        Phone Number
+                <div className="form-group">
+                    <label className="form-label" for="form3Example3">
+                        Số điện thoại
                     </label>
 
                     <input
                         type="text"
                         id="form3Example3"
-                        className="form-control form-control-lg"
-                        placeholder="Enter a valid email address"
+                        className="form-control1"
+                        placeholder="Nhập số điện thoại"
                         aria-describedby="phoneHelp"
                         value={phone}
                         onChange={(event) => setPhone(event.target.value)}
@@ -129,15 +113,15 @@ const LoginForm = (onClose) => {
                     {errors['phone'] !== '' && <span className="error">{errors['phone']}</span>}
                 </div>
 
-                <div className="form-outline mb-3">
-                    <label className="label" for="form3Example4">
-                        Password
+                <div className="form-group">
+                    <label className="form-label" for="form3Example4">
+                        Mật khẩu
                     </label>
                     <input
                         type="password"
                         id="form3Example4"
-                        className="form-control form-control-lg"
-                        placeholder="Enter password"
+                        className="form-control1"
+                        placeholder="Nhập mật khẩu"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                     />
@@ -146,20 +130,20 @@ const LoginForm = (onClose) => {
                 </div>
 
                 <div className="d-flex justify-content-between align-items-center">
-                    <div className="form-check mb-0">
+                    <div className="form-check mb-0 d-flex justify-content-between align-items-center">
                         <input className="form-check-input me-2" type="checkbox" id="form2Example3" />
 
                         <label className="form-check-label" for="form2Example3">
                             Remember me
                         </label>
                     </div>
-                    <a href="#!" className="text-body" >
+                    <a href="#!" className="text-body">
                         <Link to={'/mail'}>Forgot password?</Link>
                     </a>
                 </div>
 
                 <div className="text-center text-lg-start mt-4 pt-2">
-                    <button type="submit" className="btn btn-primary btn-lg">
+                    <button type="submit" className="form-submit">
                         Login
                     </button>
                     <p className="small fw-bold mt-2 pt-1 mb-0">

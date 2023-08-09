@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { Breadcrumbs } from '~/pages/Breadcrumbs';
@@ -9,7 +9,6 @@ import staffLuong from '~/assets/images/luong.jpg';
 import staffdube from '~/assets/images/dube.jpg';
 
 function Staff() {
-
     const [staffs] = useState([
         {
             id: 1,
@@ -99,23 +98,28 @@ function Staff() {
             <section
                 className="header"
                 style={{
-                    '--bg-url': `url(${'https://theme.hstatic.net/1000181446/1000235350/14/image_breadcrumb_bg.png?v=1737'})`
+                    '--bg-url': `url(${'https://theme.hstatic.net/1000181446/1000235350/14/image_breadcrumb_bg.png?v=1737'})`,
                 }}
             >
-                <h1 className="heading">CÁC DỊCH VỤ</h1>
+                <h1 className="heading">ĐỘI NGŨ CHUYÊN GIA</h1>
                 <Breadcrumbs className="breadcrumbs">
-                    <Link className="breadcrumb-link" to='/'>
-                        Trang chủ   
+                    <Link className="breadcrumb-link" to="/">
+                        Trang chủ
                     </Link>
-                    <Link className="breadcrumb-link" to='/staff'>
-                         Đội ngũ nhân viên
+                    <Link className="breadcrumb-link" to="/staff">
+                        Đội ngũ chuyên gia
                     </Link>
                 </Breadcrumbs>
             </section>
-            <h5 className='staff-content'>Đội ngũ nhân viên giàu kinh nghiệm</h5>
-            <p className='staff-all-desc'>Với đội ngũ chuyên gia được đào tạo bài bản từ Hoa Kỳ và các nhân viên stylist & skinner giàu kinh nghiệm, Suplo tự tin có thể giúp bạn có một mái tóc thật phong cách và cá tính. Từ những kiểu tóc nam cổ điển như Mop-top của The Beatles cho đến hiện đại như Undercut, Slickback, Pompadour của các ngôi sao bóng đá Beckham, Ronaldo…</p>
+            <h1 className="staff-content">Đội ngũ chuyên gia giàu kinh nghiệm</h1>
+            <p className="staff-all-desc">
+                Với đội ngũ chuyên gia được đào tạo bài bản từ Hoa Kỳ và các nhân viên stylist & skinner giàu kinh
+                nghiệm, Suplo tự tin có thể giúp bạn có một mái tóc thật phong cách và cá tính. Từ những kiểu tóc nam cổ
+                điển như Mop-top của The Beatles cho đến hiện đại như Undercut, Slickback, Pompadour của các ngôi sao
+                bóng đá Beckham, Ronaldo…
+            </p>
             <div className="staff-list">
-                {currentStaffs.map(staff => (
+                {currentStaffs.map((staff) => (
                     <div className="staff-item grid-col" key={staff.id}>
                         <img className="staff-img" src={staff.avatar} alt={staff.name} />
                         <h3>{staff.name}</h3>
@@ -139,7 +143,7 @@ function Staff() {
                 />
             </div>
         </div>
-    )
+    );
 }
 
 export default Staff;

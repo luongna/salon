@@ -80,7 +80,7 @@ function Header() {
                         <li className={cx('element', currentURL === '/' && 'header-active')}>trang chủ</li>
                     </Link>
                     <Link to={'/service'}>
-                        <li className={cx('element', currentURL.includes('/service') && 'header-active')}>dịch vụ</li>
+                        <li className={cx('element', currentURL === '/service' && 'header-active')}>dịch vụ</li>
                     </Link>
                     <Link to={'/serviceExample'}>
                         <li className={cx('element', currentURL === '/serviceExample' && 'header-active')}>
@@ -88,6 +88,9 @@ function Header() {
                         </li>
                     </Link>
                     <li className={cx('element')}>Contact</li>
+                    <Link to={'/staff'}>
+                        <li className={cx('element', currentURL === '/staff' && 'header-active')}>Chuyên gia</li>
+                    </Link>
                     {user && isAdmin(user.accessToken) && (
                         <Link to={`/dashboard`}>
                             <li className={cx('element')}>Admin</li>
@@ -101,11 +104,15 @@ function Header() {
                     )} */}
                 </ul>
                 {!user ? (
-                    <Link to={'/login'}>
-                        <div className={cx('actions')}>
-                            <button className={cx('btn-normal')}>đăng nhập</button>
-                        </div>
-                    </Link>
+                    <div className={cx('actions')}>
+                        <Link to={'/login'}>
+                            <button className={cx('btn-normal')}>Đăng nhập</button>
+                        </Link>
+                        {/* Add the registration link */}
+                        <Link to={'/register'}>
+                            <button className={cx('btn-normal')}>Đăng ký</button>
+                        </Link>
+                    </div>
                 ) : (
                     <div className={cx('actions', 'actions-mobile')}>
                         <div className={cx('search')}>

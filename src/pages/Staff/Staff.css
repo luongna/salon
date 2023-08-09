@@ -56,7 +56,6 @@
     font-size: 18px;
 }
 
-
 /* Pagination */
 .paginateContainer {
     display: flex;
@@ -73,7 +72,7 @@
 }
 
 .paginateContainer .disabled a {
-    display: none;  
+    display: none;
 }
 
 .paginateContainer li a {
@@ -95,22 +94,21 @@
     color: rgb(246, 109, 109);
 }
 
-
-
 /* Responsive */
 
 /* PC */
-@media (min-width: 1301px) {}
+@media (min-width: 1301px) {
+}
 
 /* Tablet & mobile */
-@media (max-width:1300px) {
+@media (max-width: 1300px) {
     .staff-item {
         width: 33.3333%;
     }
 }
 
 /* Tablet */
-@media (min-width:801px) and (max-width: 1299px) {
+@media (min-width: 801px) and (max-width: 1299px) {
     .staff-item {
         width: 50%;
     }
