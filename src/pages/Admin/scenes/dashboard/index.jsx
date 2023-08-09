@@ -1,200 +1,179 @@
-import { Box, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { tokens } from '~/utils/theme/theme';
-import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
-import TrafficIcon from '@mui/icons-material/Traffic';
+import axios from '~/utils/api/axios';
 import Header from '~/pages/Admin/components/Header';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import StatBox from '~/pages/Admin/components/StatBox';
-import ProgressCircle from '~/pages/Admin/components/ProgressCircle';
+
 import ApartmentRoundedIcon from '@mui/icons-material/ApartmentRounded';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useEffect } from 'react';
+import { useState } from 'react';
+
 const Dashboard = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-
+    const [dashboardData, setDashboardData] = useState(null);
+    useEffect(() => {
+        axios
+            .get(`/dashboard`)
+            .then((res) => {
+                const dashboard = res.data;
+                setDashboardData(dashboard);
+            })
+            .catch((error) => console.log(error));
+    }, []);
     return (
         <Box m="20px">
             {/* HEADER */}
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Header title="Bảng điều khiển" subtitle="Chào mừng bạn đến với bảng điều khiển" />
-
-                {/* <Box>
-          <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box> */}
             </Box>
-
-            {/* GRID & CHARTS */}
-            <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gridAutoRows="140px" gap="20px">
-                {/* ROW 1 */}
-                <Box
-                    gridColumn="span 3"
-                    backgroundColor={colors.primary[400]}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <StatBox
-                        title="12,361"
-                        subtitle="Khách hàng"
-                        progress="0.75"
-                        increase="+14%"
-                        icon={<PersonRoundedIcon sx={{ color: colors.greenAccent[600], fontSize: '26px' }} />}
-                    />
-                </Box>
-                <Box
-                    gridColumn="span 3"
-                    backgroundColor={colors.primary[400]}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <StatBox
-                        title="431,225"
-                        subtitle="Chi nhánh"
-                        progress="0.50"
-                        increase="+21%"
-                        icon={<ApartmentRoundedIcon sx={{ color: colors.greenAccent[600], fontSize: '26px' }} />}
-                    />
-                </Box>
-                <Box
-                    gridColumn="span 3"
-                    backgroundColor={colors.primary[400]}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <StatBox
-                        title="32,441"
-                        subtitle="Dịch vụ"
-                        progress="0.30"
-                        increase="+5%"
-                        icon={<ShoppingCartIcon sx={{ color: colors.greenAccent[600], fontSize: '26px' }} />}
-                    />
-                </Box>
-                <Box
-                    gridColumn="span 3"
-                    backgroundColor={colors.primary[400]}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <StatBox
-                        title="1,325,134"
-                        subtitle="Traffic Received"
-                        progress="0.80"
-                        increase="+43%"
-                        icon={<TrafficIcon sx={{ color: colors.greenAccent[600], fontSize: '26px' }} />}
-                    />
-                </Box>
-
-                {/* ROW 2 */}
-                <Box gridColumn="span 8" gridRow="span 2" backgroundColor={colors.primary[400]}>
-                    <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
-                        <Box>
-                            <Typography variant="h5" fontWeight="600" color={colors.grey[100]}>
-                                Revenue Generated
-                            </Typography>
-                            <Typography variant="h3" fontWeight="bold" color={colors.greenAccent[500]}>
-                                $59,342.32
-                            </Typography>
-                        </Box>
-                        <Box>
-                            <IconButton>
-                                <DownloadOutlinedIcon sx={{ fontSize: '26px', color: colors.greenAccent[500] }} />
-                            </IconButton>
-                        </Box>
-                    </Box>
-                    {/* <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
-          </Box> */}
-                </Box>
-                <Box gridColumn="span 4" gridRow="span 2" backgroundColor={colors.primary[400]} overflow="auto">
+            {dashboardData && (
+                <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gridAutoRows="140px" gap="20px">
+                    {/* ROW 1 */}
                     <Box
+                        gridColumn="span 3"
+                        backgroundColor={colors.primary[400]}
                         display="flex"
-                        justifyContent="space-between"
                         alignItems="center"
-                        borderBottom={`4px solid ${colors.primary[500]}`}
-                        colors={colors.grey[100]}
-                        p="15px"
+                        justifyContent="center"
                     >
-                        <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-                            Recent Transactions
-                        </Typography>
+                        <StatBox
+                            title={dashboardData.user}
+                            subtitle="Khách hàng"
+                            icon={<PersonRoundedIcon sx={{ color: colors.greenAccent[600], fontSize: '26px' }} />}
+                        />
                     </Box>
-                    {/* {mockTransactions.map((transaction, i) => (
-            <Box
-              key={`${transaction.txId}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                ${transaction.cost}
-              </Box>
-            </Box>
-          ))} */}
-                </Box>
+                    <Box
+                        gridColumn="span 3"
+                        backgroundColor={colors.primary[400]}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        <StatBox
+                            title={dashboardData.branch}
+                            subtitle="Chi nhánh"
+                            icon={<ApartmentRoundedIcon sx={{ color: colors.greenAccent[600], fontSize: '26px' }} />}
+                        />
+                    </Box>
+                    <Box
+                        gridColumn="span 3"
+                        backgroundColor={colors.primary[400]}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        <StatBox
+                            title={dashboardData.service}
+                            subtitle="Dịch vụ"
+                            icon={<ShoppingCartIcon sx={{ color: colors.greenAccent[600], fontSize: '26px' }} />}
+                        />
+                    </Box>
+                    <Box
+                        gridColumn="span 3"
+                        backgroundColor={colors.primary[400]}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        <StatBox
+                            title={dashboardData.employee}
+                            subtitle="Nhân viên"
+                            icon={<PersonRoundedIcon sx={{ color: colors.greenAccent[600], fontSize: '26px' }} />}
+                        />
+                    </Box>
+                    <Box gridColumn="span 6" backgroundColor={colors.primary[400]} overflow="auto">
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            borderBottom={`1px solid ${colors.primary[500]}`}
+                            colors={colors.grey[100]}
+                            p="15px"
+                        >
+                            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+                                Tổng doanh thu.
+                            </Typography>
+                        </Box>
+                        <Box marginTop="10px" marginLeft="20px">
+                            <Typography variant="h3" fontWeight="bold" color={colors.greenAccent[500]}>
+                                VNĐ {dashboardData.totalPrice.toLocaleString('en-US')}
+                            </Typography>
+                            <Typography variant="h5" fontStyle="italic" sx={{ color: colors.greenAccent[600] }}>
+                            Tổng doanh thu từ khi thành lập.
+                        </Typography>
+                        </Box>
+                        
+                    </Box>
+                    <Box gridColumn="span 6" backgroundColor={colors.primary[400]} overflow="auto">
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            borderBottom={`1px solid ${colors.primary[500]}`}
+                            colors={colors.grey[100]}
+                            p="15px"
+                        >
+                            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+                                Đơn hàng đã được xử lý.
+                            </Typography>
+                        </Box>
+                        <Box marginTop="10px" display="flex" justifyContent="center" alignItems="center"  >
+                            <Typography variant="h3" fontWeight="bold" color={colors.greenAccent[500]}>
+                                {dashboardData.booking}
+                            </Typography>
+                            
+                        </Box>
+                        <Box marginTop="10px" display="flex" justifyContent="space-between" alignItems="center"  >
+                            <Typography variant="h5" fontStyle="italic" alignItems="center" sx={{ color: colors.greenAccent[600] }} p={'5px'}>
+                                Tăng trưởng {dashboardData.increase}% so với 30 ngày trước.
+                            </Typography>
+                            <Typography variant="h5" fontStyle="italic" sx={{ color: colors.greenAccent[600] }}>
+                                +{dashboardData.increase}%
+                            </Typography>
+                        </Box>
+                    </Box>
 
-                {/* ROW 3 */}
-                <Box gridColumn="span 4" gridRow="span 2" backgroundColor={colors.primary[400]} p="30px">
-                    <Typography variant="h5" fontWeight="600">
-                        Campaign
-                    </Typography>
-                    <Box display="flex" flexDirection="column" alignItems="center" mt="25px">
-                        <ProgressCircle size="125" />
-                        <Typography variant="h5" color={colors.greenAccent[500]} sx={{ mt: '15px' }}>
-                            $48,352 revenue generated
-                        </Typography>
-                        <Typography>Includes extra misc expenditures and costs</Typography>
+                    <Box gridColumn="span 12" gridRow="span 2" backgroundColor={colors.primary[400]} overflow="auto">
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            borderBottom={`2px solid ${colors.primary[500]}`}
+                            colors={colors.grey[100]}
+                            p="15px"
+                        >
+                            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+                                Các đơn hàng gần đây.
+                            </Typography>
+                        </Box>
+                        {dashboardData.bookingDashboards.map((transaction, i) => (
+                            <Box
+                                key={`${transaction.id}-${i}`}
+                                display="flex"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                // borderBottom={`4px solid ${colors.primary[500]}`}
+                                p="15px"
+                            >
+                                <Box>
+                                    <Typography color={colors.greenAccent[500]} variant="h5" fontWeight="600">
+                                       Đơn hàng {transaction.id}
+                                    </Typography>
+                                    <Typography color={colors.grey[100]}>{transaction.userName}</Typography>
+                                </Box>
+                                <Box color={colors.grey[100]}>{transaction.date}</Box>
+                                <Box backgroundColor={colors.greenAccent[500]} p="5px 10px" borderRadius="4px">
+                                    VNĐ {transaction.cost.toLocaleString('en-US') }
+                                </Box>
+                            </Box>
+                        ))}
                     </Box>
                 </Box>
-                <Box gridColumn="span 4" gridRow="span 2" backgroundColor={colors.primary[400]}>
-                    <Typography variant="h5" fontWeight="600" sx={{ padding: '30px 30px 0 30px' }}>
-                        Sales Quantity
-                    </Typography>
-                    {/* <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
-          </Box> */}
-                </Box>
-                <Box gridColumn="span 4" gridRow="span 2" backgroundColor={colors.primary[400]} padding="30px">
-                    <Typography variant="h5" fontWeight="600" sx={{ marginBottom: '15px' }}>
-                        Geography Based Traffic
-                    </Typography>
-                    {/* <Box height="200px">
-            <GeographyChart isDashboard={true} />
-          </Box> */}
-                </Box>
-            </Box>
+            )}
+            {/* GRID & CHARTS */}
         </Box>
     );
 };
