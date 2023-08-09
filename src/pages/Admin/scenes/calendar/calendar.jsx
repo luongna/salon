@@ -6,18 +6,18 @@ import listPlugin from '@fullcalendar/list';
 import { Box } from '@mui/material';
 import Header from '../../components/Header';
 import viLocale from '@fullcalendar/core/locales/vi';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from '~/utils/api/axios';
 const Calendar = () => {
     const [branchData, setBranchData] = useState([]);
     const [selectedRange, setSelectedRange] = useState(null);
-
+    const [selectedBranch, setSelectedBranch] = useState(0);
+    const calendarRef = useRef();
     useEffect(() => {
         axios
             .get(`/branch`)
             .then((res) => {
                 setBranchData(res.data);
-                console.log(res.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -26,18 +26,47 @@ const Calendar = () => {
 
     useEffect(() => {
         if (selectedRange) {
-            console.log(selectedRange);
+            const data = { start: selectedRange.start.split('T')[0], end: selectedRange.end.split('T')[0] };
+            data.branch = selectedBranch;
+            axios
+                .post(`/calendar`, data)
+                .then((res) => {
+                    let data123 = res.data.map((item) => {
+                        const startDate = new Date(item.date + parseInt(item.time) * 3600000);
+                        const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
+
+                        return {
+                            id: item.id,
+                            title: `Đơn hàng ${item.id}`,
+                            start: startDate.toISOString(),
+                            end: endDate.toISOString(),
+                        };
+                    });
+                    let calendarApi = calendarRef.current.getApi();
+                    const calendarList = calendarApi.getEvents();
+                    calendarList.forEach((event) => {
+                        event.remove();
+                    });
+                    data123.forEach((event) => {
+                        calendarApi.addEvent(event);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
-    }, [selectedRange]);
+    }, [selectedRange, selectedBranch]);
+
+    const handleBranchChange = (event) => {
+        const selectedBranchId = parseInt(event.target.value);
+        setSelectedBranch(selectedBranchId);
+    };
+
     const handleDatesSet = (dateInfo) => {
-        if (
-            !selectedRange ||
-            selectedRange.startStr !== dateInfo.startStr ||
-            selectedRange.endStr !== dateInfo.endStr
-        ) {
+        if (!selectedRange || selectedRange.start !== dateInfo.startStr || selectedRange.end !== dateInfo.endStr) {
             setSelectedRange({
-                startStr: dateInfo.startStr,
-                endStr: dateInfo.endStr,
+                start: dateInfo.startStr,
+                end: dateInfo.endStr,
             });
         }
     };
@@ -47,8 +76,8 @@ const Calendar = () => {
             <Header title="Lịch" subtitle="Lịch làm việc đầy đủ" />
             <div>
                 <label htmlFor="branch">Chọn chi nhánh</label>
-                <select name="branch" id="branch" style={{ width: '200px' }}>
-                    <option value="none">Chọn chi nhánh</option>
+                <select name="branch" id="branch" style={{ width: '200px' }} onChange={handleBranchChange} value={selectedBranch}>
+                    <option value={0}>Chọn chi nhánh</option>
                     {branchData.map((element, index) => (
                         <option key={index} value={element.id}>
                             {element.name}
@@ -71,56 +100,10 @@ const Calendar = () => {
                         selectable={true}
                         selectMirror={true}
                         dayMaxEvents={true}
-                        // dateClick={handleDateClick}
-                        //  select={handleDateClick}
                         datesSet={handleDatesSet}
-                        // eventClick={handleEventClick}
                         locales={[viLocale]}
                         locale="vi"
-                        initialEvents={[
-                            // {
-                            //   id: "12315",
-                            //   title: "All-day event",
-                            //   date: "2022-09-14",
-                            // },
-                            // {
-                            //   id: "5123",
-                            //   title: "Timed event",
-                            //   // date: "2023-07-03",
-                            //   start: "2023-07-03T09:00:00",
-                            //   end: "2023-07-03T12:00:00",
-                            // },
-                            {
-                                id: '12316',
-                                title: 'Event 1',
-                                start: '2023-07-03T09:00:00',
-                                end: '2023-07-03T10:00:00',
-                            },
-                            {
-                                id: '12317',
-                                title: 'Event 1',
-                                start: '2023-08-01T09:00:00',
-                                end: '2023-08-01T10:00:00',
-                            },
-                            {
-                                id: '5124',
-                                title: 'Event 2',
-                                start: '2023-07-03T09:00:00',
-                                end: '2023-07-03T10:00:00',
-                            },
-                            {
-                                id: '5126',
-                                title: 'Event 3',
-                                start: '2023-07-03T09:00:00',
-                                end: '2023-07-03T10:00:00',
-                            },
-                            {
-                                id: '5126',
-                                title: 'Event 3',
-                                start: '2023-07-03T09:30:00',
-                                end: '2023-07-03T10:30:00',
-                            },
-                        ]}
+                        ref={calendarRef}
                     />
                 </Box>
             </Box>
