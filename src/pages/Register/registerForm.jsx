@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import './registerForm.scss';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import axios from '~/utils/api/axios';
 
 function RegisterForm() {
@@ -19,6 +19,7 @@ function RegisterForm() {
 
         if (id === 'name') {
             setUsername(value);
+            setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
         }
         if (id === 'phone') {
             setPhone(value);
@@ -34,6 +35,10 @@ function RegisterForm() {
         }
         if (id === 'birthday') {
             setBirthday(value);
+        }
+
+        if (value !== '') {
+            setErrors((errors) => ({ ...errors, [id]: '' }));
         }
     };
 
@@ -70,11 +75,102 @@ function RegisterForm() {
                 setErrors((errors) => ({ ...errors, phone: '' }));
             }
         }
+        if (!birthday) {
+            formIsValid = false;
+            setErrors((errors) => ({ ...errors, birthday: 'Vui lòng nhập ngày sinh!' }));
+        } else {
+            const currentDate = new Date();
+            const selectedDate = new Date(birthday);
+
+            if (selectedDate >= currentDate) {
+                formIsValid = false;
+                setErrors((errors) => ({ ...errors, birthday: 'Ngày sinh phải nhỏ hơn ngày hiện tại!' }));
+            } else {
+                setErrors((errors) => ({ ...errors, birthday: '' }));
+            }
+        }
         if (!password) {
+            formIsValid = false;
+            setErrors((errors) => ({ ...errors, password: 'Vui lòng nhập mật khẩu!' }));
+        } else {
+            // Kiểm tra mật khẩu có ít nhất 8 ký tự, bao gồm chữ viết hoa, chữ viết thường và số
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                formIsValid = false;
+                setErrors((errors) => ({
+                    ...errors,
+                    password: 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ viết hoa, chữ viết thường và số!',
+                }));
+            } else {
+                setErrors((errors) => ({ ...errors, password: '' }));
+            }
         }
         if (!confirmPassword) {
             formIsValid = false;
             setErrors((errors) => ({ ...errors, confirmPassword: 'vui lòng nhập lại mật khẩu !' }));
+        } else {
+            if (confirmPassword !== password) {
+                formIsValid = false;
+                setErrors((errors) => ({ ...errors, confirmPassword: 'Mật khẩu nhập lại không đúng !' }));
+            } else {
+                setErrors((errors) => ({ ...errors, confirmPassword: '' }));
+            }
+        }
+
+        return formIsValid;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setErrors({});
+
+        if (!username) {
+            setErrors((errors) => ({ ...errors, username: 'Vui lòng nhập tên!' }));
+        } else {
+            setErrors((errors) => ({ ...errors, username: '' }));
+        }
+        if (!email) {
+            setErrors((errors) => ({ ...errors, email: 'Vui lòng nhập email!' }));
+        } else {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                setErrors((errors) => ({ ...errors, email: 'Vui lòng nhập email hợp lệ!' }));
+            } else {
+                setErrors((errors) => ({ ...errors, email: '' }));
+            }
+        }
+        if (!phone) {
+            setErrors((errors) => ({ ...errors, phone: 'Vui lòng nhập số điện thoại!' }));
+        }
+        if (!birthday) {
+            setErrors((errors) => ({ ...errors, birthday: 'Vui lòng nhập ngày sinh!' }));
+        } else {
+            const currentDate = new Date();
+            const selectedDate = new Date(birthday);
+
+            if (selectedDate >= currentDate) {
+                setErrors((errors) => ({ ...errors, birthday: 'Ngày sinh phải nhỏ hơn ngày hiện tại!' }));
+            } else {
+                setErrors((errors) => ({ ...errors, birthday: '' }));
+            }
+        }
+        if (!password) {
+            setErrors((errors) => ({ ...errors, password: 'Vui lòng nhập mật khẩu!' }));
+        } else {
+            // Kiểm tra mật khẩu có ít nhất 8 ký tự, bao gồm chữ viết hoa, chữ viết thường và số
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                setErrors((errors) => ({
+                    ...errors,
+                    password: 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ viết hoa, chữ viết thường và số!',
+                }));
+            } else {
+                setErrors((errors) => ({ ...errors, password: '' }));
+            }
+        }
+        if (!confirmPassword) {
+            setErrors((errors) => ({ ...errors, confirmPassword: 'vui lòng nhập lại mật khẩu !' }));
+            return;
         } else {
             if (confirmPassword !== password) {
                 setErrors((errors) => ({ ...errors, confirmPassword: 'Mật khẩu nhập lại không đúng !' }));
@@ -83,28 +179,26 @@ function RegisterForm() {
             }
         }
 
-        return formIsValid
-
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("noneee")
-
         if (validateForm) {
-            
-            axios.post('/users/mail', {
-                    otp :'12',
+            console.log(email);
+            axios
+                .post('/users/mail', {
+                    otp: '12',
                     name: username,
                     birthday: birthday,
                     phone: phone,
                     pass: password,
-                    email: email,   
+                    email: email,
                 })
                 .then((response) => {
-                    console.log(response.data)
-                    if (response.data === 'Email is already existed'|| response.data === 'Phone is already existed') {
-                        setErrors((errors) => ({ ...errors, email: 'Email đã tồn tại!' }));
+                    console.log(response.data);
+                    if (response.data === 'Email is already existed' || response.data === 'Phone is already existed') {
+                        if (response.data === 'Email is already existed') {
+                            setErrors((errors) => ({ ...errors, email: 'Email đã tồn tại!' }));
+                        }
+                        if (response.data === 'Phone is already existed') {
+                            setErrors((errors) => ({ ...errors, phone: 'Số điện thoại đã tồn tại!' }));
+                        }
                     } else {
                         Swal.fire({
                             html: `<h4>Hãy nhập mã xác nhận gồm 4 chữ số được gửi đến:</h4>
@@ -126,7 +220,6 @@ function RegisterForm() {
                                         phone: phone,
                                         pass: password,
                                         email: email,
-                                        
                                     })
                                     .then((res) => {
                                         console.log(res);
@@ -151,7 +244,7 @@ function RegisterForm() {
     return (
         <form className="form" id="form-1">
             <div className="form-header">
-                <h3 className="form-heading">Đăng Kí</h3>
+                <h3 className="form-heading">Đăng Ký</h3>
             </div>
 
             <div className="form-group">
@@ -231,6 +324,7 @@ function RegisterForm() {
                 <i className="fa-solid fa-user-lock form-lock"></i>
                 <span className="form-message"></span>
                 <i className="fa-solid fa-eye-slash form-eye-slash"></i>
+                {errors['password'] !== '' && <span className="error">{errors['password']}</span>}
             </div>
 
             <div className="form-group">
@@ -247,6 +341,7 @@ function RegisterForm() {
                 <i className="fa-solid fa-user-lock form-lock"></i>
                 <span className="form-message"></span>
                 <i className="fa-solid fa-eye-slash form-eye-slash"></i>
+                {errors['confirmPassword'] !== '' && <span className="error">{errors['confirmPassword']}</span>}
             </div>
 
             <button className="form-submit" onClick={(e) => handleSubmit(e)} type="submit">

@@ -160,7 +160,7 @@ function Profile() {
                                             />
                                         </div>
                                         <div className="col-lg-6 px-xl-10">
-                                            <div className=" d-lg-inline-block py-1-9 px-1-9 px-sm-6 mb-1-9 rounded">
+                                            <div className="mb-2 d-lg-inline-block py-1-9 px-1-9 px-sm-6 mb-1-9 rounded">
                                                 <h3 className="h2  mb-0">{user.name}</h3>
                                             </div>
                                             <ul className="list-unstyled mb-1-9">
@@ -199,7 +199,10 @@ function Profile() {
                                                         endIcon={<EditIcon />}
                                                         color="primary"
                                                         size="large"
-                                                        sx={{ fontFamily: 'Lora, serif' }}
+                                                        sx={{
+                                                            fontFamily: 'Lora, serif',
+                                                            marginLeft: '10px',
+                                                        }}
                                                         onClick={() => setIsEditImg(true)}
                                                     >
                                                         Chỉnh sửa ảnh
@@ -228,7 +231,7 @@ function Profile() {
                                                             type="reset"
                                                             color="warning"
                                                             variant="contained"
-                                                            sx={{ fontFamily: 'Lora, serif' }}
+                                                            sx={{ fontFamily: 'Lora, serif', marginLeft: '10px' }}
                                                             onClick={() => {
                                                                 setIsEditImg(false);
                                                                 setImageBase64('');
@@ -364,7 +367,10 @@ function Profile() {
                                                                     type="reset"
                                                                     color="warning"
                                                                     variant="contained"
-                                                                    sx={{ fontFamily: 'Lora, serif' }}
+                                                                    sx={{
+                                                                        fontFamily: 'Lora, serif',
+                                                                        marginLeft: '10px',
+                                                                    }}
                                                                     onClick={() => setIsEditProfile(false)}
                                                                 >
                                                                     Hủy

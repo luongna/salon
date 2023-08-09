@@ -68,7 +68,7 @@ function ServiceDetail() {
                     '--bg-url': `url(${'https://theme.hstatic.net/1000181446/1000235350/14/image_breadcrumb_bg.png?v=1737'})`,
                 }}
             >
-                <h1 className="heading">CÁC DỊCH VỤ</h1>
+                <h1 className="heading">CHI TIẾT DỊCH VỤ</h1>
                 <Breadcrumbs className="breadcrumbs">
                     <Link className="breadcrumb-link" to="/">
                         Trang chủ
@@ -148,7 +148,7 @@ function ServiceDetail() {
                 </div>
             </div>
             <div style={{ width: '80%' }}>
-                <Comments  serviceID={id} />
+                <Comments serviceID={id} />
             </div>
         </>
     );

@@ -4,54 +4,56 @@ import axios from '~/utils/api/axios';
 import { Link } from 'react-router-dom';
 import { useEmailStore } from '~/utils/store/email';
 
-
-const ForgotForm =() =>{
-    const [email] = useEmailStore((state) => [state.email])
-    const [resetpass , setResetpass] = useState('')
-    const [confirmPass, setConfirmPass] = useState('')
-    const [errors, setErrors] = useState({})
+const ForgotForm = () => {
+    const [email] = useEmailStore((state) => [state.email]);
+    const [resetpass, setResetpass] = useState('');
+    const [confirmPass, setConfirmPass] = useState('');
+    const [errors, setErrors] = useState({});
     const negative = useNavigate();
 
-const validation =() =>{
-    let formIsValid = true
-    if(!resetpass){
-        formIsValid = false
-        setErrors((errors) => ({...errors , resetpass :'vui lòng nhập mật khẩu mới'}))
-    }
-    if(!confirmPass){
-        formIsValid= false
-        setErrors((errors) => ({...errors , confirmPass :'vui lòng nhập lại mật khẩu mới'}))
-    }
-    if(resetpass.length <8){
-        formIsValid=false
-        setErrors((errors) => ({...errors , resetpass :'Nhập mật khẩu ít nhất 8 kí tự'}))
-    }
-    if(resetpass!== confirmPass){
-        formIsValid=false;
-        setErrors((errors) => ({...errors , confirmPass :'Mật khẩu nhập lại không khớp'}))
-    }
-    return formIsValid
-}
-const handleSubmit =(e) =>{
-    e.preventDefault();
-if(validation()){
-    axios
-    .post('/users/resetpass',
-    {
-        email:email,
-        otp:resetpass,
-    } 
-    ).then((res) =>{
-        console.log('ssssss')
-        console.log(res.data)
-        if(res.data==='suscess'){
-        negative('/login')
+    const validation = () => {
+        let formIsValid = true;
+        const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+        if (!resetpass) {
+            formIsValid = false;
+            setErrors((errors) => ({ ...errors, resetpass: 'Vui lòng nhập mật khẩu mới' }));
+        } else if (!strongPasswordRegex.test(resetpass)) {
+            formIsValid = false;
+            setErrors((errors) => ({
+                ...errors,
+                resetpass: 'Mật khẩu mới phải ít nhất 8 kí tự, bao gồm chữ hoa, chữ thường và số',
+            }));
         }
-    })
-}
-}
-    return(
-    <div className="form">
+
+        if (!confirmPass) {
+            formIsValid = false;
+            setErrors((errors) => ({ ...errors, confirmPass: 'Vui lòng nhập lại mật khẩu mới' }));
+        } else if (resetpass !== confirmPass) {
+            formIsValid = false;
+            setErrors((errors) => ({ ...errors, confirmPass: 'Mật khẩu nhập lại không khớp' }));
+        }
+        return formIsValid;
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validation()) {
+            axios
+                .post('/users/resetpass', {
+                    email: email,
+                    otp: resetpass,
+                })
+                .then((res) => {
+                    console.log('ssssss');
+                    console.log(res.data);
+                    if (res.data === 'suscess') {
+                        negative('/login');
+                    }
+                });
+        }
+    };
+    return (
+        <div className="form">
             <form onSubmit={handleSubmit}>
                 <div className="divider d-flex align-items-center my-4">
                     <p className="text-center fw-bold mx-3 mb-0">Reset Password</p>
@@ -59,14 +61,14 @@ if(validation()){
                 <p id="f"></p>
                 <div className="form-outline mb-4">
                     <label className="label" for="form3Example3">
-                        New Pass
+                        Nhập mật khẩu mới
                     </label>
 
                     <input
-                        type="text"
+                        type="password"
                         id="form3Example3"
                         className="form-control form-control-lg"
-                        placeholder="Enter a valid email address"
+                        placeholder="Nhập mật khẩu mới"
                         aria-describedby="phoneHelp"
                         value={resetpass}
                         onChange={(event) => setResetpass(event.target.value)}
@@ -76,13 +78,13 @@ if(validation()){
 
                 <div className="form-outline mb-3">
                     <label className="label" for="form3Example4">
-                        Re-Password
+                        Nhập lại mật khẩu mới
                     </label>
                     <input
                         type="password"
                         id="form3Example4"
                         className="form-control form-control-lg"
-                        placeholder="Enter password"
+                        placeholder="Nhập lại mật khẩu mới"
                         value={confirmPass}
                         onChange={(event) => setConfirmPass(event.target.value)}
                     />
@@ -90,10 +92,8 @@ if(validation()){
                     {errors['confirmPass'] !== '' && <span className="error">{errors['confirmPass']}</span>}
                 </div>
 
-                
-
                 <div className="text-center text-lg-start mt-4 pt-2">
-                    <button type="submit" className="btn btn-primary btn-lg">
+                    <button type="submit" className="form-submit">
                         Reset Password
                     </button>
                     <p className="small fw-bold mt-2 pt-1 mb-0">
@@ -106,6 +106,5 @@ if(validation()){
             </form>
         </div>
     );
-
-}
-export default ForgotForm ;
+};
+export default ForgotForm;
