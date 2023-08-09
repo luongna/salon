@@ -40,9 +40,10 @@ function Cart() {
             phone :user.phone, 
           })
         .then((res) => {
-            const branch = res.data;
+            const cart= res.data;
             // console.log(branch)
-           setJsonData(branch);
+           setJsonData(cart);
+           
         })
         .catch((error) => console.log(error));
     }, []);
@@ -118,16 +119,8 @@ function Cart() {
         fetchDates();
     }, []);
 
-    // const [times] = useState([
-    //     // '8:00', '9:30', '11:00', '13:00', '14:30', '16:00'
-    //     {
-    //         id: 1,
-    //         time: '8:00',
-    //     },
-    //     {
-    //         id: 2,
-    //         time: '9:30',
-    //     },
+    const [pay,setPay] = useState([])
+    
     //     {
     //         id: 3,
     //         time: '11:00',
@@ -206,7 +199,7 @@ function Cart() {
     };
     const handleDateClick = (id) => {
          setSelectedDateId(id);
-      
+           
             axios
             .post(`/booking/listTime`,{
                 staffId :selectedStaff.id,
@@ -227,29 +220,51 @@ function Cart() {
     const handleSubmit = (e) => {
         
         e.preventDefault();
-        console.log(selectedStaff.id ,dates )
+        console.log(isChecked   )
         if (selectedBranchId && selectedStaff && selectedDateId && selectedTimeId) {
-            axios
+           if(isChecked){ axios
+            .post(`/checkout/create-payment`,{
+                date:dates[selectedDateId-1].date,
+                totalPrice:totalPrice,
+                nhanvien:selectedStaff.id,
+                user :user.phone,
+                time :selectedTimeId,
+                branch:selectedBranchId.id,
+                bankCode: 'NCB',
+            }).then((res)=>{
+                toast.success('Bạn đã đặt lịch thành công', {
+                    position: toast.POSITION.TOP_RIGHT,
+                    
+            }) 
+            window.location.href = res.data.url
+            
+            });}
+            else{
+                axios
             .post(`/booking/book`,{
                 date:dates[selectedDateId-1].date,
                 totalPrice:totalPrice,
                 nhanvien:selectedStaff.id,
                 user :user.phone,
                 time :selectedTimeId,
-                branch:selectedBranchId.id
+                branch:selectedBranchId.id,
+                bankCode: 'NCB',
             }).then((res)=>{
                 toast.success('Bạn đã đặt lịch thành công', {
                     position: toast.POSITION.TOP_RIGHT,
+                    
             }) 
-            
+
             });
+        }
+
         } else {
             toast.error('Vui lòng chọn đầy đủ các mục !!!', {
                 position: toast.POSITION.TOP_RIGHT,
             });
         }
     };
-
+    const [isChecked, setIsChecked] = useState(false);
     const position = [15.977456962147246, 108.2627979201717];
     let defaultIcon = L.icon({
         iconUrl: icon,
@@ -276,7 +291,7 @@ function Cart() {
                                     <th>
                                         <h2>{element.tittle}</h2>
 
-                                        <div> Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+                                        <div> {element.name}</div>
                                     </th>
                                     <th>{element.price.toLocaleString('en-US')} VNĐ</th>
                                     <th>
@@ -371,6 +386,18 @@ function Cart() {
                                         </>
                                     ))}
                                 </div>
+
+     <div className="checkbox-">
+
+        <div class="form-check">
+  <input className="form-check-input" type="checkbox" value="" id="flexCheckDisabled" 
+          onChange={() => setIsChecked((prev) => !prev)}/>
+  <label className="form-check-label" for="flexCheckDisabled">Thanh toán Online</label>
+</div>
+
+    </div>
+
+
                             </div>
                             <div className={cx('total-price')}>
                         Tổng tiền: <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
@@ -416,14 +443,7 @@ function Cart() {
                         </div>
                     </div>
 
-                    <div className={cx('total-price')}>
-                        Tổng tiền: <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
-                    </div>
-                    <div style={{ justifyContent: 'end', display: 'flex' }}>
-                        <button onClick={handleOrder} className={cx('button-price')}>
-                            Đặt hàng
-                        </button>
-                    </div>
+                    
                 </>
             )}
         </div>
