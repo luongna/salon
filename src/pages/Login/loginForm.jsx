@@ -84,8 +84,11 @@ const LoginForm = (onClose) => {
                     }
                 })
                 .catch((err) => {
-                    document.getElementById('f').innerText = `Số điện thoại hoặc mật khẩu không đúng!`;
-                    console.log('error', err);
+                    if (err.response && err.response.status === 401) {
+                        setErrors((errors) => ({ ...errors, password: 'Số điện thoại hoặc mật khẩu không đúng!' }));
+                    } else {
+                        console.log('error', err);
+                    }
                     dispath(loginFailed());
                 });
         }
