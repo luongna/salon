@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import { Link, useNavigate} from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { ToastContainer, toast } from 'react-toastify';
 import axios from '~/utils/api/axios';
 
 export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
@@ -24,14 +25,23 @@ export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
         phone :user.phone, 
       }
       
-      ).then(() => {
+      ).then((res) => {
+        if(res.data==='ok'){
       Swal.fire({
         html: `<h4>Thêm vào giỏ hàng thành công!</h4>`,
         icon: 'success',
         showConfirmButton: false,
         timer: 1100,
     });
-       
+  }
+  else{
+    Swal.fire({
+      html: `<h4>Sản phẩm đã tồn tại trong giỏ hàng!</h4>`,
+      icon: 'error',
+      showConfirmButton: false,
+      timer: 2000,
+  });   
+  }
     console.log(id ,user.phone)
   })
 }

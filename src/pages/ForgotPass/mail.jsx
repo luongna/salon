@@ -60,11 +60,19 @@ const Mail = () => {
                                     })
                                     .then((res) => {
                                         console.log(res);
+                                        if(res.data === 'OTP het han'){
+                                            Swal.showValidationMessage('Mã OTP hết hạn! Vui lòng thử lại!');
+                                            Swal.close();
+                                            document.getElementById('f').innerText = `Mã OTP hết hạn`;
+                                            document.getElementById('f').style.color='red'
+                                        }
+                                        else{
                                         if (res.data === 'OTP is not correct') {
                                             Swal.showValidationMessage('Mã OTP không đúng! Vui lòng thử lại!');
                                         } else {
                                             navigate('/reset');
                                         }
+                                    }
                                     })
                                     .catch((err) => {
                                         console.log(err);
