@@ -23,10 +23,6 @@ function Service() {
                 console.error('Error fetching data:', error);
             });
     }, []);
-    // const navigate = useNavigate();
-    // const handleServiceClick = (service) => {
-    //     navigate.push(`/service/${service.id}`, { services });
-    // };
 
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 6;
@@ -59,9 +55,6 @@ function Service() {
         setCurrentPage(selectedPage.selected);
     };
 
-    // const getServiceById = (id) => {
-    //     return services.find((service) => service.id === id);
-    // };
 
     const handleSearch = (searchResults) => {
         setServices(searchResults);

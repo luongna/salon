@@ -11,29 +11,45 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector } from 'react-redux';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from '~/utils/api/axios';
+import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Cart() {
-  
+    const navigate = useNavigate();
     const [jsonData, setJsonData] = useState([]);
     const [staffs, setStaffs] = useState([]);
     const [times, setTimes] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const user = useSelector((state) => state.auth.login?.currenUser);
-    const deleteElement = (index) => {
+    const deleteElement = (index,id) => {
+        console.log(id)
+        axios
+        .post(`/booking/deleteDetail`,{
+            serviceID :id,
+            phone :user.phone, 
+          })
+        .then(() => {
+            toast.success('Bạn đã đặt lịch thành công', {
+                position: toast.POSITION.TOP_RIGHT,
+                
+        }) 
+           
+        })
+        .catch((error) => console.log(error));
         const updatedElements = [...jsonData];
         updatedElements.splice(index, 1);
         setJsonData(updatedElements);
+        
+       
     };
 
     useEffect(() => {
         const newTotalPrice = jsonData.reduce((total, element) => total + element.price, 0);
         setTotalPrice(newTotalPrice);
     }, [jsonData]);
-    const handleOrder = () => {
-        // console.log('Selected titles:');
-    };
+   
     useEffect(() => {
+        if(user){
         axios
         .post(`/booking/listCart`,{
             serviceID :1,
@@ -46,6 +62,11 @@ function Cart() {
            
         })
         .catch((error) => console.log(error));
+        }
+    
+    else{
+        navigate("/login")
+    }
     }, []);
     //staff
     useEffect(() => {
@@ -70,31 +91,7 @@ function Cart() {
     }, []);
     //BookServices
     const [branches,setBranches] = useState([
-        // {
-        //     id: 1,
-        //     address: 'Khu đô thị FPT, Ngũ Hành Sơn, TP Đà Nẵng',
-        //     position: '15.977456962147246, 108.2627979201717',
-        // },
-        // {
-        //     id: 2,
-        //     address: '123 Phạm Như Xương, Liên Chiểu, TP Đà Nẵng',
-        //     position: '16.06456047137082, 108.15191449651242',
-        // },
-        // {
-        //     id: 3,
-        //     address: '36 Trần Văn Ơn, TP Huế, Thừa Thiên Huế',
-        //     position: '16.465680902969627, 107.60516250808173',
-        // },
-        // {
-        //     id: 4,
-        //     address: '150 Trần Thánh Tông, Hội An, Quảng Nam',
-        //     position: '15.888565750138024, 108.34642808301683',
-        // },
-        // {
-        //     id: 5,
-        //     address: 'Thị trấn Chợ Chùa, Quảng Ngãi',
-        //     position: '15.03934538342154, 108.77545294091901',
-        // },
+     
     ]);
 
     const [dates, setDates] = useState([]);
@@ -118,62 +115,7 @@ function Cart() {
 
         fetchDates();
     }, []);
-
-    const [pay,setPay] = useState([])
-    
-    //     {
-    //         id: 3,
-    //         time: '11:00',
-    //     },
-    //     {
-    //         id: 4,
-    //         time: '13:00',
-    //     },
-    //     {
-    //         id: 5,
-    //         time: '14:30',
-    //     },
-    //     {
-    //         id: 6,
-    //         time: '16:00',
-    //     },
-    // ]);
-
-    // const [staffs] = useState([
-    //     {
-    //         id: 1,
-    //         name: 'Lê Quý Nghĩa',
-    //         avatar: staffNghia,
-    //         position: 'Salon staff',
-    //         phone: '0969140342',
-    //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'Ngô Anh Lượng',
-    //         avatar: staffLuong,
-    //         position: 'Salon staff',
-    //         phone: '0123456789',
-    //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    //     },
-    //     {
-    //         id: 3,
-    //         name: 'Hoàng Hồng Phúc',
-    //         avatar: staffdube,
-    //         position: 'Salon staff',
-    //         phone: '0123456789',
-    //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    //     },
-    //     {
-    //         id: 4,
-    //         name: 'Nguyễn Hữu Phước',
-    //         avatar: staffdube,
-    //         position: 'Salon staff',
-    //         phone: '0123456789',
-    //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    //     },
-    // ]);
-
+   
     const [active, setActive] = useState(false);
     const [selectedBranchId, setSelectedBranchId] = useState(null);
     const [selectedTimeId, setSelectedTimeId] = useState(null);
@@ -221,6 +163,9 @@ function Cart() {
         
         e.preventDefault();
         console.log(isChecked   )
+        if(!user){
+            navigate("/login")
+        }else{
         if (selectedBranchId && selectedStaff && selectedDateId && selectedTimeId) {
            if(isChecked){ axios
             .post(`/checkout/create-payment`,{
@@ -263,7 +208,9 @@ function Cart() {
                 position: toast.POSITION.TOP_RIGHT,
             });
         }
+    }
     };
+    
     const [isChecked, setIsChecked] = useState(false);
     const position = [15.977456962147246, 108.2627979201717];
     let defaultIcon = L.icon({
@@ -276,7 +223,8 @@ function Cart() {
 
     return (
         <div>
-            {jsonData.length === 0 ? (
+
+            {jsonData.length === 0 || !user ? (
                 <h1>Bạn chưa đặt sản phẩm!!!!!</h1>
             ) : (
                 <>
@@ -295,7 +243,7 @@ function Cart() {
                                     </th>
                                     <th>{element.price.toLocaleString('en-US')} VNĐ</th>
                                     <th>
-                                        <div onClick={() => deleteElement(index)} style={{ cursor: 'pointer' }}>
+                                        <div onClick={() => deleteElement(index,element.id)} style={{ cursor: 'pointer' }}>
                                             <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
                                         </div>
                                     </th>
@@ -317,7 +265,7 @@ function Cart() {
                                             value={branch.id}
                                             // onClick={() => handleBranchesClick(branch.id)}
                                         >
-                                            {branch.address}
+                                            {branch.name}
                                         </option>
                                     ))}
                                 </select>
@@ -362,10 +310,7 @@ function Cart() {
                                         <div style={{ backgroundColor: 'rgb(246, 109, 109)' }}></div>
                                         <span>Chưa chọn</span>
                                     </div>
-                                    <div>
-                                        <div style={{ backgroundColor: '#ccc' }}></div>
-                                        <span>Hết chỗ</span>
-                                    </div>
+                                    
                                 </div>
                                 <div className={cx('date-time')}>
                                     {times.map((data) => (

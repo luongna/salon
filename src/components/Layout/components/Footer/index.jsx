@@ -53,7 +53,7 @@ function Footer() {
                 <div>
                     <h3>giờ mở cửa </h3>
                     <p>
-                        Từ 8:00 - 22:00 tất cả các ngày trong tuần (trừ ngày lễ, ngày Tết). Vui lòng đến sớm 15 phút
+                        Từ 7:00 - 22:00 tất cả các ngày trong tuần (trừ ngày lễ, ngày Tết). Vui lòng đến sớm 15 phút
                         trước thời gian đã đặt lịch.
                     </p>
                 </div>
@@ -81,7 +81,7 @@ function Footer() {
             </footer>
             <div className={cx('footer-bottom')}>
                 <div className={cx('footer-bottom-element')}>@2023 All Rights reserved</div>
-                <div className={cx('footer-bottom-element')}>Powered by Company</div>
+                <div className={cx('footer-bottom-element')}>SalonSpaceTeam</div>
             </div>
         </>
     );
