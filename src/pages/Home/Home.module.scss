@@ -6,11 +6,32 @@
     align-items: center;
 }
 
+.dots {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    bottom: 10px; // Đặt khoảng cách dấu chấm với đáy của Slideshow
+    width: 100%;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background-color: gray;
+    border-radius: 50%;
+    margin: 0 5px; // Điều chỉnh khoảng cách giữa các dấu chấm
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: black; // Màu nền cho dấu chấm hiện tại
+}
+
 .img-element {
     width: 100%;
     height: 100%;
     justify-content: center;
-    object-fit: cover;
+    object-fit: fill;
 }
 .slide-text {
     position: absolute;
@@ -18,12 +39,13 @@
     left: 35%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: #000000;
+    color: black;
     font-size: 60px;
     text-transform: uppercase;
-  
+
     p {
-        color: #5a5757;
+        margin-top: 10px;
+        color: black;
         font-size: 20px;
         text-align: center;
     }
@@ -79,7 +101,7 @@
             height: 100%;
             object-fit: cover;
             z-index: 1;
-            &:hover{
+            &:hover {
                 transition: scale(1.1);
             }
         }
@@ -229,6 +251,8 @@
         }
         img {
             width: 100%;
+            height: 300px;
+            object-fit: cover;
         }
     }
     .team-text {
