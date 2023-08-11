@@ -4,15 +4,12 @@ import { Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-import { ToastContainer, toast } from 'react-toastify';
 import axios from '~/utils/api/axios';
 import { addToCart } from '~/utils/store/authSlice';
 export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state) => state.auth.login?.currenUser);
-  const navigate = useNavigate(); 
-  const user = useSelector((state) => state.auth.login?.currenUser);
  const HandleAddToCart =(e)=> {
   e.preventDefault();
     if(user === null){
