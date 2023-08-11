@@ -37,10 +37,10 @@ function ConfirmBox({ open, closeDialog, title, deleteFunction }) {
                     </Grid>
                     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
                         <Button onClick={closeDialog} size="medium" variant="contained" color="primary">
-                            Cancel
+                            Không
                         </Button>
                         <Button onClick={deleteFunction} size="medium" variant="contained" color="error">
-                            Delete
+                            Có
                         </Button>{' '}
                     </Grid>
                 </Grid>

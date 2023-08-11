@@ -3,6 +3,7 @@ import { Box, Button, useTheme } from '@mui/material';
 import { DataGrid, viVN } from '@mui/x-data-grid';
 import { tokens } from '~/utils/theme/theme';
 import axios from '~/utils/api/axios';
+import Swal from 'sweetalert2';
 // import { Link } from 'react-router-dom';
 
 function AcceptBooking() {
@@ -19,12 +20,77 @@ function AcceptBooking() {
     }, []);
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const handleStatusClick = (id) => {
+        Swal.fire({
+            html: `<h4>Xác nhận đơn hàng đã được được hoàn thành!</h4>`,
+            // input: 'number',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Đóng',
+            showLoaderOnConfirm: true,
+            confirmButtonColor: '#4caf50',
+            cancelButtonColor: ' #D3D3D3',
+            allowOutsideClick: false,
+            preConfirm: (code) => {
+                return axios
+                    .get(`/receptionist/status/${id}`)
+                    .then((res) => {
+                        if (id === res.data) {
+                            const updatedTeamData = teamData.map((booking) => {
+                                if (booking.id === id) {
+                                    return { ...booking, status: 1 };
+                                }
+                                return booking;
+                            });
+                            setTeamData(updatedTeamData);
+                        }
+                    })
+                    .catch((error) => console.log(error));
+            },
+        });
+    };
+    const handlePaymentClick = (id) => {
+        Swal.fire({
+            html: `<h4>Xác nhận đơn hàng đã được thánh toán!</h4>`,
+            // input: 'number',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Đóng',
+            showLoaderOnConfirm: true,
+            confirmButtonColor: '#4caf50',
+            cancelButtonColor: ' #D3D3D3',
+            allowOutsideClick: false,
+            preConfirm: (code) => {
+                return axios
+                    .get(`/receptionist/payment/${id}`)
+                    .then((res) => {
+                        if (id === res.data) {
+                            const updatedTeamData = teamData.map((booking) => {
+                                if (booking.id === id) {
+                                    return { ...booking, payment: 1 };
+                                }
+                                return booking;
+                            });
+                            setTeamData(updatedTeamData);
+                        }
+                    })
+                    .catch((error) => console.log(error));
+            },
+        });
+    };
     const columns = [
         { field: 'id', headerName: 'ID' },
         {
             field: 'name',
             headerName: 'Tên',
             flex: 1,
+            renderCell: ({ row }) => {
+                if (row.user) {
+                    return row.user.phone;
+                } else {
+                    return 'Khách hàng';
+                }
+            },
         },
         {
             field: 'date',
@@ -34,12 +100,12 @@ function AcceptBooking() {
             align: 'left',
             flex: 1,
             renderCell: ({ row }) => {
-                const timestamp = row.date;
-                const date = new Date(timestamp);
-                const year = date.getFullYear();
-                const month = date.getMonth() + 1;
-                const day = date.getDate();
-                return `${day}/${month}/${year}`;
+                const timestamp = row.time;
+                if (timestamp) {
+                    return row.date + ' | ' + row.time.times;
+                } else {
+                    return row.date;
+                }
             },
         },
         {
@@ -62,7 +128,6 @@ function AcceptBooking() {
             field: 'totalPrice',
             headerName: 'Tổng tiền',
             flex: 1,
-           
         },
         {
             field: 'actions',
@@ -72,10 +137,10 @@ function AcceptBooking() {
                 return row.payment === 0 ? (
                     <Box>
                         <Button
-                            type="submit"
                             color="secondary"
                             variant="contained"
                             sx={{ fontFamily: 'Lora, serif' }}
+                            onClick={() => handlePaymentClick(row.id)}
                         >
                             Thanh toán
                         </Button>
@@ -91,10 +156,10 @@ function AcceptBooking() {
                 return row.status === 0 ? (
                     <Box>
                         <Button
-                            type="reset"
                             color="warning"
                             variant="contained"
                             sx={{ fontFamily: 'Lora, serif' }}
+                            onClick={() => handleStatusClick(row.id)}
                         >
                             Hoàn thành
                         </Button>

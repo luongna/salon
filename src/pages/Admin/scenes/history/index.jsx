@@ -71,7 +71,7 @@ const HistoryBooking = () => {
             renderCell: ({ row }) => {
                 return (
                     <div style={{ wordWrap: 'break-word' }}>
-                        <div>{row.time.times}</div>
+                        <div>{row.time?.times}</div>
                     </div>
                 );
             },
@@ -99,7 +99,7 @@ const HistoryBooking = () => {
             renderCell: ({ row }) => {
                 return (
                     <div style={{ wordWrap: 'break-word' }}>
-                        <div>{row.user.phone}</div>
+                        <div>{row.user?.phone}</div>
                     </div>
                 );
             },

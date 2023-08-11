@@ -78,7 +78,7 @@ const HistoryBooking = () => {
             renderCell: ({ row }) => {
                 return (
                     <div style={{ wordWrap: 'break-word' }}>
-                        <div>{row.time.times}</div>
+                        <div>{row.time?.times}</div>
                     </div>
                 );
             },
@@ -97,20 +97,20 @@ const HistoryBooking = () => {
             headerAlign: 'left',
             align: 'left',
         },
-        {
-            field: 'user', // Use a new field name
-            headerName: 'Số điện thoại người dùng',
-            flex: 1,
-            headerAlign: 'left',
-            align: 'left',
-            renderCell: ({ row }) => {
-                return (
-                    <div style={{ wordWrap: 'break-word' }}>
-                        <div>{row.user.phone}</div>
-                    </div>
-                );
-            },
-        },
+        // {
+        //     field: 'user', // Use a new field name
+        //     headerName: 'Số điện thoại người dùng',
+        //     flex: 1,
+        //     headerAlign: 'left',
+        //     align: 'left',
+        //     renderCell: ({ row }) => {
+        //         return (
+        //             <div style={{ wordWrap: 'break-word' }}>
+        //                 <div>{row.user.phone}</div>
+        //             </div>
+        //         );
+        //     },
+        // },
         {
             field: 'branch',
             headerName: 'Chi nhánh',

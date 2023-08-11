@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loginStart, loginFailed, loginSuccess } from '~/utils/store/authSlice';
 import { useDispatch } from 'react-redux';
-import avatarDefault from '~/pages/Profile';
+import avatarDefault from '~/assets/images/avatarDefault.jpg';
 function Profile() {
     const user = useSelector((state) => state.auth.login?.currenUser);
     const [isEditProfile, setIsEditProfile] = useState(false);
@@ -68,7 +68,7 @@ function Profile() {
             const values = {
                 phone: user.phone,
                 name: null,
-                accessToken: null,
+                accessToken: user.accessToken,
                 birthday: null,
                 email: null,
                 img: imageBase64,

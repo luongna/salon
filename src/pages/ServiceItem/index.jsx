@@ -1,19 +1,20 @@
 import PropTypes from 'prop-types';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Button } from '@mui/material';
-import { Link, useNavigate} from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from '~/utils/api/axios';
-
+import { addToCart } from '~/utils/store/authSlice';
 export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const user = useSelector((state) => state.auth.login?.currenUser);
   const navigate = useNavigate(); 
   const user = useSelector((state) => state.auth.login?.currenUser);
  const HandleAddToCart =(e)=> {
   e.preventDefault();
-  console.log(11111)
     if(user === null){
       
      navigate('/login')
@@ -27,6 +28,7 @@ export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
       
       ).then((res) => {
         if(res.data==='ok'){
+          dispatch(addToCart(1));
       Swal.fire({
         html: `<h4>Thêm vào giỏ hàng thành công!</h4>`,
         icon: 'success',
@@ -46,6 +48,7 @@ export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
   })
 }
  }
+
 
     return (
         <div className="service-wrapper" onClick={onClick}>
@@ -117,8 +120,8 @@ export const ServiceItem = ({ id, title, imgUrl, onClick }) => {
                 <img className="service-image" src={imgUrl} alt="service" />
                 <h3 className="service-title">{title}</h3>
             </Link>
-            <Button className="add-cart-button" >
-                <AddShoppingCartIcon className="add-cart-icon" onClick={(e) =>HandleAddToCart(e)}/>
+            <Button className="add-cart-button">
+                <AddShoppingCartIcon className="add-cart-icon" onClick={(e) => HandleAddToCart(e)} />
             </Button>
         </div>
     );
@@ -128,4 +131,4 @@ ServiceItem.propTypes = {
     title: PropTypes.string,
     imgUrl: PropTypes.string,
     onClick: PropTypes.func,
-}
+};

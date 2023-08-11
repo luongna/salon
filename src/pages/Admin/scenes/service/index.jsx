@@ -19,7 +19,7 @@ const Service = () => {
 
     useEffect(() => {
         axios
-            .get(`/service`)
+            .get(`/service/admin`)
             .then((res) => {
                 const branch = res.data;
                 setTeamData(branch);

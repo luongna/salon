@@ -8,9 +8,10 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import styles from './Cart.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from '~/utils/api/axios';
+import { removeToCart } from '~/utils/store/authSlice';
 import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
@@ -21,6 +22,7 @@ function Cart() {
     const [times, setTimes] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const user = useSelector((state) => state.auth.login?.currenUser);
+    const dispatch = useDispatch();
     const deleteElement = (index,id) => {
         console.log(id)
         axios
@@ -47,7 +49,7 @@ function Cart() {
         const newTotalPrice = jsonData.reduce((total, element) => total + element.price, 0);
         setTotalPrice(newTotalPrice);
     }, [jsonData]);
-   
+
     useEffect(() => {
         if(user){
         axios
@@ -67,17 +69,18 @@ function Cart() {
     else{
         navigate("/login")
     }
-    }, []);
+    }, [user.phone]);
+
     //staff
     useEffect(() => {
         axios
-        .get(`/booking/listStaff`)
-        .then((res) => {
-            const staffs = res.data;
-            // console.log(staffs);
-           setStaffs(staffs)
-        })
-        .catch((error) => console.log(error));
+            .get(`/booking/listStaff`)
+            .then((res) => {
+                const staffs = res.data;
+                // console.log(staffs);
+                setStaffs(staffs);
+            })
+            .catch((error) => console.log(error));
     }, []);
     //branch
     useEffect(() => {
@@ -90,10 +93,7 @@ function Cart() {
             .catch((error) => console.log(error));
     }, []);
     //BookServices
-    const [branches,setBranches] = useState([
-     
-    ]);
-
+    const [branches, setBranches] = useState([]);
     const [dates, setDates] = useState([]);
     const handleClick = (daysToAdd) => {
         return new Promise((resolve) => {
@@ -115,7 +115,7 @@ function Cart() {
 
         fetchDates();
     }, []);
-   
+
     const [active, setActive] = useState(false);
     const [selectedBranchId, setSelectedBranchId] = useState(null);
     const [selectedTimeId, setSelectedTimeId] = useState(null);
@@ -137,72 +137,68 @@ function Cart() {
         const selectedID = parseInt(event.target.value);
         const selected = branches.find((branch) => branch.id === selectedID);
         setSelectedBranchId(selected);
-        console.log(selected)
+        console.log(selected);
     };
     const handleDateClick = (id) => {
-         setSelectedDateId(id);
-           
-            axios
-            .post(`/booking/listTime`,{
-                staffId :selectedStaff.id,
-                date:dates[id-1].date,
+        setSelectedDateId(id);
+
+        axios
+            .post(`/booking/listTime`, {
+                staffId: selectedStaff.id,
+                date: dates[id - 1].date,
             })
             .then((res) => {
                 const time = res.data;
-               setTimes(time)
+                setTimes(time);
             })
             .catch((error) => console.log(error));
-       
-
     };
     const handleTimesClick = (id) => {
         setSelectedTimeId(id);
     };
 
     const handleSubmit = (e) => {
-        
         e.preventDefault();
-        console.log(isChecked   )
         if(!user){
             navigate("/login")
         }else{
         if (selectedBranchId && selectedStaff && selectedDateId && selectedTimeId) {
-           if(isChecked){ axios
-            .post(`/checkout/create-payment`,{
-                date:dates[selectedDateId-1].date,
-                totalPrice:totalPrice,
-                nhanvien:selectedStaff.id,
-                user :user.phone,
-                time :selectedTimeId,
-                branch:selectedBranchId.id,
-                bankCode: 'NCB',
-            }).then((res)=>{
-                toast.success('Bạn đã đặt lịch thành công', {
-                    position: toast.POSITION.TOP_RIGHT,
-                    
-            }) 
-            window.location.href = res.data.url
-            
-            });}
-            else{
+            if (isChecked) {
                 axios
-            .post(`/booking/book`,{
-                date:dates[selectedDateId-1].date,
-                totalPrice:totalPrice,
-                nhanvien:selectedStaff.id,
-                user :user.phone,
-                time :selectedTimeId,
-                branch:selectedBranchId.id,
-                bankCode: 'NCB',
-            }).then((res)=>{
-                toast.success('Bạn đã đặt lịch thành công', {
-                    position: toast.POSITION.TOP_RIGHT,
-                    
-            }) 
-
-            });
-        }
-
+                    .post(`/checkout/create-payment`, {
+                        date: dates[selectedDateId - 1].date,
+                        totalPrice: totalPrice,
+                        nhanvien: selectedStaff.id,
+                        user: user.phone,
+                        time: selectedTimeId,
+                        branch: selectedBranchId.id,
+                        bankCode: 'NCB',
+                    })
+                    .then((res) => {
+                        dispatch(removeToCart());
+                        toast.success('Bạn đã đặt lịch thành công', {
+                            position: toast.POSITION.TOP_RIGHT,
+                        });
+                        window.location.href = res.data.url;
+                    });
+            } else {
+                axios
+                    .post(`/booking/book`, {
+                        date: dates[selectedDateId - 1].date,
+                        totalPrice: totalPrice,
+                        nhanvien: selectedStaff.id,
+                        user: user.phone,
+                        time: selectedTimeId,
+                        branch: selectedBranchId.id,
+                        bankCode: 'NCB',
+                    })
+                    .then((res) => {
+                        dispatch(removeToCart());
+                        toast.success('Bạn đã đặt lịch thành công', {
+                            position: toast.POSITION.TOP_RIGHT,
+                        });
+                    });
+            }
         } else {
             toast.error('Vui lòng chọn đầy đủ các mục !!!', {
                 position: toast.POSITION.TOP_RIGHT,
@@ -332,21 +328,24 @@ function Cart() {
                                     ))}
                                 </div>
 
-     <div className="checkbox-">
-
-        <div class="form-check">
-  <input className="form-check-input" type="checkbox" value="" id="flexCheckDisabled" 
-          onChange={() => setIsChecked((prev) => !prev)}/>
-  <label className="form-check-label" for="flexCheckDisabled">Thanh toán Online</label>
-</div>
-
-    </div>
-
-
+                                <div className="checkbox-">
+                                    <div className="form-check">
+                                        <input
+                                            className="form-check-input"
+                                            type="checkbox"
+                                            value=""
+                                            id="flexCheckDisabled"
+                                            onChange={() => setIsChecked((prev) => !prev)}
+                                        />
+                                        <label className="form-check-label" htmlFor="flexCheckDisabled">
+                                            Thanh toán Online
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                             <div className={cx('total-price')}>
-                        Tổng tiền: <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
-                    </div>
+                                Tổng tiền: <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
+                            </div>
                             <button className={cx('submit-booking')} type="submit" onClick={handleSubmit}>
                                 ĐẶT LỊCH
                             </button>
@@ -378,17 +377,16 @@ function Cart() {
                                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 />
-                                {selectedBranchId && ( <Marker position={{lat:selectedBranchId.lat,lng:selectedBranchId.lng}}>
-                                    <Popup>
-                                        A pretty CSS3 popup. <br /> Easily customizable.
-                                    </Popup>
-                                </Marker>)}
-                               
+                                {selectedBranchId && (
+                                    <Marker position={{ lat: selectedBranchId.lat, lng: selectedBranchId.lng }}>
+                                        <Popup>
+                                            A pretty CSS3 popup. <br /> Easily customizable.
+                                        </Popup>
+                                    </Marker>
+                                )}
                             </MapContainer>
                         </div>
                     </div>
-
-                    
                 </>
             )}
         </div>

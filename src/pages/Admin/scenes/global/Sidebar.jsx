@@ -14,6 +14,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
+import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 import { useSelector } from 'react-redux';
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -198,6 +199,13 @@ const Sidebar = () => {
                         <Typography variant="h6" color={colors.grey[300]} sx={{ m: '15px 0 5px 20px' }}>
                             Charts
                         </Typography>
+                        <Item
+                            title="Biểu đồ"
+                            to="/chart"
+                            icon={<TimelineOutlinedIcon />}
+                            selected={selected}
+                            setSelected={setSelected}
+                        />
                         {/* <Item
               title="Bar Chart"
               to="/bar"

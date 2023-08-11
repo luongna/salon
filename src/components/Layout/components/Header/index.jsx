@@ -6,9 +6,9 @@ import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import logo from '~/assets/images/logo2.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { logoutSuccess } from '~/utils/store/authSlice';
+import { logoutSuccess,removeToCart } from '~/utils/store/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import isAdmin from '~/utils/jwt';
+import isAdmin, { isReceptionist } from '~/utils/jwt';
 import { Avatar, Badge } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
@@ -25,7 +25,7 @@ function Header() {
     const currentURL = location.pathname;
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const cart = useSelector((state) => state.auth.cart);
     const user = useSelector((state) => state.auth.login?.currenUser);
     useEffect(() => {
         const handleScroll = () => {
@@ -52,6 +52,7 @@ function Header() {
 
     const handleLogout = () => {
         dispatch(logoutSuccess());
+        dispatch(removeToCart());
     };
 
     const handleSearchChange = (e) => {
@@ -87,7 +88,7 @@ function Header() {
                             Mẫu dịch vụ
                         </li>
                     </Link>
-                    <li className={cx('element')}>Contact</li>
+
                     <Link to={'/staff'}>
                         <li className={cx('element', currentURL === '/staff' && 'header-active')}>Chuyên gia</li>
                     </Link>
@@ -96,12 +97,30 @@ function Header() {
                             <li className={cx('element')}>Admin</li>
                         </Link>
                     )}
-
-                    {/* {user && (
-                        <li className={cx('element')} onClick={handleLogout}>
-                            đăng xuất
-                        </li>
-                    )} */}
+                    {user && isReceptionist(user.accessToken) && (
+                        <Tippy
+                            //  content="Tài khoản "
+                            hideOnClick={true}
+                            trigger="click"
+                            placement="bottom"
+                            interactive
+                            render={(attrs) => (
+                                <div className={cx('box_tippy')} tabIndex="-1" {...attrs} style={{height:'80px'}}>
+                                    <ul>
+                                        <Link to={'/bookOff'}>
+                                            <li>Đặt lịch</li>
+                                        </Link>
+                                        <Link to={'/accept'}>
+                                            <li>Xác nhận</li>
+                                        </Link>
+                                    </ul>
+                                </div>
+                            )}
+                        >
+                            <li className={cx('element',(currentURL === '/bookOff' || currentURL === '/accept')  && 'header-active')}>Lễ tân</li>
+                        </Tippy>
+                    )}
+                    <li className={cx('element')}>liên hệ</li>
                 </ul>
                 {!user ? (
                     <div className={cx('actions')}>
@@ -133,7 +152,7 @@ function Header() {
                             </form>
                         </div>
                         <Badge
-                            badgeContent={4}
+                            badgeContent={cart}
                             color="error"
                             sx={{ '& .MuiBadge-badge': { fontSize: 15, height: 15, minWidth: 15 } }}
                         >
@@ -193,7 +212,7 @@ function Header() {
                                 </Tippy>
                             </div>
                             <Badge
-                                badgeContent={4}
+                                badgeContent={cart}
                                 color="error"
                                 sx={{ '& .MuiBadge-badge': { fontSize: 15, height: 15, minWidth: 15 } }}
                             >

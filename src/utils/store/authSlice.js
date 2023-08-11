@@ -1,4 +1,3 @@
-
 import { createSlice } from '@reduxjs/toolkit';
 
 const authSlice = createSlice({
@@ -12,7 +11,8 @@ const authSlice = createSlice({
         logout: {
             isFetching: false,
             error: false,
-        }
+        },
+        cart: 0,
     },
     reducers: {
         loginStart: (state) => {
@@ -30,7 +30,7 @@ const authSlice = createSlice({
         logoutStart: (state) => {
             state.logout.isFetching = true;
         },
-        logoutSuccess: (state) =>{
+        logoutSuccess: (state) => {
             //  state.logout.isFetching = false;
             state.login.currenUser = null;
             //  state.logout.error = false;
@@ -39,9 +39,16 @@ const authSlice = createSlice({
             state.login.isFetching = false;
             state.logout.error = true;
         },
+        addToCart: (state, action) => {
+            const quantity = action.payload;
+            state.cart += quantity;
+        },
+        removeToCart: (state, action) => {
+            state.cart = 0;
+        },
     },
 });
 
-export const { loginStart, loginFailed, loginSuccess,logoutSuccess,logoutFailed, logoutStart } = authSlice.actions;
+export const { loginStart, loginFailed, loginSuccess, logoutSuccess, logoutFailed, logoutStart, addToCart,removeToCart } = authSlice.actions;
 
 export default authSlice.reducer;
