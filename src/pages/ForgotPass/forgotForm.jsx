@@ -60,7 +60,7 @@ const ForgotForm = () => {
                 </div>
                 <p id="f"></p>
                 <div className="form-outline mb-4">
-                    <label className="label" for="form3Example3">
+                    <label className="label" htmlFor="form3Example3">
                         Nhập mật khẩu mới
                     </label>
 
@@ -77,7 +77,7 @@ const ForgotForm = () => {
                 </div>
 
                 <div className="form-outline mb-3">
-                    <label className="label" for="form3Example4">
+                    <label className="label" htmlFor="form3Example4">
                         Nhập lại mật khẩu mới
                     </label>
                     <input

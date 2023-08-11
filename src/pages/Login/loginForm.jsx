@@ -7,7 +7,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 // import { useUserStore } from '~/utils/store/user';
 import './login.component.scss';
 import { Link } from 'react-router-dom';
-import { loginStart, loginFailed, loginSuccess } from '~/utils/store/authSlice';
+import { loginStart, loginFailed, loginSuccess, addToCart } from '~/utils/store/authSlice';
 import { useDispatch } from 'react-redux';
 const LoginForm = (onClose) => {
     const [phone, setPhone] = useState('');
@@ -71,16 +71,12 @@ const LoginForm = (onClose) => {
 
                         dispath(loginSuccess(response.data));
                         navigate('/');
-                        // const { user, accessToken } = response.data;
-                        // if (user.id === 1) {
-                        // setUserInfo(response.data);
-                        // setToken(response.data.accessToken);
-                        //     navigate('/');
-                        // } else {
-                        //     setUserInfo(user);
-                        //     setToken(accessToken);
-                        //     navigate('/');
-                        // }
+                        axios
+                            .get(`/auth/cart/${response.data.id}`)
+                            .then((res) => {
+                                dispath(addToCart(res.data));
+                            })
+                            .catch((error) => console.log(error));
                     }
                 })
                 .catch((err) => {
@@ -97,7 +93,7 @@ const LoginForm = (onClose) => {
                     <h3 className="form-heading">Đăng nhập</h3>
                 </div>
                 <div className="form-group">
-                    <label className="form-label" for="form3Example3">
+                    <label className="form-label" htmlFor="form3Example3">
                         Số điện thoại
                     </label>
 
@@ -114,7 +110,7 @@ const LoginForm = (onClose) => {
                 </div>
 
                 <div className="form-group">
-                    <label className="form-label" for="form3Example4">
+                    <label className="form-label" htmlFor="form3Example4">
                         Mật khẩu
                     </label>
                     <input
@@ -133,7 +129,7 @@ const LoginForm = (onClose) => {
                     <div className="form-check mb-0 d-flex justify-content-between align-items-center">
                         <input className="form-check-input me-2" type="checkbox" id="form2Example3" />
 
-                        <label className="form-check-label" for="form2Example3">
+                        <label className="form-check-label" htmlFor="form2Example3">
                             Remember me
                         </label>
                     </div>
