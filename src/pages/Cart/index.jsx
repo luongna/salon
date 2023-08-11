@@ -12,19 +12,37 @@ import { useDispatch, useSelector } from 'react-redux';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from '~/utils/api/axios';
 import { removeToCart } from '~/utils/store/authSlice';
+import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Cart() {
+    const navigate = useNavigate();
     const [jsonData, setJsonData] = useState([]);
     const [staffs, setStaffs] = useState([]);
     const [times, setTimes] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const user = useSelector((state) => state.auth.login?.currenUser);
     const dispatch = useDispatch();
-    const deleteElement = (index) => {
+    const deleteElement = (index,id) => {
+        console.log(id)
+        axios
+        .post(`/booking/deleteDetail`,{
+            serviceID :id,
+            phone :user.phone, 
+          })
+        .then(() => {
+            toast.success('Bạn đã đặt lịch thành công', {
+                position: toast.POSITION.TOP_RIGHT,
+                
+        }) 
+           
+        })
+        .catch((error) => console.log(error));
         const updatedElements = [...jsonData];
         updatedElements.splice(index, 1);
         setJsonData(updatedElements);
+        
+       
     };
 
     useEffect(() => {
@@ -33,18 +51,26 @@ function Cart() {
     }, [jsonData]);
 
     useEffect(() => {
+        if(user){
         axios
-            .post(`/booking/listCart`, {
-                serviceID: 1,
-                phone: user.phone,
-            })
-            .then((res) => {
-                const cart = res.data;
-                // console.log(branch)
-                setJsonData(cart);
-            })
-            .catch((error) => console.log(error));
+        .post(`/booking/listCart`,{
+            serviceID :1,
+            phone :user.phone, 
+          })
+        .then((res) => {
+            const cart= res.data;
+            // console.log(branch)
+           setJsonData(cart);
+           
+        })
+        .catch((error) => console.log(error));
+        }
+    
+    else{
+        navigate("/login")
+    }
     }, [user.phone]);
+
     //staff
     useEffect(() => {
         axios
@@ -68,7 +94,6 @@ function Cart() {
     }, []);
     //BookServices
     const [branches, setBranches] = useState([]);
-
     const [dates, setDates] = useState([]);
     const handleClick = (daysToAdd) => {
         return new Promise((resolve) => {
@@ -134,7 +159,9 @@ function Cart() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(isChecked);
+        if(!user){
+            navigate("/login")
+        }else{
         if (selectedBranchId && selectedStaff && selectedDateId && selectedTimeId) {
             if (isChecked) {
                 axios
@@ -177,7 +204,9 @@ function Cart() {
                 position: toast.POSITION.TOP_RIGHT,
             });
         }
+    }
     };
+    
     const [isChecked, setIsChecked] = useState(false);
     const position = [15.977456962147246, 108.2627979201717];
     let defaultIcon = L.icon({
@@ -190,7 +219,8 @@ function Cart() {
 
     return (
         <div>
-            {jsonData.length === 0 ? (
+
+            {jsonData.length === 0 || !user ? (
                 <h1>Bạn chưa đặt sản phẩm!!!!!</h1>
             ) : (
                 <>
@@ -209,7 +239,7 @@ function Cart() {
                                     </th>
                                     <th>{element.price.toLocaleString('en-US')} VNĐ</th>
                                     <th>
-                                        <div onClick={() => deleteElement(index)} style={{ cursor: 'pointer' }}>
+                                        <div onClick={() => deleteElement(index,element.id)} style={{ cursor: 'pointer' }}>
                                             <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
                                         </div>
                                     </th>
@@ -231,7 +261,7 @@ function Cart() {
                                             value={branch.id}
                                             // onClick={() => handleBranchesClick(branch.id)}
                                         >
-                                            {branch.address}
+                                            {branch.name}
                                         </option>
                                     ))}
                                 </select>
@@ -276,10 +306,7 @@ function Cart() {
                                         <div style={{ backgroundColor: 'rgb(246, 109, 109)' }}></div>
                                         <span>Chưa chọn</span>
                                     </div>
-                                    <div>
-                                        <div style={{ backgroundColor: '#ccc' }}></div>
-                                        <span>Hết chỗ</span>
-                                    </div>
+                                    
                                 </div>
                                 <div className={cx('date-time')}>
                                     {times.map((data) => (

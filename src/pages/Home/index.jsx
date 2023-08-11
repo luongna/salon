@@ -2,12 +2,41 @@ import React from 'react';
 import Slideshow from './slideshow';
 import classNames from 'classnames/bind';
 import styles from './Home.module.scss';
-import slideshow from '~/assets/images/combs-scissors-copy-space.jpg';
+import slideshow1 from '~/assets/images/combs-scissors-copy-space.jpg';
+import slideshow2 from '~/assets/images/image_breadcrumb_bg.png';
+import slideshow3 from '~/assets/images/slideshow3.jpg';
+import axios from '~/utils/api/axios';
+import { useEffect, useState } from 'react';
+import avatarDefault from '~/assets/images/avatarDefault.jpg';
+
 const cx = classNames.bind(styles);
 function Home() {
+    const slideshowImages = [slideshow1, slideshow2, slideshow3];
+    const [topUsers, setTopUsers] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get(`/users/top-users`)
+            .then((response) => {
+                setTopUsers(response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching top users:', error);
+            });
+    }, []);
+
+    function mapRole(role) {
+        switch (role) {
+            case 'ROLE_STAFF':
+                return 'Nhân viên';
+            default:
+                return role;
+        }
+    }
+
     return (
         <>
-            <Slideshow slides={slideshow} />
+            <Slideshow slides={slideshowImages} />
             <div className={cx('about')}>
                 <div className="container">
                     <div className="row align-items-center">
@@ -237,50 +266,19 @@ function Home() {
                         <h2>Meet Our Hair Cut Expert Barber</h2>
                     </div>
                     <div className="row">
-                        <div className="col-lg-3 col-md-6">
-                            <div className={cx('team-item')}>
-                                <div className={cx('team-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/team-3.jpg'} alt="Team" />
-                                </div>
-                                <div className={cx('team-text')}>
-                                    <h2>Adam Phillips</h2>
-                                    <p>Master Barber</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className={cx('team-item')}>
-                                <div className={cx('team-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/team-3.jpg'} alt="Team" />
-                                </div>
-                                <div className={cx('team-text')}>
-                                    <h2>Dylan Adams</h2>
-                                    <p>Hair Expert</p>
+                        {topUsers.map((user, index) => (
+                            <div className="col-lg-3 col-md-6" key={index}>
+                                <div className={cx('team-item')}>
+                                    <div className={cx('team-img')}>
+                                        <img src={user[0] ? user[0] : avatarDefault} alt="Team" />
+                                    </div>
+                                    <div className={cx('team-text')}>
+                                        <h2>{user[1]}</h2>
+                                        <p className={cx('team-role')}>{mapRole(user[2])}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className={cx('team-item')}>
-                                <div className={cx('team-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/team-3.jpg'} alt="team" />
-                                </div>
-                                <div className={cx('team-text')}>
-                                    <h2>Gloria Edwards</h2>
-                                    <p>Beard Expert</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className={cx('team-item')}>
-                                <div className={cx('team-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/team-3.jpg'} alt="team" />
-                                </div>
-                                <div className={cx('team-text')}>
-                                    <h2>Josh Dunn</h2>
-                                    <p>Color Expert</p>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>

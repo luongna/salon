@@ -46,7 +46,7 @@ function RegisterForm() {
         let formIsValid = true;
         if (!username) {
             formIsValid = false;
-            setErrors((errors) => ({ ...errors, username: 'vui lòng nhập Tên !' }));
+            setErrors((errors) => ({ ...errors, username: 'vui lòng nhập tên !' }));
         } else {
             setErrors((errors) => ({ ...errors, username: '' }));
         }
@@ -122,64 +122,8 @@ function RegisterForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setErrors({});
 
-        if (!username) {
-            setErrors((errors) => ({ ...errors, username: 'Vui lòng nhập tên!' }));
-        } else {
-            setErrors((errors) => ({ ...errors, username: '' }));
-        }
-        if (!email) {
-            setErrors((errors) => ({ ...errors, email: 'Vui lòng nhập email!' }));
-        } else {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                setErrors((errors) => ({ ...errors, email: 'Vui lòng nhập email hợp lệ!' }));
-            } else {
-                setErrors((errors) => ({ ...errors, email: '' }));
-            }
-        }
-        if (!phone) {
-            setErrors((errors) => ({ ...errors, phone: 'Vui lòng nhập số điện thoại!' }));
-        }
-        if (!birthday) {
-            setErrors((errors) => ({ ...errors, birthday: 'Vui lòng nhập ngày sinh!' }));
-        } else {
-            const currentDate = new Date();
-            const selectedDate = new Date(birthday);
-
-            if (selectedDate >= currentDate) {
-                setErrors((errors) => ({ ...errors, birthday: 'Ngày sinh phải nhỏ hơn ngày hiện tại!' }));
-            } else {
-                setErrors((errors) => ({ ...errors, birthday: '' }));
-            }
-        }
-        if (!password) {
-            setErrors((errors) => ({ ...errors, password: 'Vui lòng nhập mật khẩu!' }));
-        } else {
-            // Kiểm tra mật khẩu có ít nhất 8 ký tự, bao gồm chữ viết hoa, chữ viết thường và số
-            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
-            if (!passwordRegex.test(password)) {
-                setErrors((errors) => ({
-                    ...errors,
-                    password: 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ viết hoa, chữ viết thường và số!',
-                }));
-            } else {
-                setErrors((errors) => ({ ...errors, password: '' }));
-            }
-        }
-        if (!confirmPassword) {
-            setErrors((errors) => ({ ...errors, confirmPassword: 'vui lòng nhập lại mật khẩu !' }));
-            return;
-        } else {
-            if (confirmPassword !== password) {
-                setErrors((errors) => ({ ...errors, confirmPassword: 'Mật khẩu nhập lại không đúng !' }));
-            } else {
-                setErrors((errors) => ({ ...errors, confirmPassword: '' }));
-            }
-        }
-
-        if (validateForm) {
+        if (validateForm()) {
             console.log(email);
             axios
                 .post('/users/mail', {
@@ -223,6 +167,13 @@ function RegisterForm() {
                                     })
                                     .then((res) => {
                                         console.log(res);
+                                        if(res.data === 'OTP het han'){
+                                            Swal.showValidationMessage('Mã OTP hết hạn! Vui lòng thử lại!');
+                                            Swal.close();
+                                            document.getElementById('f').innerText = `Mã OTP hết hạn`;
+                                            document.getElementById('f').style.color='red'
+                                        }
+                                        else{
                                         if (res.data === 'OTP is not correct') {
                                             Swal.showValidationMessage('Mã OTP không đúng! Vui lòng thử lại!');
                                         } else {
@@ -231,6 +182,7 @@ function RegisterForm() {
                                                 navigate('/login');
                                             }, 2000);
                                         }
+                                    }
                                     })
                                     .catch((err) => {
                                         console.log(err);
@@ -246,7 +198,7 @@ function RegisterForm() {
             <div className="form-header">
                 <h3 className="form-heading">Đăng Ký</h3>
             </div>
-
+                <p id="f"></p>
             <div className="form-group">
                 <label className="form-label">Họ và tên</label>
                 <input

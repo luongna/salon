@@ -4,83 +4,34 @@ import ReactPaginate from 'react-paginate';
 import { Breadcrumbs } from '~/pages/Breadcrumbs';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/md';
 import './Staff.css';
-import staffNghia from '~/assets/images/n.jpg';
-import staffLuong from '~/assets/images/luong.jpg';
-import staffdube from '~/assets/images/dube.jpg';
+import { useEffect } from 'react';
+import axios from '~/utils/api/axios';
+import avatarDefault from '~/assets/images/avatarDefault.jpg';
 
 function Staff() {
-    const [staffs] = useState([
-        {
-            id: 1,
-            name: 'Lê Quý Nghĩa',
-            avatar: staffNghia,
-            position: 'Salon staff',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-            id: 2,
-            name: 'Ngô Anh Lượng',
-            avatar: staffLuong,
-            position: 'Salon staff',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-            id: 3,
-            name: 'Hoàng Hồng Phúc',
-            avatar: staffdube,
-            position: 'Salon staff',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-            id: 4,
-            name: 'Nguyễn Hữu Phước',
-            avatar: staffdube,
-            position: 'Salon staff',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-            id: 5,
-            name: 'Lê Quý Nghĩa',
-            avatar: staffNghia,
-            position: 'Salon staff',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-            id: 6,
-            name: 'Ngô Anh Lượng',
-            avatar: staffLuong,
-            position: 'Salon staff',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-            id: 7,
-            name: 'Hoàng Hồng Phúc',
-            avatar: staffdube,
-            position: 'Salon staff',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-            id: 8,
-            name: 'Nguyễn Hữu Phước',
-            avatar: staffdube,
-            position: 'Salon staff',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-            id: 9,
-            name: 'Lê Quý Nghĩa',
-            avatar: staffNghia,
-            position: 'Salon staff',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-            id: 10,
-            name: 'Ngô Anh Lượng',
-            avatar: staffLuong,
-            position: 'Salon staff',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-    ]);
+    const [staffs, setStaffs] = useState([]);
+    // ... (rest of your state variables and constants)
+
+    function mapRole(role) {
+        switch (role) {
+            case 'ROLE_STAFF':
+                return 'Nhân viên';
+            default:
+                return role;
+        }
+    }
+
+    useEffect(() => {
+        // Fetch staff data from the API
+        axios
+            .get(`/users/staff`) // Update the URL to match your API endpoint
+            .then((response) => {
+                setStaffs(response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching staff data:', error);
+            });
+    }, []);
 
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 6;
@@ -111,7 +62,7 @@ function Staff() {
                     </Link>
                 </Breadcrumbs>
             </section>
-            <h1 className="staff-content">Đội ngũ chuyên gia giàu kinh nghiệm</h1>
+            <h2 className="staff-content">ĐỘI NGŨ CHUYÊN GIA GIÀU KINH NGHIỆM</h2>
             <p className="staff-all-desc">
                 Với đội ngũ chuyên gia được đào tạo bài bản từ Hoa Kỳ và các nhân viên stylist & skinner giàu kinh
                 nghiệm, Suplo tự tin có thể giúp bạn có một mái tóc thật phong cách và cá tính. Từ những kiểu tóc nam cổ
@@ -119,12 +70,11 @@ function Staff() {
                 bóng đá Beckham, Ronaldo…
             </p>
             <div className="staff-list">
-                {currentStaffs.map((staff) => (
-                    <div className="staff-item grid-col" key={staff.id}>
-                        <img className="staff-img" src={staff.avatar} alt={staff.name} />
-                        <h3>{staff.name}</h3>
-                        <p>{staff.position}</p>
-                        <p>{staff.description}</p>
+                {currentStaffs.map((staff, index) => (
+                    <div className="staff-item grid-col" key={index}>
+                        <img className="staff-img" src={staff.img ? staff.img : avatarDefault} alt={staff.name} />
+                        <h3 className="staff-name">{staff.name}</h3>
+                        <p>{mapRole(staff.role)}</p>
                     </div>
                 ))}
             </div>
