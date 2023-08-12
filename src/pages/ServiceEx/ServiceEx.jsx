@@ -124,7 +124,7 @@ function ServiceEx() {
                     <Link className="breadcrumb-link" to="/">
                         Trang chủ
                     </Link>
-                    <Link className="breadcrumb-link" to="/service">
+                    <Link className="breadcrumb-link" to="/serviceExample">
                         Mẫu dịch vụ
                     </Link>
                 </Breadcrumbs>

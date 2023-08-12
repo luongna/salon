@@ -8,8 +8,44 @@ import { Breadcrumbs } from '../Breadcrumbs';
 import Comments from '~/components/Comment/Comments';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from '~/utils/api/axios';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { addToCart } from '~/utils/store/authSlice';
 
 function ServiceDetail() {
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth.login?.currenUser);
+    const HandleAddToCart = (e) => {
+        e.preventDefault();
+        if (user === null) {
+            navigate('/login');
+        } else {
+            axios
+                .post('/booking/addToCart', {
+                    serviceID: id,
+                    phone: user.phone,
+                })
+                .then((res) => {
+                    if (res.data === 'ok') {
+                        dispatch(addToCart(1));
+                        Swal.fire({
+                            html: `<h4>Thêm vào giỏ hàng thành công!</h4>`,
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1100,
+                        });
+                    } else {
+                        Swal.fire({
+                            html: `<h4>Sản phẩm đã tồn tại trong giỏ hàng!</h4>`,
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 2000,
+                        });
+                    }
+                    console.log(id, user.phone);
+                });
+        }
+    };
     const navigate = useNavigate();
     const { id } = useParams();
     useEffect(() => {
@@ -142,8 +178,8 @@ function ServiceDetail() {
                         <h3>Giá:</h3>
                         <p>{serviceDetail?.price}₫</p>
                     </div>
-                    <Button className="add-cart-button" onClick={() => navigate('/cart')}>
-                        <AddShoppingCartIcon className="add-cart-icon" />
+                    <Button className="add-cart-button">
+                        <AddShoppingCartIcon className="add-cart-icon" onClick={(e) => HandleAddToCart(e)} />
                     </Button>
                 </div>
             </div>

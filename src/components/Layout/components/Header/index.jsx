@@ -6,7 +6,7 @@ import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import logo from '~/assets/images/logo2.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { logoutSuccess,removeToCart } from '~/utils/store/authSlice';
+import { logoutSuccess, removeToCart } from '~/utils/store/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import isAdmin, { isReceptionist } from '~/utils/jwt';
 import { Avatar, Badge } from '@mui/material';
@@ -74,7 +74,9 @@ function Header() {
 
     return (
         <header className={cx('wrapper', isFixed ? 'fixed-header' : '')}>
-            <img src={logo} alt="logo" className={cx('logo')} />
+            <Link to={'/'}>
+                <img src={logo} alt="logo" className={cx('logo')} />
+            </Link>
             <div className={cx('inner')} style={status ? { right: '0px' } : {}}>
                 <ul className={cx('ul-element')}>
                     <Link to={'/'}>
@@ -87,6 +89,9 @@ function Header() {
                         <li className={cx('element', currentURL === '/serviceExample' && 'header-active')}>
                             Mẫu dịch vụ
                         </li>
+                    </Link>
+                    <Link to={'/contact'}>
+                        <li className={cx('element', currentURL === '/contact' && 'header-active')}>Liên hệ</li>
                     </Link>
 
                     <Link to={'/staff'}>
@@ -105,7 +110,7 @@ function Header() {
                             placement="bottom"
                             interactive
                             render={(attrs) => (
-                                <div className={cx('box_tippy')} tabIndex="-1" {...attrs} style={{height:'80px'}}>
+                                <div className={cx('box_tippy')} tabIndex="-1" {...attrs} style={{ height: '80px' }}>
                                     <ul>
                                         <Link to={'/bookOff'}>
                                             <li>Đặt lịch</li>
@@ -117,10 +122,16 @@ function Header() {
                                 </div>
                             )}
                         >
-                            <li className={cx('element',(currentURL === '/bookOff' || currentURL === '/accept')  && 'header-active')}>Lễ tân</li>
+                            <li
+                                className={cx(
+                                    'element',
+                                    (currentURL === '/bookOff' || currentURL === '/accept') && 'header-active',
+                                )}
+                            >
+                                Lễ tân
+                            </li>
                         </Tippy>
                     )}
-                    <li className={cx('element')}>liên hệ</li>
                 </ul>
                 {!user ? (
                     <div className={cx('actions')}>

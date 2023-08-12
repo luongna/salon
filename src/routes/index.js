@@ -31,6 +31,8 @@ import BookOff from '~/pages/Receptionist/BookOff';
 import DataUser from '~/pages/Admin/scenes/team';
 import AcceptBooking from '~/pages/Receptionist/AcceptBooking';
 import Chart from '~/pages/Admin/scenes/chart';
+import Contact from '~/pages/Contact';
+
 // Public routes
 const publicRoutes = [
     { path: '/', component: Home },
@@ -61,8 +63,9 @@ const publicRoutes = [
     { path: '/reset', component: ForgotPage, layout: null },
     { path: '/bookOff', component: BookOff },
     { path: '/dataUser', component: DataUser, admin: true },
-    { path: '/chart', component: Chart , admin: true},
+    { path: '/chart', component: Chart, admin: true },
     { path: '/accept', component: AcceptBooking },
+    { path: '/contact', component: Contact },
 ];
 //dddd
 
