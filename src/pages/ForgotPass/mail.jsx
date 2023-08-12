@@ -60,19 +60,18 @@ const Mail = () => {
                                     })
                                     .then((res) => {
                                         console.log(res);
-                                        if(res.data === 'OTP het han'){
+                                        if (res.data === 'OTP het han') {
                                             Swal.showValidationMessage('Mã OTP hết hạn! Vui lòng thử lại!');
                                             Swal.close();
                                             document.getElementById('f').innerText = `Mã OTP hết hạn`;
-                                            document.getElementById('f').style.color='red'
-                                        }
-                                        else{
-                                        if (res.data === 'OTP is not correct') {
-                                            Swal.showValidationMessage('Mã OTP không đúng! Vui lòng thử lại!');
+                                            document.getElementById('f').style.color = 'red';
                                         } else {
-                                            navigate('/reset');
+                                            if (res.data === 'OTP is not correct') {
+                                                Swal.showValidationMessage('Mã OTP không đúng! Vui lòng thử lại!');
+                                            } else {
+                                                navigate('/reset');
+                                            }
                                         }
-                                    }
                                     })
                                     .catch((err) => {
                                         console.log(err);
@@ -99,7 +98,7 @@ const Mail = () => {
                         type="text"
                         id="form3Example3"
                         className="form-control form-control-lg"
-                        placeholder="Enter a valid email address"
+                        placeholder="Nhập email"
                         aria-describedby="phoneHelp"
                         value={email}
                         onChange={(event) => setEmail(event.target.value)}

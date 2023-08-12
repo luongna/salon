@@ -30,12 +30,12 @@ const HistoryBooking = () => {
     }, [user]);
 
     const columns = [
-        { field: 'id', headerName: 'ID' },
+        { field: 'id', headerName: 'ID', flex: 0.5 },
         {
             field: 'date',
             headerName: 'Ngày tháng',
             type: 'number',
-            flex: 1,
+            flex: 1.5,
             headerAlign: 'left',
             align: 'left',
         },
@@ -52,20 +52,20 @@ const HistoryBooking = () => {
             type: 'text',
             headerAlign: 'left',
             align: 'left',
-            flex: 1,
+            flex: 1.5,
             renderCell: ({ row }) => {
-                return <span>{row.status === 0 ? 'Pending' : 'Accepted'}</span>;
+                return <span>{row.status === 0 ? 'Đang chờ' : 'Đã chấp nhận'}</span>;
             },
         },
         {
             field: 'payment',
             headerName: 'Trạng thái thanh toán',
-            flex: 1,
+            flex: 2,
             type: 'text',
             headerAlign: 'left',
             align: 'left',
             renderCell: ({ row }) => {
-                return <span>{row.payment === 0 ? 'Unpaid' : 'Paid'}</span>;
+                return <span>{row.payment === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}</span>;
             },
         },
         {
@@ -86,14 +86,14 @@ const HistoryBooking = () => {
         {
             field: 'totalPrice',
             headerName: 'Tổng tiền',
-            flex: 1,
+            flex: 1.5,
             headerAlign: 'left',
             align: 'left',
         },
         {
             field: 'nhanvienName',
             headerName: 'Tên nhân viên',
-            flex: 1,
+            flex: 2,
             headerAlign: 'left',
             align: 'left',
         },
@@ -132,10 +132,11 @@ const HistoryBooking = () => {
                     <Header title="Lịch sử giao dịch" subtitle="Quản lý lịch sử giao dịch" />
                     <Box
                         m="40px 0 0 0"
-                        height="75vh"
+                        height="100vh"
                         sx={{
                             '& .MuiDataGrid-root': {
                                 border: 'none',
+                                fontSize: '14px',
                             },
                             '& .MuiDataGrid-cell': {
                                 borderBottom: 'none',

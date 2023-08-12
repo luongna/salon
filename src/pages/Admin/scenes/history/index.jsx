@@ -47,7 +47,7 @@ const HistoryBooking = () => {
             align: 'left',
             flex: 1,
             renderCell: ({ row }) => {
-                return <span>{row.status === 0 ? 'Pending' : 'Accepted'}</span>;
+                return <span>{row.status === 0 ? 'Đang chờ' : 'Đã chấp nhận'}</span>;
             },
         },
         {
@@ -58,7 +58,7 @@ const HistoryBooking = () => {
             headerAlign: 'left',
             align: 'left',
             renderCell: ({ row }) => {
-                return <span>{row.payment === 0 ? 'Unpaid' : 'Paid'}</span>;
+                return <span>{row.payment === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}</span>;
             },
         },
         {
