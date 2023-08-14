@@ -9,26 +9,26 @@
 }
 
 .header .heading {
-    color: rgb(246, 109, 109);
+    color: #fff;
     font-size: 30px;
     font-weight: 800;
 }
 
 .breadcrumbs {
-    color: rgb(246, 109, 109) !important;
+    color: #fff !important;
     margin-top: 14px;
 }
 
 .breadcrumb-link {
     text-decoration: none;
-    color: rgb(246, 109, 109) !important;
+    color: #fff !important;
     font-size: 16px;
 }
 
 .breadcrumb-text {
     text-decoration: none;
     pointer-events: none;
-    color: rgb(246, 109, 109) !important;
+    color: #fff !important;
     font-size: 16px;
 }
 
@@ -59,7 +59,7 @@
 .service-list {
     margin-top: 30px;
     display: grid;
-    gap: 30px;
+    gap: 10px !important;
 }
 
 .item {
@@ -90,6 +90,10 @@
 
     .service-list {
         grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .body {
+        padding-inline: 0 !important;
     }
 }
 

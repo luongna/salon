@@ -51,7 +51,7 @@ const Form = () => {
             axios
                 .post(`/service`, formValues)
                 .then((res) => {
-                    toast.success('Tạo dịch vụ thành công thành công!', {
+                    toast.success('Tạo dịch vụ thành công!', {
                         position: 'top-right',
                         autoClose: 5000,
                         hideProgressBar: false,
@@ -63,7 +63,7 @@ const Form = () => {
                     });
                     resetForm();
                     setImageBase64('');
-                    setItemData([])
+                    setItemData([]);
                 })
                 .catch((error) => console.log(error));
         } else {

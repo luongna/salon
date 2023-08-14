@@ -50,7 +50,7 @@ const Contact = () => {
 };
 
 const Heading = styled.div({
-    color: 'rgb(246, 109, 109)',
+    color: '#fff',
     fontSize: '30px',
     fontWeight: 800,
 });
@@ -75,13 +75,13 @@ const Header = styled.section({
 });
 
 const Breadcrumbs = styled(BreadcrumbsComponent)`
-    color: rgb(246, 109, 109);
+    color: #fff;
     margin-top: 14px;
 `;
 
 const BreadcrumbItem = styled(Link)`
     text-decoration: none;
-    color: rgb(246, 109, 109) !important;
+    color: #fff;
     font-size: 16px;
 
     &:hover {
@@ -98,9 +98,10 @@ const Body = styled.section({
 
 const BranchBox = styled.div({
     padding: '15px',
-    backgroundColor: 'rgb(246, 109, 109)',
+    backgroundColor: '#fbfbf1',
     maxWidth: '1140px',
     marginInline: 'auto',
+    border: '1px solid #000',
 });
 
 const BranchHeading = styled.h2({

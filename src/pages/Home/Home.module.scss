@@ -31,7 +31,7 @@
     width: 100%;
     height: 100%;
     justify-content: center;
-    object-fit: fill;
+    object-fit: cover;
 }
 .slide-text {
     position: absolute;
@@ -39,13 +39,13 @@
     left: 35%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: black;
+    color: #fbfbf1;
     font-size: 60px;
     text-transform: uppercase;
 
     p {
         margin-top: 10px;
-        color: black;
+        color: #fbfbf1;
         font-size: 20px;
         text-align: center;
     }
@@ -208,6 +208,10 @@
             border: 1px solid #ffffff;
             z-index: 1;
         }
+        .price-img {
+            width: 100px;
+            height: 100px;
+        }
     }
     .price-text {
         position: relative;
@@ -227,6 +231,18 @@
             font-size: 16px;
             font-weight: 400;
             color: #333333;
+        }
+        .price-text-name {
+            // overflow: hidden;
+            // white-space: nowrap;
+            // text-overflow: ellipsis;
+            max-height: 3em;
+            overflow: hidden;
+            white-space: normal;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Limit to 2 lines */
+            -webkit-box-orient: vertical;
+            word-wrap: break-word;
         }
     }
 }

@@ -39,23 +39,26 @@ export default function CustomizedInputBase({ onSearch }) {
         <Paper
             component="form"
             sx={{
-                p: '2px 4px',
+                py: '8px',
+                pl: '16px',
+                pr: '8px',
+                margin: '40px 0',
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
                 display: 'flex',
-                alignItems: 'center',
-                width: 400,
-                margin: '40px auto 0',
-                backgroundColor: 'rgb(246, 109, 109)',
+                border: '2px solid #333',
+                borderRadius: 0,
             }}
             onSubmit={(e) => handleSubmit(e)}
         >
             <InputBase
                 inputRef={searchRef}
                 sx={{ ml: 1, flex: 1 }}
-                style={{ fontSize: '14px', color: '#fff' }}
+                style={{ fontSize: '18px', color: '#333', width: '100%' }}
                 placeholder="Tìm kiếm"
             />
-            <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={(e) => handleSubmit(e)}>
-                <SearchIcon style={{ fontSize: '14px', color: '#fff' }} />
+            <IconButton type="button" aria-label="search" onClick={(e) => handleSubmit(e)}>
+                <SearchIcon style={{ fontSize: '28px', color: '#333' }} />
             </IconButton>
         </Paper>
     );

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { useEmailStore } from '~/utils/store/email';
-import { Link } from 'react-router-dom';
+import './mail.scss';
 
 const Mail = () => {
     const [email, setEmail] = useEmailStore((state) => [state.email, state.setEmail]);
@@ -14,12 +14,12 @@ const Mail = () => {
         let formIsValid = true;
         // if(!email){
         //     formIsValid =false
-        //     setErrors((errors) =>({...errors ,email:'vui lòng nhập Email !'}))
+        //     setErrors((errors) =>({...errors ,email:'Vui lòng nhập Email !'}))
         // }
         // else setErrors((errors) =>({...errors ,email:''}))
         if (!email) {
             formIsValid = false;
-            setErrors((errors) => ({ ...errors, email: 'vui lòng nhập Email !' }));
+            setErrors((errors) => ({ ...errors, email: 'Vui lòng nhập Email !' }));
         } else {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
@@ -86,19 +86,19 @@ const Mail = () => {
         <div className="form">
             <form onSubmit={handleSubmit}>
                 <div className="divider d-flex align-items-center my-4">
-                    <p className="text-center fw-bold mx-3 mb-0">Reset Password</p>
+                    <p className="text-center fw-bold mx-3 mb-0 mail-name">Reset Password</p>
                 </div>
                 <p id="f"></p>
                 <div className="form-outline mb-4">
-                    <label className="label" htmlFor="form3Example3">
+                    <label className="label mail-name" htmlFor="form3Example3">
                         Email
                     </label>
 
                     <input
                         type="text"
                         id="form3Example3"
-                        className="form-control form-control-lg"
-                        placeholder="Nhập email"
+                        className="form-control form-control-lg black-border"
+                        placeholder="Nhập Email"
                         aria-describedby="phoneHelp"
                         value={email}
                         onChange={(event) => setEmail(event.target.value)}
@@ -114,12 +114,6 @@ const Mail = () => {
                     <button type="submit" className="form-submit">
                         Sent OTP
                     </button>
-                    <p className="small fw-bold mt-2 pt-1 mb-0">
-                        You have an account?{' '}
-                        <a href="#!" className="link-danger">
-                            <Link to={'/login'}>Register</Link>
-                        </a>
-                    </p>
                 </div>
             </form>
         </div>

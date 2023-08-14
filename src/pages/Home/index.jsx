@@ -2,8 +2,8 @@ import React from 'react';
 import Slideshow from './slideshow';
 import classNames from 'classnames/bind';
 import styles from './Home.module.scss';
-import slideshow1 from '~/assets/images/combs-scissors-copy-space.jpg';
-import slideshow2 from '~/assets/images/image_breadcrumb_bg.png';
+import slideshow1 from '~/assets/images/slideshow1.jpg';
+import slideshow2 from '~/assets/images/slideshow2.jpg';
 import slideshow3 from '~/assets/images/slideshow3.jpg';
 import axios from '~/utils/api/axios';
 import { useEffect, useState } from 'react';
@@ -13,6 +13,18 @@ const cx = classNames.bind(styles);
 function Home() {
     const slideshowImages = [slideshow1, slideshow2, slideshow3];
     const [topUsers, setTopUsers] = useState([]);
+    const [mostBookedServices, setMostBookedServices] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get(`/service/most-booked`)
+            .then((response) => {
+                setMostBookedServices(response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching most booked services:', error);
+            });
+    }, []);
 
     useEffect(() => {
         axios
@@ -28,7 +40,7 @@ function Home() {
     function mapRole(role) {
         switch (role) {
             case 'ROLE_STAFF':
-                return 'Nhân viên';
+                return 'Chuyên gia';
             default:
                 return role;
         }
@@ -123,138 +135,20 @@ function Home() {
                         <h2>We Provide Best Price in the City</h2>
                     </div>
                     <div className="row">
-                        <div className="col-lg-3 col-md-4 col-sm-6">
-                            <div className={cx('price-item')}>
-                                <div className={cx('price-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/price-1.jpg'} alt="price" />
-                                </div>
-                                <div className={cx('price-text')}>
-                                    <h2>Hair Cut</h2>
-                                    <h3>$9.99</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-4 col-sm-6">
-                            <div className={cx('price-item')}>
-                                <div className={cx('price-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/price-1.jpg'} alt="price" />
-                                </div>
-                                <div className={cx('price-text')}>
-                                    <h2>Hair Wash</h2>
-                                    <h3>$10.99</h3>
+                        {mostBookedServices.map((service, index) => (
+                            <div className="col-lg-3 col-md-4 col-sm-6" key={index}>
+                                <div className={cx('price-item')}>
+                                    <div className={cx('price-img')}>
+                                        {/* You can replace this with an appropriate image source */}
+                                        <img src={service[0]} alt="price" />
+                                    </div>
+                                    <div className={cx('price-text')}>
+                                        <h2 className={cx('price-text-name')}>{service[1]}</h2>
+                                        <h3>{service[2]}VNĐ</h3>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="col-lg-3 col-md-4 col-sm-6">
-                            <div className={cx('price-item')}>
-                                <div className={cx('price-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/price-1.jpg'} alt="price" />
-                                </div>
-                                <div className={cx('price-text')}>
-                                    <h2>Hair Color</h2>
-                                    <h3>$11.99</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-4 col-sm-6">
-                            <div className={cx('price-item')}>
-                                <div className={cx('price-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/price-1.jpg'} alt="price" />
-                                </div>
-                                <div className={cx('price-text')}>
-                                    <h2>Hair Shave</h2>
-                                    <h3>$12.99</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-4 col-sm-6">
-                            <div className={cx('price-item')}>
-                                <div className={cx('price-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/price-1.jpg'} alt="price" />
-                                </div>
-                                <div className={cx('price-text')}>
-                                    <h2>Hair Straight</h2>
-                                    <h3>$13.99</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-4 col-sm-6">
-                            <div className={cx('price-item')}>
-                                <div className={cx('price-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/price-1.jpg'} alt="price" />
-                                </div>
-                                <div className={cx('price-text')}>
-                                    <h2>Facial</h2>
-                                    <h3>$14.99</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-4 col-sm-6">
-                            <div className={cx('price-item')}>
-                                <div className={cx('price-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/price-1.jpg'} alt="price" />
-                                </div>
-                                <div className={cx('price-text')}>
-                                    <h2>Shampoo</h2>
-                                    <h3>$15.99</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-4 col-sm-6">
-                            <div className={cx('price-item')}>
-                                <div className={cx('price-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/price-1.jpg'} alt="price" />
-                                </div>
-                                <div className={cx('price-text')}>
-                                    <h2>Beard Trim</h2>
-                                    <h3>$16.99</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-4 col-sm-6">
-                            <div className={cx('price-item')}>
-                                <div className={cx('price-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/price-1.jpg'} alt="price" />
-                                </div>
-                                <div className={cx('price-text')}>
-                                    <h2>Beard Shave</h2>
-                                    <h3>$17.99</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-4 col-sm-6">
-                            <div className={cx('price-item')}>
-                                <div className={cx('price-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/price-1.jpg'} alt="price" />
-                                </div>
-                                <div className={cx('price-text')}>
-                                    <h2>Wedding Cut</h2>
-                                    <h3>$18.99</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-4 col-sm-6">
-                            <div className={cx('price-item')}>
-                                <div className={cx('price-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/price-1.jpg'} alt="price" />
-                                </div>
-                                <div className={cx('price-text')}>
-                                    <h2>Clean Up</h2>
-                                    <h3>$19.99</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-4 col-sm-6">
-                            <div className={cx('price-item')}>
-                                <div className={cx('price-img')}>
-                                    <img src={process.env.PUBLIC_URL + '/img/price-1.jpg'} alt="price" />
-                                </div>
-                                <div className={cx('price-text')}>
-                                    <h2>Massage</h2>
-                                    <h3>$20.99</h3>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>

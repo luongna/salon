@@ -10,6 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { loginStart, loginFailed, loginSuccess } from '~/utils/store/authSlice';
 import { useDispatch } from 'react-redux';
 import avatarDefault from '~/assets/images/avatarDefault.jpg';
+import './Profile.scss';
+
 function Profile() {
     const user = useSelector((state) => state.auth.login?.currenUser);
     const [isEditProfile, setIsEditProfile] = useState(false);
@@ -189,7 +191,17 @@ function Profile() {
                                                         endIcon={<EditIcon />}
                                                         color="secondary"
                                                         size="large"
-                                                        sx={{ fontFamily: 'Lora, serif' }}
+                                                        sx={{
+                                                            fontFamily: 'Lora, serif',
+                                                            backgroundColor: '#000',
+                                                            color: '#fff',
+                                                            fontWeight: 'bold',
+                                                            fontSize: '13px',
+
+                                                            '&:hover': {
+                                                                backgroundColor: '#000', // Keep the same background color on hover
+                                                            },
+                                                        }}
                                                         onClick={() => setIsEditProfile(true)}
                                                     >
                                                         Cập nhật thông tin!
@@ -202,6 +214,14 @@ function Profile() {
                                                         sx={{
                                                             fontFamily: 'Lora, serif',
                                                             marginLeft: '10px',
+                                                            backgroundColor: '#000',
+                                                            color: '#fff',
+                                                            fontWeight: 'bold',
+                                                            fontSize: '13px',
+
+                                                            '&:hover': {
+                                                                backgroundColor: '#000',
+                                                            },
                                                         }}
                                                         onClick={() => setIsEditImg(true)}
                                                     >
@@ -222,7 +242,17 @@ function Profile() {
                                                             type="submit"
                                                             color="secondary"
                                                             variant="contained"
-                                                            sx={{ fontFamily: 'Lora, serif' }}
+                                                            sx={{
+                                                                fontFamily: 'Lora, serif',
+                                                                backgroundColor: '#000',
+                                                                color: '#fff',
+                                                                fontWeight: 'bold',
+                                                                fontSize: '13px',
+
+                                                                '&:hover': {
+                                                                    backgroundColor: '#000',
+                                                                },
+                                                            }}
                                                             onClick={handleSubmitImg}
                                                         >
                                                             Cập nhật
@@ -231,7 +261,18 @@ function Profile() {
                                                             type="reset"
                                                             color="warning"
                                                             variant="contained"
-                                                            sx={{ fontFamily: 'Lora, serif', marginLeft: '10px' }}
+                                                            sx={{
+                                                                fontFamily: 'Lora, serif',
+                                                                marginLeft: '10px',
+                                                                backgroundColor: '#000',
+                                                                color: '#fff',
+                                                                fontWeight: 'bold',
+                                                                fontSize: '13px',
+
+                                                                '&:hover': {
+                                                                    backgroundColor: '#000',
+                                                                },
+                                                            }}
                                                             onClick={() => {
                                                                 setIsEditImg(false);
                                                                 setImageBase64('');
@@ -359,7 +400,17 @@ function Profile() {
                                                                     type="submit"
                                                                     color="secondary"
                                                                     variant="contained"
-                                                                    sx={{ fontFamily: 'Lora, serif' }}
+                                                                    sx={{
+                                                                        fontFamily: 'Lora, serif',
+                                                                        backgroundColor: '#000',
+                                                                        color: '#fff',
+                                                                        fontWeight: 'bold',
+                                                                        fontSize: '13px',
+
+                                                                        '&:hover': {
+                                                                            backgroundColor: '#000',
+                                                                        },
+                                                                    }}
                                                                 >
                                                                     Cập nhật
                                                                 </Button>
@@ -370,6 +421,14 @@ function Profile() {
                                                                     sx={{
                                                                         fontFamily: 'Lora, serif',
                                                                         marginLeft: '10px',
+                                                                        backgroundColor: '#000',
+                                                                        color: '#fff',
+                                                                        fontWeight: 'bold',
+                                                                        fontSize: '13px',
+
+                                                                        '&:hover': {
+                                                                            backgroundColor: '#000',
+                                                                        },
                                                                     }}
                                                                     onClick={() => setIsEditProfile(false)}
                                                                 >

@@ -46,7 +46,7 @@ function RegisterForm() {
         let formIsValid = true;
         if (!username) {
             formIsValid = false;
-            setErrors((errors) => ({ ...errors, username: 'vui lòng nhập tên !' }));
+            setErrors((errors) => ({ ...errors, username: 'Vui lòng nhập tên !' }));
         } else {
             setErrors((errors) => ({ ...errors, username: '' }));
         }
@@ -167,22 +167,21 @@ function RegisterForm() {
                                     })
                                     .then((res) => {
                                         console.log(res);
-                                        if(res.data === 'OTP het han'){
+                                        if (res.data === 'OTP het han') {
                                             Swal.showValidationMessage('Mã OTP hết hạn! Vui lòng thử lại!');
                                             Swal.close();
                                             document.getElementById('f').innerText = `Mã OTP hết hạn`;
-                                            document.getElementById('f').style.color='red'
-                                        }
-                                        else{
-                                        if (res.data === 'OTP is not correct') {
-                                            Swal.showValidationMessage('Mã OTP không đúng! Vui lòng thử lại!');
+                                            document.getElementById('f').style.color = 'red';
                                         } else {
-                                            toast.success('Đăng kí thành công!');
-                                            setTimeout(() => {
-                                                navigate('/login');
-                                            }, 2000);
+                                            if (res.data === 'OTP is not correct') {
+                                                Swal.showValidationMessage('Mã OTP không đúng! Vui lòng thử lại!');
+                                            } else {
+                                                toast.success('Đăng kí thành công!');
+                                                setTimeout(() => {
+                                                    navigate('/login');
+                                                }, 2000);
+                                            }
                                         }
-                                    }
                                     })
                                     .catch((err) => {
                                         console.log(err);
@@ -198,7 +197,7 @@ function RegisterForm() {
             <div className="form-header">
                 <h3 className="form-heading">Đăng Ký</h3>
             </div>
-                <p id="f"></p>
+            <p id="f"></p>
             <div className="form-group">
                 <label className="form-label">Họ và tên</label>
                 <input
@@ -237,7 +236,7 @@ function RegisterForm() {
                     id="phone"
                     name="phone"
                     type="text"
-                    placeholder="Nhập mật khẩu"
+                    placeholder="VD: 0720743823"
                     className="form-control1"
                     value={phone}
                     onChange={(e) => handleInputChange(e)}

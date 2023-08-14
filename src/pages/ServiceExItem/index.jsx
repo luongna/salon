@@ -6,7 +6,7 @@ export const ServiceExItem = ({ id, title, imgUrl, onClick }) => {
             <style>
                 {`
             .service-wrapper {
-              cursor: pointer;
+              cursor: default;
               overflow: hidden;
             }
             
@@ -15,24 +15,23 @@ export const ServiceExItem = ({ id, title, imgUrl, onClick }) => {
             }
             
             .service-wrapper:hover .service-title {
-              background-color: #000;
-              color: rgb(246, 109, 109);
+              color: #ccc;
             }
-            
+
             .service-title {
-              background-color: rgb(246, 109, 109);
-              color: #00;
-              padding: 20px;
+              color: #fff;
               max-height: 80px;
-              text-align: center;
-              font-size: 16px;
+              font-size: 18px;
+              font-weight: 500;
               position: relative;
-              transition: all 0.6s;
               text-transform: uppercase;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
               margin-bottom: 0px;
+              background-color: #000;
+              padding: 30px 15px;
+              border-bottom: 2px solid #fbfbf1;
             }
             
             .service-image {
@@ -54,7 +53,7 @@ export const ServiceExItem = ({ id, title, imgUrl, onClick }) => {
                 font-size: 32px !important;
               }
               &:hover {
-                background-color: rgb(255,193,7, 0.8);
+                background-color: #fff;
               }
               &:focus {
                 outline: none;

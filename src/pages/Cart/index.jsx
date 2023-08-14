@@ -62,7 +62,7 @@ function Cart() {
         } else {
             navigate('/login');
         }
-    }, [user.phone]);
+    }, [navigate, user]);
 
     //staff
     useEffect(() => {
@@ -213,10 +213,10 @@ function Cart() {
     return (
         <div>
             {jsonData.length === 0 || !user ? (
-                <h1>Bạn chưa đặt sản phẩm!!!!!</h1>
+                <h1>Bạn chưa đặt sản phẩm!</h1>
             ) : (
                 <>
-                    <h1>Giỏ hàng</h1>
+                    <h1>Giỏ Hàng</h1>
                     <table className={cx('table-element')}>
                         <tbody>
                             {jsonData.map((element, index) => (
@@ -247,7 +247,7 @@ function Cart() {
                         <div className={cx('booking-information')}>
                             <h3>ĐẶT LỊCH</h3>
                             <div className={cx('branch-staff-booking')}>
-                                <p>Chọn salon (*):</p>
+                                <p className={cx('branch-title')}>Chọn salon (*):</p>
                                 <select onChange={handleBranchesChange}>
                                     <option value="0">- Vui lòng chọn chi nhánh -</option>
                                     {branches.map((branch) => (
@@ -256,13 +256,13 @@ function Cart() {
                                             value={branch.id}
                                             // onClick={() => handleBranchesClick(branch.id)}
                                         >
-                                            {branch.name}
+                                            {branch.address}
                                         </option>
                                     ))}
                                 </select>
                             </div>
                             <div className={cx('branch-staff-booking')}>
-                                <p>Chọn nhân viên (*):</p>
+                                <p className={cx('branch-title')}>Chọn nhân viên (*):</p>
                                 <select onChange={handleSelectChange}>
                                     <option value="0">- Vui lòng chọn nhân viên -</option>
                                     {staffs.map((staff) => (
@@ -273,7 +273,7 @@ function Cart() {
                                 </select>
                             </div>
                             <div className={cx('date-booking')}>
-                                <p>Chọn ngày (*):</p>
+                                <p className={cx('branch-title')}>Chọn ngày (*):</p>
                                 <div className={cx('date-time')}>
                                     {dates.map((date) =>
                                         active !== true ? (
@@ -291,14 +291,14 @@ function Cart() {
                                         ),
                                     )}
                                 </div>
-                                <p>Chọn giờ (*):</p>
+                                <p className={cx('branch-title')}>Chọn giờ (*):</p>
                                 <div className={cx('status-time')}>
                                     <div>
                                         <div style={{ backgroundColor: '#000' }}></div>
                                         <span>Đã chọn</span>
                                     </div>
                                     <div>
-                                        <div style={{ backgroundColor: 'rgb(246, 109, 109)' }}></div>
+                                        <div style={{ backgroundColor: '#fff', border: '1px solid #333' }}></div>
                                         <span>Chưa chọn</span>
                                     </div>
                                 </div>
@@ -338,7 +338,8 @@ function Cart() {
                                 </div>
                             </div>
                             <div className={cx('total-price')}>
-                                Tổng tiền: <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
+                                <p className={cx('total-price-title')}>Tổng tiền:</p>{' '}
+                                <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
                             </div>
                             <button className={cx('submit-booking')} type="submit" onClick={handleSubmit}>
                                 ĐẶT LỊCH
@@ -350,12 +351,13 @@ function Cart() {
                                 <h3>THÔNG TIN NHÂN VIÊN BẠN ĐÃ CHỌN</h3>
                                 {selectedStaff && (
                                     <div>
-                                        <img src={selectedStaff.img} alt="img" />
+                                        <img className={cx('staff-img')} src={selectedStaff.img} alt="img" />
                                         <div>
                                             <p>
-                                                <strong>{selectedStaff.name}</strong> - {selectedStaff.position}
+                                                <strong>{selectedStaff.name}</strong>
                                             </p>
-                                            <p>{selectedStaff.description}</p>
+                                            <p>Ngày sinh: {selectedStaff.birthday}</p>
+                                            <p>Email: {selectedStaff.email}</p>
                                             <p>Số điện thoại: {selectedStaff.phone}</p>
                                         </div>
                                     </div>
