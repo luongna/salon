@@ -19,17 +19,24 @@ const Branch = ({ address, phone }) => {
 };
 
 const Wrapper = styled.div({
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
+    border: '1px solid #000',
     padding: '5px 15px',
+    color: 'white',
 
     ':hover': {
-        backgroundColor: 'black',
-        color: 'pink',
+        backgroundColor: '#fbfbf1',
+        color: '#000',
+        border: '1px solid #000',
+        '> div': {
+            color: '#000',
+        },
     },
 });
 
 const Text = styled.div({
     display: 'grid',
+    color: 'white',
     gridTemplateColumns: '20px 1fr',
 });
 

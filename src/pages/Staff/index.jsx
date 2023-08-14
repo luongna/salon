@@ -15,7 +15,7 @@ function Staff() {
     function mapRole(role) {
         switch (role) {
             case 'ROLE_STAFF':
-                return 'Nhân viên';
+                return 'Chuyên gia';
             default:
                 return role;
         }

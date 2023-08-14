@@ -1,19 +1,18 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
-import logo from '~/assets/images/logo2.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { logoutSuccess, removeToCart } from '~/utils/store/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import isAdmin, { isReceptionist } from '~/utils/jwt';
-import { Avatar, Badge } from '@mui/material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import { Avatar, Badge, Button, IconButton } from '@mui/material';
 import Tippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
+import { FiSearch } from 'react-icons/fi';
+import { IoCartSharp } from 'react-icons/io5';
+import { HiMenuAlt3 } from 'react-icons/hi';
+import { AiFillBell } from 'react-icons/ai';
 
 const cx = classNames.bind(styles);
 function Header() {
@@ -27,6 +26,7 @@ function Header() {
     const navigate = useNavigate();
     const cart = useSelector((state) => state.auth.cart);
     const user = useSelector((state) => state.auth.login?.currenUser);
+
     useEffect(() => {
         const handleScroll = () => {
             const headerPosition = window.scrollY;
@@ -74,33 +74,49 @@ function Header() {
 
     return (
         <header className={cx('wrapper', isFixed ? 'fixed-header' : '')}>
-            <Link to={'/'}>
-                <img src={logo} alt="logo" className={cx('logo')} />
-            </Link>
             <div className={cx('inner')} style={status ? { right: '0px' } : {}}>
+                <div className={cx('text-logo-box', 'pc')}>
+                    <h2 className={cx('text-logo')}>SALON SPACE</h2>
+                </div>
                 <ul className={cx('ul-element')}>
-                    <Link to={'/'}>
-                        <li className={cx('element', currentURL === '/' && 'header-active')}>trang chủ</li>
-                    </Link>
-                    <Link to={'/service'}>
-                        <li className={cx('element', currentURL === '/service' && 'header-active')}>dịch vụ</li>
-                    </Link>
-                    <Link to={'/serviceExample'}>
-                        <li className={cx('element', currentURL === '/serviceExample' && 'header-active')}>
-                            Mẫu dịch vụ
-                        </li>
-                    </Link>
-                    <Link to={'/contact'}>
-                        <li className={cx('element', currentURL === '/contact' && 'header-active')}>Liên hệ</li>
-                    </Link>
-
-                    <Link to={'/staff'}>
-                        <li className={cx('element', currentURL === '/staff' && 'header-active')}>Chuyên gia</li>
-                    </Link>
-                    {user && isAdmin(user.accessToken) && (
-                        <Link to={`/dashboard`}>
-                            <li className={cx('element')}>Admin</li>
+                    <li>
+                        <Link to={'/'} className={cx('element', currentURL === '/' && 'header-active')}>
+                            trang chủ
                         </Link>
+                    </li>
+                    <li>
+                        <Link to={'/service'} className={cx('element', currentURL === '/service' && 'header-active')}>
+                            dịch vụ
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link
+                            to={'/serviceExample'}
+                            className={cx('element', currentURL === '/serviceExample' && 'header-active')}
+                        >
+                            Mẫu dịch vụ
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link to={'/staff'} className={cx('element', currentURL === '/staff' && 'header-active')}>
+                            Chuyên gia
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link to={'/contact'} className={cx('element', currentURL === '/contact' && 'header-active')}>
+                            liên hệ
+                        </Link>
+                    </li>
+
+                    {user && isAdmin(user.accessToken) && (
+                        <li>
+                            <Link className={cx('element')} to={`/dashboard`}>
+                                Admin
+                            </Link>
+                        </li>
                     )}
                     {user && isReceptionist(user.accessToken) && (
                         <Tippy
@@ -112,12 +128,12 @@ function Header() {
                             render={(attrs) => (
                                 <div className={cx('box_tippy')} tabIndex="-1" {...attrs} style={{ height: '80px' }}>
                                     <ul>
-                                        <Link to={'/bookOff'}>
-                                            <li>Đặt lịch</li>
-                                        </Link>
-                                        <Link to={'/accept'}>
-                                            <li>Xác nhận</li>
-                                        </Link>
+                                        <li>
+                                            <Link to={'/bookOff'}>Đặt lịch</Link>
+                                        </li>
+                                        <li>
+                                            <Link to={'/accept'}>Xác nhận</Link>
+                                        </li>
                                     </ul>
                                 </div>
                             )}
@@ -134,112 +150,68 @@ function Header() {
                     )}
                 </ul>
                 {!user ? (
-                    <div className={cx('actions')}>
-                        <Link to={'/login'}>
-                            <button className={cx('btn-normal')}>Đăng nhập</button>
-                        </Link>
-                        {/* Add the registration link */}
-                        <Link to={'/register'}>
-                            <button className={cx('btn-normal')}>Đăng ký</button>
-                        </Link>
-                    </div>
-                ) : (
-                    <div className={cx('actions', 'actions-mobile')}>
-                        <div className={cx('search')}>
-                            {/* Render the search input and button */}
-                            <form onSubmit={handleSearchSubmit}>
-                                {isSearchVisible && (
-                                    <input
-                                        type="text"
-                                        placeholder="Tìm kiếm dịch vụ"
-                                        value={searchValue}
-                                        onChange={handleSearchChange}
-                                        className={cx('search-input', isSearchVisible ? 'search-input-visible' : '')}
-                                    />
-                                )}
-                                <button type="submit" className={cx('search-btn')} onClick={handleToggleSearch}>
-                                    <FontAwesomeIcon icon={faSearch} />
-                                </button>
-                            </form>
-                        </div>
-                        <Badge
-                            badgeContent={cart}
-                            color="error"
-                            sx={{ '& .MuiBadge-badge': { fontSize: 15, height: 15, minWidth: 15 } }}
-                        >
-                            <Link to={'/cart'}>
-                                <ShoppingCartIcon color="action" sx={{ fontSize: 35, cursor: 'pointer' }} />
-                            </Link>
-                        </Badge>
-                        <Badge
-                            badgeContent={5}
-                            color="error"
-                            sx={{ '& .MuiBadge-badge': { fontSize: 15, height: 15, minWidth: 15 } }}
-                        >
-                            <Link to={'/notification'}>
-                                <NotificationsActiveIcon color="action" sx={{ fontSize: 35, cursor: 'pointer' }} />
-                            </Link>
-                        </Badge>
-                        <Tippy
-                            //  content="Tài khoản "
-                            hideOnClick={true}
-                            trigger="click"
-                            placement="bottom"
-                            interactive
-                            render={(attrs) => (
-                                <div className={cx('box_tippy')} tabIndex="-1" {...attrs}>
-                                    <ul>
-                                        <Link to={'/profile'}>
-                                            <li>Hồ sơ</li>
-                                        </Link>
-                                        <Link to={'/user-history'}>
-                                            <li>Lịch sử</li>
-                                        </Link>
-                                        <li onClick={handleLogout}>Đăng xuất</li>
-                                    </ul>
-                                </div>
-                            )}
-                        >
-                            <Avatar alt="avatar" src={user.img} />
-                        </Tippy>
-                    </div>
-                )}
-            </div>
-            <div className={cx('mobile')}>
-                <div>
-                    {user && (
+                    <>
+                        <hr className={cx('line')} />
                         <div className={cx('actions')}>
+                            <Link className={cx('non-user-button')} to={'/login'}>
+                                <Button className={cx('btn-normal')}>Đăng nhập</Button>
+                            </Link>
+                            {/* Add the registration link */}
+                            <Link className={cx('non-user-button')} to={'/register'}>
+                                <Button className={cx('btn-normal', 'sign-in')}>Đăng ký</Button>
+                            </Link>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <div className={cx('actions', 'actions-mobile')}>
                             <div className={cx('search')}>
-                                <Tippy
-                                    hideOnClick={true}
-                                    trigger="click"
-                                    placement="bottom"
-                                    interactive
-                                    render={(attrs) => <input placeholder="Tìm kiếm dịch vụ" />}
-                                >
-                                    <button className={cx('search-btn')}>
-                                        <FontAwesomeIcon icon={faSearch} />
-                                    </button>
-                                </Tippy>
+                                {/* Render the search input and button */}
+                                <form onSubmit={handleSearchSubmit}>
+                                    {isSearchVisible && (
+                                        <input
+                                            type="text"
+                                            placeholder="Tìm kiếm dịch vụ"
+                                            value={searchValue}
+                                            onChange={handleSearchChange}
+                                            className={cx(
+                                                'search-input',
+                                                isSearchVisible ? 'search-input-visible' : '',
+                                            )}
+                                        />
+                                    )}
+                                    <IconButton
+                                        type="submit"
+                                        className={cx('search-btn', 'action-button')}
+                                        onClick={handleToggleSearch}
+                                    >
+                                        <FiSearch size={24} />
+                                    </IconButton>
+                                </form>
                             </div>
-                            <Badge
-                                badgeContent={cart}
-                                color="error"
-                                sx={{ '& .MuiBadge-badge': { fontSize: 15, height: 15, minWidth: 15 } }}
-                            >
-                                <Link to={'/cart'}>
-                                    <ShoppingCartIcon color="action" sx={{ fontSize: 35, cursor: 'pointer' }} />
-                                </Link>
-                            </Badge>
-                            <Badge
-                                badgeContent={5}
-                                color="error"
-                                sx={{ '& .MuiBadge-badge': { fontSize: 15, height: 15, minWidth: 15 } }}
-                            >
-                                <Link to={'/notification'}>
-                                    <NotificationsActiveIcon color="action" sx={{ fontSize: 35, cursor: 'pointer' }} />
-                                </Link>
-                            </Badge>
+                            <Link to={'/cart'}>
+                                <IconButton className={cx('action-button')}>
+                                    <Badge
+                                        badgeContent={cart}
+                                        color="error"
+                                        sx={{ '& .MuiBadge-badge': { fontSize: 15, height: 15, minWidth: 15 } }}
+                                    >
+                                        <IoCartSharp size={28} />
+                                    </Badge>
+                                </IconButton>
+                            </Link>
+
+                            <Link to={'/notification'}>
+                                <IconButton className={cx('action-button')}>
+                                    <Badge
+                                        badgeContent={5}
+                                        color="error"
+                                        sx={{ '& .MuiBadge-badge': { fontSize: 15, height: 15, minWidth: 15 } }}
+                                    >
+                                        <AiFillBell size={28} />
+                                    </Badge>
+                                </IconButton>
+                            </Link>
                             <Tippy
                                 //  content="Tài khoản "
                                 hideOnClick={true}
@@ -249,20 +221,77 @@ function Header() {
                                 render={(attrs) => (
                                     <div className={cx('box_tippy')} tabIndex="-1" {...attrs}>
                                         <ul>
-                                            <li>Hồ sơ</li>
-                                            <li>Lịch sử</li>
+                                            <Link to={'/profile'}>
+                                                <li>Hồ sơ</li>
+                                            </Link>
+                                            <Link to={'/user-history'}>
+                                                <li>Lịch sử</li>
+                                            </Link>
                                             <li onClick={handleLogout}>Đăng xuất</li>
                                         </ul>
                                     </div>
                                 )}
                             >
-                                <Avatar alt="avatar" src={user.img} />
+                                <IconButton>
+                                    <Avatar alt="avatar" src={user.img} sx={{ width: 28, height: 28 }} />
+                                </IconButton>
                             </Tippy>
                         </div>
+                        <div className={cx('user-nav')}>
+                            <hr />
+                            <Link to={'/notification'} className={cx('element')}>
+                                Thông báo
+                            </Link>
+                            <p className={cx('element')}>Hồ sơ</p>
+                            <p className={cx('element')}>Lịch sử</p>
+                            <p className={cx('element')} onClick={handleLogout}>
+                                Đăng xuất
+                            </p>
+                        </div>
+                    </>
+                )}
+            </div>
+
+            <div className={cx('mobile')}>
+                <div className={cx('mobile-header')}>
+                    <div className={cx('text-logo-box')}>
+                        <h2 className={cx('text-logo')}>SALON SPACE</h2>
+                    </div>
+                    {user && (
+                        <div className={cx('actions')}>
+                            <div className={cx('search')}>
+                                <Tippy
+                                    hideOnClick={true}
+                                    trigger="click"
+                                    placement="bottom"
+                                    offset={[0, 20]}
+                                    interactive
+                                    render={(attrs) => (
+                                        <input className={cx('search-input')} placeholder="Tìm kiếm dịch vụ" />
+                                    )}
+                                >
+                                    <IconButton className={cx('search-btn', 'action-button')}>
+                                        <FiSearch size={24} />
+                                    </IconButton>
+                                </Tippy>
+                            </div>
+
+                            <Link to={'/cart'}>
+                                <IconButton className={cx('action-button')}>
+                                    <Badge
+                                        badgeContent={cart}
+                                        color="error"
+                                        sx={{ '& .MuiBadge-badge': { fontSize: 15, height: 15, minWidth: 15 } }}
+                                    >
+                                        <IoCartSharp size={24} />
+                                    </Badge>
+                                </IconButton>
+                            </Link>
+                        </div>
                     )}
-                </div>
-                <div onClick={() => setStatus(!status)}>
-                    <FontAwesomeIcon icon={status ? faTimes : faBars} size="2x"></FontAwesomeIcon>
+                    <div onClick={() => setStatus(!status)} className={cx('action-button')}>
+                        <HiMenuAlt3 size={24} />
+                    </div>
                 </div>
             </div>
         </header>

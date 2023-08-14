@@ -3,14 +3,13 @@
     width: 80vw;
     tr {
         box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.08);
-        border-radius: 13px;
         th {
             text-align: center;
             &:first-child {
                 width: 20%;
                 // max-width: 15px;
             }
-           
+
             &:nth-child(2) {
                 text-align: start;
                 text-overflow: ellipsis;
@@ -38,7 +37,12 @@
 
 .total-price {
     text-align: end;
-    font-size: 32px;
+    font-size: 22px;
+    margin-right: 20px;
+}
+
+.total-price-title {
+    font-weight: bold;
 }
 
 .button-price {
@@ -53,7 +57,6 @@
     cursor: pointer;
 }
 
-
 //Booking Services
 .booking-service {
     width: 80vw;
@@ -65,11 +68,12 @@
 .booking-information {
     width: 48%;
     height: 600px;
-    background-color: #f9f9f9;
+    background-color: transparent;
+    border: 1px solid #333;
     h3 {
         text-align: center;
         margin-top: 15px;
-        font-weight: 600;
+        font-weight: 700;
     }
 }
 
@@ -81,12 +85,20 @@
     select {
         width: 100%;
         padding: 7px;
-        border: 1px solid rgb(246, 109, 109);
-        border-radius: 5px;
+        border: 1px solid #333;
         outline: none;
         cursor: pointer;
-        background-color: rgb(246, 109, 109);
+        background-color: #fff;
     }
+}
+
+.branch-title {
+    font-weight: bold;
+}
+
+.staff-img {
+    border: 2px solid #000;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .date-booking {
@@ -102,11 +114,11 @@
             min-width: 100px;
             height: 25px;
             border: transparent;
-            border-radius: 3px;
             margin-bottom: 15px;
             text-align: center;
             margin-right: 20px;
-            background-color: rgb(246, 109, 109);
+            background-color: #fff;
+            border: 1px solid #333;
             color: #000;
             // cursor: not-allowed;
         }
@@ -131,13 +143,18 @@
 }
 
 .submit-booking {
-    margin: 15px auto;
+    margin: 8px auto;
     display: flex;
     padding: 12px 20px;
     border: transparent;
-    border-radius: 5px;
     font-weight: 600;
-    background-color: rgb(246, 109, 109);
+    background-color: #000;
+    border: 1px solid #333;
+    color: #fff;
+}
+
+.submit-booking:hover {
+    background-color: #fbfbf1;
     color: #000;
 }
 
@@ -160,10 +177,9 @@
 }
 
 .selectted {
-    color: rgb(246, 109, 109) !important;
+    color: #fbfbf1 !important;
     background-color: #000 !important;
 }
-
 
 /* Tablet */
 @media (min-width: 481px) and (max-width: 1000px) {
@@ -235,4 +251,3 @@
         }
     }
 }
-

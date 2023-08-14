@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import { DataGrid, viVN } from '@mui/x-data-grid';
-import { tokens } from '~/utils/theme/theme';
 import Header from '../../components/Header';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from '~/utils/api/axios';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import './user-history.scss';
 
 const HistoryBooking = () => {
     const [teamData, setTeamData] = useState([]);
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
     const user = useSelector((state) => state.auth.login?.currenUser);
     useEffect(() => {
         console.log(user);
@@ -114,7 +112,7 @@ const HistoryBooking = () => {
         {
             field: 'branch',
             headerName: 'Chi nhánh',
-            flex: 1,
+            flex: 3,
             renderCell: ({ row }) => {
                 return (
                     <div style={{ wordWrap: 'break-word' }}>
@@ -129,34 +127,47 @@ const HistoryBooking = () => {
         <>
             <div className="container">
                 <Box m="20px">
-                    <Header title="Lịch sử giao dịch" subtitle="Quản lý lịch sử giao dịch" />
+                    <Header title="Lịch sử giao dịch" />
+                    <span className="history-subtitle">Quản lý lịch sử giao dịch</span>
                     <Box
                         m="40px 0 0 0"
                         height="100vh"
                         sx={{
                             '& .MuiDataGrid-root': {
-                                border: 'none',
+                                border: '1px solid #ccc',
                                 fontSize: '14px',
                             },
                             '& .MuiDataGrid-cell': {
-                                borderBottom: 'none',
+                                borderBottom: '1px solid #333',
+                                backgroundColor: '#fbfbfb1',
                             },
                             '& .name-column--cell': {
-                                color: colors.greenAccent[300],
+                                backgroundColor: '#fbfbfb1',
+                                border: '1px solid #ccc',
                             },
                             '& .MuiDataGrid-columnHeaders': {
-                                backgroundColor: colors.blueAccent[700],
-                                borderBottom: 'none',
+                                backgroundColor: '#000',
+                                color: '#fff',
+                                border: '1px solid #ccc',
                             },
                             '& .MuiDataGrid-virtualScroller': {
-                                backgroundColor: colors.primary[400],
+                                backgroundColor: '#fbfbfb1',
+                                border: '1px solid #ccc',
                             },
                             '& .MuiDataGrid-footerContainer': {
-                                borderTop: 'none',
-                                backgroundColor: colors.blueAccent[700],
+                                backgroundColor: '#000',
+                                border: '1px solid #ccc',
+                                '& p': {
+                                    fontSize: '14px',
+                                    color: '#fff',
+                                },
                             },
                             '& .MuiCheckbox-root': {
-                                color: `${colors.greenAccent[200]} !important`,
+                                color: '#fbfbfb1 !important',
+                            },
+                            '& .MuiToolbar-root': {
+                                fontSize: '14px',
+                                color: '#fff',
                             },
                         }}
                     >

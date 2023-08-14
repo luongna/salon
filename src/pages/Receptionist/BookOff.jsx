@@ -16,7 +16,7 @@ import axios from '~/utils/api/axios';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useState } from 'react';
-import { ToastContainer,toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from 'react';
 import { useEffect } from 'react';
@@ -136,7 +136,7 @@ function BookOff() {
                         }
                     })
                     .catch((error) => console.log(error));
-            }else{
+            } else {
                 toast.warning('Bạn chưa chọn dịch vụ!', {
                     position: 'top-right',
                     autoClose: 5000,

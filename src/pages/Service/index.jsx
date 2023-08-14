@@ -13,7 +13,6 @@ function Service() {
     const [services, setServices] = useState([]);
 
     useEffect(() => {
-        // Fetch data from the API when the component mounts
         axios
             .get(`/service`)
             .then((response) => {
@@ -36,11 +35,9 @@ function Service() {
     const searchQuery = searchParams.get('search') || '';
 
     useEffect(() => {
-        // Fetch data from the API when the component mounts
         axios
             .get(`/service`)
             .then((response) => {
-                // Filter the services based on the search query
                 const filteredServices = response.data.filter((service) =>
                     service.name.toLowerCase().includes(searchQuery.toLowerCase()),
                 );
@@ -54,7 +51,6 @@ function Service() {
     const handlePageChange = (selectedPage) => {
         setCurrentPage(selectedPage.selected);
     };
-
 
     const handleSearch = (searchResults) => {
         setServices(searchResults);
@@ -79,7 +75,6 @@ function Service() {
                 </Breadcrumbs>
             </section>
             <section className="body">
-                <SearchService onSearch={handleSearch} />
                 <h2 className="heading">TRỞ THÀNH QUÝ ÔNG LỊCH LÃM CÙNG SUPLO</h2>
                 <p className="sub-heading">
                     Suplo hạnh phúc khi mỗi ngày đem đến cho phái mạnh toàn cầu sự tự tin tỏa sáng, sức khoẻ, niềm vui
@@ -87,6 +82,7 @@ function Service() {
                     trang - gói gọn trong quy trình khoa học 30phút (không phải chờ đợi lâu) với giá thành rẻ nhất thế
                     giới.
                 </p>
+                <SearchService onSearch={handleSearch} />
                 <div className="service-list">
                     {currentServices.map((service) => (
                         <ServiceItem

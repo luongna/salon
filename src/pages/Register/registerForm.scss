@@ -32,9 +32,8 @@ html {
     min-height: 100px;
     padding: 32px 24px;
     // text-align: center;
-    background-image: linear-gradient(0, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
-    border-radius: 20px;
-    border: 3px solid var(--primary-color);
+    background-color: #fbfbf1;
+    border: 3px solid #000;
     margin: 24px;
     align-self: center;
     box-shadow: 0 2px 5px 0 rgba(51, 62, 73, 0.1);
@@ -45,7 +44,7 @@ html {
     font-weight: 700;
     margin-bottom: 30px;
     text-align: left;
-    color: rgb(246, 109, 109);
+    color: #000;
 }
 
 .form-group {
@@ -106,15 +105,15 @@ html {
 
 .form-control1 {
     height: 30px;
-    padding: 8px 12px 8px 50px;
-    border: 1px solid #b3b3b3;
-    border-radius: 20px;
+    padding: 12px;
+    background-color: #fff;
+    border: 1px solid #000;
     outline: none;
     font-size: 1.4rem;
 }
 
 .form-control1:hover {
-    border-color: var(--primary-color);
+    border-color: #000;
 }
 
 .form-group.invalid .form-control1 {
@@ -133,7 +132,7 @@ html {
 
 .form-submit {
     outline: none !important;
-    background-color: var(--primary-color);
+    background-color: #000;
     margin-top: 12px;
     padding: 12px 16px;
     font-weight: 600;
@@ -141,12 +140,13 @@ html {
     border: none;
     width: 100%;
     font-size: 14px;
-    border-radius: 20px;
     cursor: pointer;
 }
 
 .form-submit:hover {
-    background-color: rgb(237, 135, 135) !important;
+    background-color: #fbfbf1;
+    color: #000;
+    border: 1px solid #000;
     cursor: pointer;
 }
 

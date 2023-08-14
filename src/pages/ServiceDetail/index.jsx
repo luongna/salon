@@ -144,6 +144,7 @@ function ServiceDetail() {
                                         height: '100px',
                                         margin: '4px',
                                         cursor: 'pointer',
+                                        objectFit: 'cover',
                                         border: currentIndex === index ? '4px solid #ed8787' : 'none',
                                     }}
                                     onClick={() => handleItemClick(index)}

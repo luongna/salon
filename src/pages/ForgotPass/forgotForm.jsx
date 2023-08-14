@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from '~/utils/api/axios';
-import { Link } from 'react-router-dom';
 import { useEmailStore } from '~/utils/store/email';
+import './forgotForm.scss';
 
 const ForgotForm = () => {
     const [email] = useEmailStore((state) => [state.email]);
@@ -56,18 +56,18 @@ const ForgotForm = () => {
         <div className="form">
             <form onSubmit={handleSubmit}>
                 <div className="divider d-flex align-items-center my-4">
-                    <p className="text-center fw-bold mx-3 mb-0">Reset Password</p>
+                    <p className="text-center fw-bold mx-3 mb-0 title-lable">Reset Password</p>
                 </div>
                 <p id="f"></p>
                 <div className="form-outline mb-4">
-                    <label className="label" htmlFor="form3Example3">
+                    <label className="label title-lable" htmlFor="form3Example3">
                         Nhập mật khẩu mới
                     </label>
 
                     <input
                         type="password"
                         id="form3Example3"
-                        className="form-control form-control-lg"
+                        className="form-control form-control-lg black-border"
                         placeholder="Nhập mật khẩu mới"
                         aria-describedby="phoneHelp"
                         value={resetpass}
@@ -77,13 +77,13 @@ const ForgotForm = () => {
                 </div>
 
                 <div className="form-outline mb-3">
-                    <label className="label" htmlFor="form3Example4">
+                    <label className="label title-lable" htmlFor="form3Example4">
                         Nhập lại mật khẩu mới
                     </label>
                     <input
                         type="password"
                         id="form3Example4"
-                        className="form-control form-control-lg"
+                        className="form-control form-control-lg black-border"
                         placeholder="Nhập lại mật khẩu mới"
                         value={confirmPass}
                         onChange={(event) => setConfirmPass(event.target.value)}
@@ -96,12 +96,6 @@ const ForgotForm = () => {
                     <button type="submit" className="form-submit">
                         Reset Password
                     </button>
-                    <p className="small fw-bold mt-2 pt-1 mb-0">
-                        Don't have an account?{' '}
-                        <a href="#!" className="link-danger">
-                            <Link to={'/register'}>Register</Link>
-                        </a>
-                    </p>
                 </div>
             </form>
         </div>

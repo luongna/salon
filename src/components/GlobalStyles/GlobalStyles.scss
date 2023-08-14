@@ -1,9 +1,12 @@
 @import 'normalize.css';
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital@1&family=Oswald:wght@700&family=Rubik:ital,wght@1,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap');
+
 :root {
     --primary: #fe2c55;
     // Default layout
-    --default-layout-header-height: 60px;
+    --default-layout-header-height: 80px;
     --default-layout-width: 1550px;
     --black: #000;
     --text-color: #333;
@@ -13,7 +16,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
 }
 
 html {
@@ -21,11 +23,12 @@ html {
 }
 
 body {
-    font-family: 'Lora', serif;
+    font-family: 'Raleway', serif;
     font-size: 1.6rem;
     line-height: 1.5;
     text-rendering: optimizespeed;
     color: var(--text-color);
+    background: #fbfbf1;
 }
 
 button,

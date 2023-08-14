@@ -17,6 +17,23 @@ const LoginForm = (onClose) => {
     // const [setToken] = useTokenStore((state) => [state.setToken]);
     const navigate = useNavigate();
     const dispath = useDispatch();
+
+    const handlePhoneChange = (event) => {
+        const newPhone = event.target.value;
+        setPhone(newPhone);
+        if (newPhone && errors.phone) {
+            setErrors((errors) => ({ ...errors, phone: '' }));
+        }
+    };
+
+    const handlePasswordChange = (event) => {
+        const newPassword = event.target.value;
+        setPassword(newPassword);
+        if (newPassword && errors.password) {
+            setErrors((errors) => ({ ...errors, password: '' }));
+        }
+    };
+
     const validateForm = () => {
         let formIsValid = true;
 
@@ -107,7 +124,7 @@ const LoginForm = (onClose) => {
                         placeholder="Nhập số điện thoại"
                         aria-describedby="phoneHelp"
                         value={phone}
-                        onChange={(event) => setPhone(event.target.value)}
+                        onChange={handlePhoneChange}
                     />
                     {errors['phone'] !== '' && <span className="error">{errors['phone']}</span>}
                 </div>
@@ -122,7 +139,7 @@ const LoginForm = (onClose) => {
                         className="form-control1"
                         placeholder="Nhập mật khẩu"
                         value={password}
-                        onChange={(event) => setPassword(event.target.value)}
+                        onChange={handlePasswordChange}
                     />
 
                     {errors['password'] !== '' && <span className="error">{errors['password']}</span>}
