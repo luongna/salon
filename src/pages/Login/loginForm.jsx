@@ -7,7 +7,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 // import { useUserStore } from '~/utils/store/user';
 import './login.component.scss';
 import { Link } from 'react-router-dom';
-import { loginStart, loginFailed, loginSuccess, addToCart } from '~/utils/store/authSlice';
+import { loginStart, loginFailed, loginSuccess, addToCart, addToNotification } from '~/utils/store/authSlice';
 import { useDispatch } from 'react-redux';
 const LoginForm = (onClose) => {
     const [phone, setPhone] = useState('');
@@ -70,13 +70,20 @@ const LoginForm = (onClose) => {
                         });
 
                         dispath(loginSuccess(response.data));
-                        navigate('/');
+
                         axios
                             .get(`/auth/cart/${response.data.id}`)
                             .then((res) => {
                                 dispath(addToCart(res.data));
                             })
                             .catch((error) => console.log(error));
+                        axios
+                            .get(`/auth/notification/${response.data.id}`)
+                            .then((res) => {
+                                dispath(addToNotification(res.data));
+                            })
+                            .catch((error) => console.log(error));
+                        navigate('/');
                     }
                 })
                 .catch((err) => {

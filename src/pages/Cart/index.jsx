@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from '~/utils/api/axios';
-import { removeToCart } from '~/utils/store/authSlice';
+import { removeToCart, addToCart } from '~/utils/store/authSlice';
 import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
@@ -23,26 +23,23 @@ function Cart() {
     const [totalPrice, setTotalPrice] = useState(0);
     const user = useSelector((state) => state.auth.login?.currenUser);
     const dispatch = useDispatch();
-    const deleteElement = (index,id) => {
-        console.log(id)
+    const deleteElement = (index, id) => {
+        console.log(id);
         axios
-        .post(`/booking/deleteDetail`,{
-            serviceID :id,
-            phone :user.phone, 
-          })
-        .then(() => {
-            toast.success('Bạn đã đặt lịch thành công', {
-                position: toast.POSITION.TOP_RIGHT,
-                
-        }) 
-           
-        })
-        .catch((error) => console.log(error));
+            .post(`/booking/deleteDetail`, {
+                serviceID: id,
+                phone: user.phone,
+            })
+            .then(() => {
+                dispatch(addToCart(-1));
+                toast.success('Bạn đã xóa dịch vụ thành công', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+            })
+            .catch((error) => console.log(error));
         const updatedElements = [...jsonData];
         updatedElements.splice(index, 1);
         setJsonData(updatedElements);
-        
-       
     };
 
     useEffect(() => {
@@ -51,25 +48,22 @@ function Cart() {
     }, [jsonData]);
 
     useEffect(() => {
-        if(user){
-        axios
-        .post(`/booking/listCart`,{
-            serviceID :1,
-            phone :user.phone, 
-          })
-        .then((res) => {
-            const cart= res.data;
-            // console.log(branch)
-           setJsonData(cart);
-           
-        })
-        .catch((error) => console.log(error));
+        if (user) {
+            axios
+                .post(`/booking/listCart`, {
+                    serviceID: 1,
+                    phone: user.phone,
+                })
+                .then((res) => {
+                    const cart = res.data;
+                    // console.log(branch)
+                    setJsonData(cart);
+                })
+                .catch((error) => console.log(error));
+        } else {
+            navigate('/login');
         }
-    
-    else{
-        navigate("/login")
-    }
-    }, [user.phone]);
+    }, [user,navigate]);
 
     //staff
     useEffect(() => {
@@ -159,54 +153,54 @@ function Cart() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(!user){
-            navigate("/login")
-        }else{
-        if (selectedBranchId && selectedStaff && selectedDateId && selectedTimeId) {
-            if (isChecked) {
-                axios
-                    .post(`/checkout/create-payment`, {
-                        date: dates[selectedDateId - 1].date,
-                        totalPrice: totalPrice,
-                        nhanvien: selectedStaff.id,
-                        user: user.phone,
-                        time: selectedTimeId,
-                        branch: selectedBranchId.id,
-                        bankCode: 'NCB',
-                    })
-                    .then((res) => {
-                        dispatch(removeToCart());
-                        toast.success('Bạn đã đặt lịch thành công', {
-                            position: toast.POSITION.TOP_RIGHT,
-                        });
-                        window.location.href = res.data.url;
-                    });
-            } else {
-                axios
-                    .post(`/booking/book`, {
-                        date: dates[selectedDateId - 1].date,
-                        totalPrice: totalPrice,
-                        nhanvien: selectedStaff.id,
-                        user: user.phone,
-                        time: selectedTimeId,
-                        branch: selectedBranchId.id,
-                        bankCode: 'NCB',
-                    })
-                    .then((res) => {
-                        dispatch(removeToCart());
-                        toast.success('Bạn đã đặt lịch thành công', {
-                            position: toast.POSITION.TOP_RIGHT,
-                        });
-                    });
-            }
+        if (!user) {
+            navigate('/login');
         } else {
-            toast.error('Vui lòng chọn đầy đủ các mục !!!', {
-                position: toast.POSITION.TOP_RIGHT,
-            });
+            if (selectedBranchId && selectedStaff && selectedDateId && selectedTimeId) {
+                if (isChecked) {
+                    axios
+                        .post(`/checkout/create-payment`, {
+                            date: dates[selectedDateId - 1].date,
+                            totalPrice: totalPrice,
+                            nhanvien: selectedStaff.id,
+                            user: user.phone,
+                            time: selectedTimeId,
+                            branch: selectedBranchId.id,
+                            bankCode: 'NCB',
+                        })
+                        .then((res) => {
+                            dispatch(removeToCart());
+                            toast.success('Bạn đã đặt lịch thành công', {
+                                position: toast.POSITION.TOP_RIGHT,
+                            });
+                            window.location.href = res.data.url;
+                        });
+                } else {
+                    axios
+                        .post(`/booking/book`, {
+                            date: dates[selectedDateId - 1].date,
+                            totalPrice: totalPrice,
+                            nhanvien: selectedStaff.id,
+                            user: user.phone,
+                            time: selectedTimeId,
+                            branch: selectedBranchId.id,
+                            bankCode: 'NCB',
+                        })
+                        .then((res) => {
+                            dispatch(removeToCart());
+                            toast.success('Bạn đã đặt lịch thành công', {
+                                position: toast.POSITION.TOP_RIGHT,
+                            });
+                        });
+                }
+            } else {
+                toast.error('Vui lòng chọn đầy đủ các mục !!!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+            }
         }
-    }
     };
-    
+
     const [isChecked, setIsChecked] = useState(false);
     const position = [15.977456962147246, 108.2627979201717];
     let defaultIcon = L.icon({
@@ -219,7 +213,6 @@ function Cart() {
 
     return (
         <div>
-
             {jsonData.length === 0 || !user ? (
                 <h1>Bạn chưa đặt sản phẩm!!!!!</h1>
             ) : (
@@ -239,7 +232,10 @@ function Cart() {
                                     </th>
                                     <th>{element.price.toLocaleString('en-US')} VNĐ</th>
                                     <th>
-                                        <div onClick={() => deleteElement(index,element.id)} style={{ cursor: 'pointer' }}>
+                                        <div
+                                            onClick={() => deleteElement(index, element.id)}
+                                            style={{ cursor: 'pointer' }}
+                                        >
                                             <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
                                         </div>
                                     </th>
@@ -306,7 +302,6 @@ function Cart() {
                                         <div style={{ backgroundColor: 'rgb(246, 109, 109)' }}></div>
                                         <span>Chưa chọn</span>
                                     </div>
-                                    
                                 </div>
                                 <div className={cx('date-time')}>
                                     {times.map((data) => (

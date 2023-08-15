@@ -13,6 +13,7 @@ const authSlice = createSlice({
             error: false,
         },
         cart: 0,
+        notification: 0,
     },
     reducers: {
         loginStart: (state) => {
@@ -46,9 +47,27 @@ const authSlice = createSlice({
         removeToCart: (state, action) => {
             state.cart = 0;
         },
+        addToNotification: (state, action) => {
+            const quantity = action.payload;
+            state.notification += quantity;
+        },
+        removeToNotification: (state, action) => {
+            state.notification = 0;
+        },
     },
 });
 
-export const { loginStart, loginFailed, loginSuccess, logoutSuccess, logoutFailed, logoutStart, addToCart,removeToCart } = authSlice.actions;
+export const {
+    loginStart,
+    loginFailed,
+    loginSuccess,
+    logoutSuccess,
+    logoutFailed,
+    logoutStart,
+    addToCart,
+    removeToCart,
+    addToNotification,
+    removeToNotification,
+} = authSlice.actions;
 
 export default authSlice.reducer;
