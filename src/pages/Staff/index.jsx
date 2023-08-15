@@ -7,6 +7,7 @@ import './Staff.css';
 import { useEffect } from 'react';
 import axios from '~/utils/api/axios';
 import avatarDefault from '~/assets/images/avatarDefault.jpg';
+import { Avatar } from '@mui/material';
 
 function Staff() {
     const [staffs, setStaffs] = useState([]);
@@ -45,7 +46,7 @@ function Staff() {
     };
 
     return (
-        <div>
+        <div style={{ width: '79%' }}>
             <section
                 className="header"
                 style={{
@@ -72,7 +73,13 @@ function Staff() {
             <div className="staff-list">
                 {currentStaffs.map((staff, index) => (
                     <div className="staff-item grid-col" key={index}>
-                        <img className="staff-img" src={staff.img ? staff.img : avatarDefault} alt={staff.name} />
+                        <Avatar
+                            className="staff-img"
+                            src={staff.img ? staff.img : avatarDefault}
+                            alt={staff.name}
+                            sx={{ width: 160, height: 160 }}
+                        />
+                        {/* <img className="staff-img" src={staff.img ? staff.img : avatarDefault} alt={staff.name} /> */}
                         <h3 className="staff-name">{staff.name}</h3>
                         <p>{mapRole(staff.role)}</p>
                     </div>

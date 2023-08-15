@@ -80,7 +80,7 @@ const Calendar = () => {
                     <option value={0}>Chọn chi nhánh</option>
                     {branchData.map((element, index) => (
                         <option key={index} value={element.id}>
-                            {element.name}
+                            {element.address}
                         </option>
                     ))}
                 </select>
