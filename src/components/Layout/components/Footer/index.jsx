@@ -39,11 +39,11 @@ function Footer() {
                         {address.map((item, index) => (
                             <li key={index}>
                                 <span>
-                                <LocationOnIcon className="contact-icon" />
+                                    <LocationOnIcon className="contact-icon" />
                                     {item.location}
                                 </span>
                                 <span>
-                                <CallIcon className="contact-icon" />
+                                    <CallIcon className="contact-icon" />
                                     <a href={`tel: ${item.phone}`}>{item.phone}</a>
                                 </span>
                             </li>
@@ -72,10 +72,10 @@ function Footer() {
                     <h3>LIÊN lạc </h3>
                     <div>
                         <MailOutlineIcon className="contact-icon" />
-                            Phone: <span>13135123</span>
+                        Phone: <span>13135123</span>
                         <br></br>
                         <PhoneIcon className="contact-icon" />
-                            Mail: <span>anhluong@gmail.com</span>
+                        Mail: <span>anhluong@gmail.com</span>
                     </div>
                 </div>
             </footer>

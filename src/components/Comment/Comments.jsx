@@ -155,12 +155,9 @@ const Comments = ({ serviceID }) => {
             });
             setStompClient(client);
         });
-        let cleanup = false;
+
         return () => {
-            cleanup = true;
-            if (!cleanup) {
-                client.disconnect();
-            }
+            client.disconnect();
         };
     }, [serviceID]);
 
@@ -168,7 +165,7 @@ const Comments = ({ serviceID }) => {
         <>
             <div className={cx('comments')}>
                 <h3 className={cx('comments-title')}>Bình luận</h3>
-                <div className={cx('comment-form-title')}>Viết bình luận</div>
+                {/* <div className={cx('comment-form-title')}>Viết bình luận</div> */}
                 <CommentForm submitLabel="Bình luận" handleSubmit={addComment} />
                 <div className={cx('comments-container')}>
                     {rootComments.map((rootComment) => (

@@ -1,18 +1,33 @@
-import './ServiceDetail.scss';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { Button } from '@mui/material';
-import { Breadcrumbs } from '../Breadcrumbs';
+import { useEffect, useMemo, useState } from 'react';
+import { Button, useMediaQuery } from '@mui/material';
+import { Breadcrumbs as BreadcrumbsComponent } from '../Breadcrumbs';
 import Comments from '~/components/Comment/Comments';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from '~/utils/api/axios';
+import styled from '@emotion/styled';
+import SlickSlider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { formatVNCurrency } from '~/utils/common';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { addToCart } from '~/utils/store/authSlice';
 
 function ServiceDetail() {
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const isMediumScreen = useMediaQuery('(min-width: 768px)');
+    const isLargeScreen = useMediaQuery('(min-width: 1024px)');
+    const isSmallScreen = !isLargeScreen && !isMediumScreen;
+    const [serviceDetail, setServiceDetail] = useState(null);
+    const sliderConfig = {
+        arrows: false,
+        rows: isSmallScreen ? 1 : 2,
+        slidesPerRow: isSmallScreen ? 1 : 2,
+        dots: false,
+        autoplay: true,
+    };
+
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.login?.currenUser);
     const HandleAddToCart = (e) => {
@@ -46,8 +61,12 @@ function ServiceDetail() {
                 });
         }
     };
-    const navigate = useNavigate();
-    const { id } = useParams();
+
+    const listImgs = useMemo(() => {
+        const listImages = (serviceDetail?.imgDetails || []).map((item) => item.img);
+        return [serviceDetail?.img, ...listImages];
+    }, [serviceDetail]);
+
     useEffect(() => {
         window.scrollTo(0, 0);
         axios
@@ -60,135 +79,200 @@ function ServiceDetail() {
             });
     }, [id]);
 
-    const [serviceDetail, setServiceDetail] = useState(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const containerRef = useRef(null);
-
-    const listImgs = useMemo(() => {
-        const listImages = (serviceDetail?.imgDetails || []).map((item) => item.img);
-        return [serviceDetail?.img, ...listImages];
-    }, [serviceDetail]);
-
-    const handlePrevClick = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === 0 ? listImgs.length - 1 : prevIndex - 1));
-    };
-
-    const handleNextClick = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === listImgs.length - 1 ? 0 : prevIndex + 1));
-    };
-
-    const handleItemClick = (index) => {
-        setCurrentIndex(index);
-        if (containerRef.current) {
-            const itemRef = containerRef.current.children[index];
-            const containerWidth = containerRef.current.getBoundingClientRect().width;
-            const itemWidth = itemRef.getBoundingClientRect().width;
-            const itemOffsetLeft = itemRef.offsetLeft;
-            if (itemOffsetLeft + itemWidth > containerWidth) {
-                containerRef.current.scrollLeft = itemOffsetLeft + itemWidth - containerWidth;
-            } else if (itemOffsetLeft < containerRef.current.scrollLeft) {
-                containerRef.current.scrollLeft = itemOffsetLeft;
-            }
-        }
-    };
-
     if (!serviceDetail) {
         return <div>Loading...</div>; // You can render a loading indicator while waiting for data to be fetched
     }
 
     return (
-        <>
-            <section
-                className="header __detail"
-                style={{
-                    '--bg-url': `url(${'https://theme.hstatic.net/1000181446/1000235350/14/image_breadcrumb_bg.png?v=1737'})`,
-                }}
-            >
-                <h1 className="heading">CHI TIẾT DỊCH VỤ</h1>
-                <Breadcrumbs className="breadcrumbs">
-                    <Link className="breadcrumb-link" to="/">
-                        Trang chủ
-                    </Link>
-                    <Link className="breadcrumb-link" to="/service">
-                        Các dịch vụ
-                    </Link>
-                    <Link className="breadcrumb-text">{serviceDetail.name}</Link>
+        <Container>
+            <Wrapper>
+                <Breadcrumbs separate={<Separate>/</Separate>}>
+                    <BreadcrumbLink to="/">Trang chủ</BreadcrumbLink>
+                    <BreadcrumbLink to="/service">Các dịch vụ</BreadcrumbLink>
+                    <BreadcrumbLink>{serviceDetail.name}</BreadcrumbLink>
                 </Breadcrumbs>
-            </section>
-            <div className="service-container">
-                <div className="service-content">
-                    <div className="service-content__image">
-                        <img className="service-image" src={listImgs[currentIndex]} alt={` ${currentIndex + 1}`} />
-                    </div>
-                    <div className="list-images">
-                        <button className="left-button" onClick={handlePrevClick}>
-                            <ArrowBackIosNewIcon />
-                        </button>
-                        <div
-                            ref={containerRef}
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginTop: '16px',
-                                overflowX: 'scroll',
-                            }}
-                        >
-                            {listImgs?.map((imgDetail, index) => (
-                                <img
-                                    key={index}
-                                    src={imgDetail}
-                                    alt={` ${index + 1}`}
-                                    style={{
-                                        width: '150px',
-                                        height: '100px',
-                                        margin: '4px',
-                                        cursor: 'pointer',
-                                        objectFit: 'cover',
-                                        border: currentIndex === index ? '4px solid #ed8787' : 'none',
-                                    }}
-                                    onClick={() => handleItemClick(index)}
-                                />
-                            ))}
-                        </div>
-                        <button className="right-button" onClick={handleNextClick}>
-                            <ArrowForwardIosIcon />
-                        </button>
-                    </div>
-                    <div>
-                        <h1 className="service-title">{serviceDetail?.name}</h1>
-                        <p>{serviceDetail?.description}</p>
-                    </div>
-                </div>
-                <div className="right-sider-bar">
-                    <div style={{ padding: '12px' }}>
-                        <h2
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                textAlign: 'center',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            THÔNG TIN DỊCH VỤ
-                        </h2>
-                        <h3>Tên:</h3>
-                        <p>{serviceDetail?.name}</p>
-                        <h3>Mô tả:</h3>
-                        <p>{serviceDetail?.description}</p>
-                        <h3>Giá:</h3>
-                        <p>{serviceDetail?.price}₫</p>
-                    </div>
-                    <Button className="add-cart-button">
-                        <AddShoppingCartIcon className="add-cart-icon" onClick={(e) => HandleAddToCart(e)} />
-                    </Button>
-                </div>
-            </div>
-            <div style={{ width: '80%' }}>
-                <Comments serviceID={id} />
-            </div>
-        </>
+                <GridView>
+                    <Header>
+                        <Heading>{serviceDetail?.name}</Heading>
+                        <SubHeading>{formatVNCurrency(+serviceDetail?.price)}</SubHeading>
+                        {isLargeScreen && (
+                            <Description>
+                                <DesHeading>Mô tả</DesHeading>
+                                <DesContent>{serviceDetail?.description}</DesContent>
+                            </Description>
+                        )}
+                        <CartButton size="large" onClick={(e) => HandleAddToCart(e)}>
+                            Thêm vào giỏ hàng
+                        </CartButton>
+                    </Header>
+                    <Silder {...sliderConfig}>
+                        {listImgs?.map((imgDetail) => (
+                            <ImageSlide key={imgDetail?.id} src={imgDetail} />
+                        ))}
+                    </Silder>
+                    {!isLargeScreen && (
+                        <Description>
+                            <DesHeading>Mô tả</DesHeading>
+                            <DesContent>{serviceDetail?.description}</DesContent>
+                        </Description>
+                    )}
+                    <CommentBox>
+                        <Comments serviceID={id} />
+                    </CommentBox>
+                </GridView>
+            </Wrapper>
+        </Container>
     );
 }
+
+const Container = styled.div({
+    width: '100%',
+    maxWidth: '1550px',
+    marginInline: 'auto',
+    paddingTop: '40px',
+});
+
+const Wrapper = styled.div({
+    display: 'flex',
+    flexDirection: 'column',
+
+    '@media(min-width: 768px)': {
+        marginInline: '15px',
+    },
+
+    '@media(min-width: 1024px)': {
+        marginInline: '30px',
+    },
+
+    '@media(min-width: 1550px)': {
+        marginInline: 0,
+    },
+});
+
+const Breadcrumbs = styled(BreadcrumbsComponent)({
+    marginInline: '15px',
+    marginBottom: '20px',
+
+    '@media(min-width: 768px)': {
+        marginInline: 0,
+    },
+});
+
+const BreadcrumbLink = styled(Link)({
+    color: '#333',
+    fontSize: '14px',
+});
+
+const Separate = styled.span({
+    marginInline: '6px',
+});
+
+const GridView = styled.div({
+    position: 'relative',
+    gridTemplateColumns: 'repeat(12, minmax(0, 1fr))',
+    columnGap: '40px',
+
+    '@media(min-width: 1024px)': {
+        display: 'grid',
+        // marginInline: '30px',
+    },
+});
+
+const Silder = styled(SlickSlider)({
+    marginBottom: '30px',
+    gridColumn: 'span 8 / span 8',
+    gridColumnStart: 1,
+    gridRowStart: 1,
+});
+
+const ImageSlide = styled.img({
+    aspectRatio: '1/1',
+    objectFit: 'cover',
+});
+
+const Header = styled.div({
+    marginInline: '15px',
+    marginBottom: '30px',
+    gridColumn: 'span 4 / span 4',
+    gridColumnStart: 9,
+    gridRowStart: 1,
+
+    '@media(min-width: 768px)': {
+        marginInline: '0px',
+    },
+});
+
+const Heading = styled.h1({
+    fontWeight: 600,
+    fontSize: '24px',
+    marginBottom: 0,
+    '@media(min-width: 1024px)': {
+        fontSize: '32px',
+        marginBottom: '10px',
+    },
+});
+
+const SubHeading = styled.p({
+    fontWeight: 600,
+    fontSize: '18px',
+    marginBottom: 0,
+
+    '@media(min-width: 1024px)': {
+        fontSize: '24px',
+        marginBottom: '64px',
+    },
+});
+
+const CartButton = styled(Button)({
+    backgroundColor: '#000',
+    borderRadius: 0,
+    fontSize: '16px',
+    fontWeight: 600,
+    textTransform: 'none',
+    color: '#fbfbf1',
+    position: 'fixed',
+    inset: 'auto 15px 15px 15px',
+    zIndex: 10,
+    paddingBlock: '14px',
+
+    '&:hover': {
+        backgroundColor: '#000',
+    },
+
+    '&:focus': {
+        outline: 'none',
+    },
+
+    '@media(min-width: 1024px)': {
+        position: 'initial',
+        width: '100%',
+    },
+});
+
+const Description = styled.div({
+    marginInline: '15px',
+    marginBottom: '30px',
+    gridColumn: 'span 8 / span 8',
+
+    '@media(min-width: 768px)': {
+        marginInline: 0,
+    },
+});
+
+const DesHeading = styled.h2({
+    fontSize: '18px',
+    fontWeight: 600,
+});
+
+const DesContent = styled.p({});
+
+const CommentBox = styled.div({
+    marginInline: '15px',
+    gridColumn: 'span 8 / span 8',
+
+    '@media(min-width: 768px)': {
+        marginInline: 0,
+    },
+});
 
 export default ServiceDetail;

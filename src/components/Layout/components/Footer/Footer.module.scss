@@ -61,6 +61,16 @@
     padding: 10px;
 }
 
+@media screen and (max-width: 1550px) {
+    .footer-element {
+        padding-inline: 30px;
+
+        &::before {
+            padding-inline: 30px;
+        }
+    }
+}
+
 @media screen and (max-width: 1024px) {
     .footer-element {
         display: grid;

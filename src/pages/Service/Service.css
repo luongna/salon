@@ -39,7 +39,8 @@
 }
 
 .body {
-    padding-inline: 16px;
+    margin-inline: 15px;
+    padding-inline: 0 !important;
 }
 
 .body .heading {
@@ -83,7 +84,6 @@
     }
 
     .body {
-        padding-inline: 30px;
         max-width: 1200px;
         margin: auto;
     }
@@ -93,7 +93,13 @@
     }
 
     .body {
-        padding-inline: 0 !important;
+        margin-inline: 15px !important;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .body {
+        margin-inline: 30px !important;
     }
 }
 
