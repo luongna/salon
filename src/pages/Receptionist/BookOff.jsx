@@ -153,7 +153,7 @@ function BookOff() {
     };
 
     const customList = (items) => (
-        <Paper sx={{ width: 300, height: 430, overflow: 'auto' }}>
+        <Paper sx={{ width: 300, height: 430, overflow: 'auto', border: '1px solid #000' }}>
             <List dense component="div" role="list">
                 {items.map((value) => {
                     const labelId = `transfer-list-item-${value.id}-label`;
@@ -295,7 +295,13 @@ function BookOff() {
                                     <Grid item>
                                         <Grid container direction="column" alignItems="center">
                                             <Button
-                                                sx={{ my: 0.5 }}
+                                                style={{
+                                                    my: 0.5,
+                                                    backgroundColor: 'black',
+                                                    color: 'white',
+                                                    padding: '4px 12px',
+                                                    fontSize: '14px',
+                                                }}
                                                 variant="outlined"
                                                 size="small"
                                                 onClick={handleAllRight}
@@ -305,7 +311,14 @@ function BookOff() {
                                                 ≫
                                             </Button>
                                             <Button
-                                                sx={{ my: 0.5 }}
+                                                style={{
+                                                    my: 0.5,
+                                                    marginTop: '5px',
+                                                    backgroundColor: 'black',
+                                                    color: 'white',
+                                                    padding: '4px 12px',
+                                                    fontSize: '14px',
+                                                }}
                                                 variant="outlined"
                                                 size="small"
                                                 onClick={handleCheckedRight}
@@ -315,7 +328,14 @@ function BookOff() {
                                                 &gt;
                                             </Button>
                                             <Button
-                                                sx={{ my: 0.5 }}
+                                                style={{
+                                                    my: 0.5,
+                                                    marginTop: '5px',
+                                                    backgroundColor: 'black',
+                                                    color: 'white',
+                                                    padding: '4px 12px',
+                                                    fontSize: '14px',
+                                                }}
                                                 variant="outlined"
                                                 size="small"
                                                 onClick={handleCheckedLeft}
@@ -325,7 +345,14 @@ function BookOff() {
                                                 &lt;
                                             </Button>
                                             <Button
-                                                sx={{ my: 0.5 }}
+                                                style={{
+                                                    my: 0.5,
+                                                    marginTop: '5px',
+                                                    backgroundColor: 'black',
+                                                    color: 'white',
+                                                    padding: '4px 12px',
+                                                    fontSize: '14px',
+                                                }}
                                                 variant="outlined"
                                                 size="small"
                                                 onClick={handleAllLeft}
@@ -338,11 +365,24 @@ function BookOff() {
                                     </Grid>
                                     <Grid item>{customList(right)}</Grid>
                                 </Grid>
-                                <div style={{ textAlign: 'end' }}>
+                                <div style={{ textAlign: 'end', fontSize: '3rem', marginTop: '20px' }}>
                                     Tổng tiền: <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
                                 </div>
                                 <Box display="flex" justifyContent="end" mt="20px">
-                                    <Button type="submit" color="secondary" variant="contained">
+                                    <Button
+                                        type="submit"
+                                        color="secondary"
+                                        variant="contained"
+                                        sx={{
+                                            backgroundColor: 'black',
+                                            color: 'white',
+                                            padding: '10px 20px',
+                                            fontSize: '14px',
+                                            '&:hover': {
+                                                backgroundColor: '#333',
+                                            },
+                                        }}
+                                    >
                                         Tạo dịch vụ
                                     </Button>
                                 </Box>
@@ -359,8 +399,8 @@ function BookOff() {
 }
 const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const checkoutSchema = yup.object().shape({
-    phone: yup.string().matches(phoneRegExp, 'Số điện thoại không hợp lệ').required('Không được bỏ trống'),
-    time: yup.number().notOneOf([0], 'Phải chọn giờ'),
+    phone: yup.string().matches(phoneRegExp, 'Số điện thoại không hợp lệ!').required('Vui lòng nhập số điện thoại!'),
+    time: yup.number().notOneOf([0], 'Vui lòng chọn giờ!'),
 });
 const initialValues = {
     time: 0,

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, useTheme } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { DataGrid, viVN } from '@mui/x-data-grid';
-import { tokens } from '~/utils/theme/theme';
 import axios from '~/utils/api/axios';
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
@@ -23,8 +22,6 @@ function AcceptBooking() {
                 .catch((error) => console.log(error));
         }
     }, [user]);
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
     const handleStatusClick = (id) => {
         Swal.fire({
             html: `<h4>Xác nhận đơn hàng đã được được hoàn thành!</h4>`,
@@ -181,35 +178,40 @@ function AcceptBooking() {
                     height="75vh"
                     sx={{
                         '& .MuiDataGrid-root': {
-                            border: 'none',
-                            fontSize: '16px',
+                            border: '1px solid #ccc',
+                            fontSize: '14px',
                         },
                         '& .MuiDataGrid-cell': {
-                            borderBottom: 'none',
-                            fontSize: '12px',
+                            borderBottom: '1px solid #333',
+                            backgroundColor: '#fbfbfb1',
                         },
                         '& .name-column--cell': {
-                            color: colors.greenAccent[300],
+                            backgroundColor: '#fbfbfb1',
+                            border: '1px solid #ccc',
                         },
                         '& .MuiDataGrid-columnHeaders': {
-                            backgroundColor: colors.blueAccent[700],
-                            borderBottom: 'none',
+                            backgroundColor: '#000',
+                            color: '#fff',
+                            border: '1px solid #ccc',
                         },
                         '& .MuiDataGrid-virtualScroller': {
-                            backgroundColor: colors.primary[400],
+                            backgroundColor: '#fbfbfb1',
+                            border: '1px solid #ccc',
                         },
                         '& .MuiDataGrid-footerContainer': {
-                            borderTop: 'none',
-                            backgroundColor: colors.blueAccent[700],
+                            backgroundColor: '#000',
+                            border: '1px solid #ccc',
+                            '& p': {
+                                fontSize: '14px',
+                                color: '#fff',
+                            },
                         },
                         '& .MuiCheckbox-root': {
-                            color: `${colors.greenAccent[200]} !important`,
+                            color: '#fbfbfb1 !important',
                         },
                         '& .MuiToolbar-root': {
-                            fontSize: '16px',
-                        },
-                        '& p': {
-                            fontSize: '16px',
+                            fontSize: '14px',
+                            color: '#fff',
                         },
                     }}
                 >
