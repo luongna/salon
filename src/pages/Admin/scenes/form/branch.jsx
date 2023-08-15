@@ -33,11 +33,11 @@ const Form = () => {
         if (selectedPoint != null) {
             const formValues = {
                 ...values,
-                name: values.name,
+                phone: values.phone,
                 address: values.address,
                 lat: selectedPoint.lat,
                 lng: selectedPoint.lng,
-                status : 1
+                status: 1,
             };
             axios
                 .post(`/branch`, formValues)
@@ -56,7 +56,6 @@ const Form = () => {
                     });
                 })
                 .catch((error) => console.log(error));
-        
         } else {
             alert('Chưa chọn chi nhánh trên bản đồ');
         }
@@ -82,13 +81,13 @@ const Form = () => {
                                     fullWidth
                                     variant="filled"
                                     type="text"
-                                    label="Tên chi nhánh"
+                                    label="Số điện thoại"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    value={values.name}
-                                    name="name"
-                                    error={!!touched.name && !!errors.name}
-                                    helperText={touched.name && errors.name}
+                                    value={values.phone}
+                                    name="phone"
+                                    error={!!touched.phone && !!errors.phone}
+                                    helperText={touched.phone && errors.phone}
                                     sx={{ gridColumn: 'span 4' }}
                                 />
 
@@ -137,11 +136,11 @@ const Form = () => {
         </>
     );
 };
-
+const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const checkoutSchema = yup.object().shape({
-    name: yup.string().required('required'),
-    address: yup.string().required('required'),
+    phone: yup.string().matches(phoneRegExp, 'Số điện thoại không hợp lệ').required('Không được bỏ trống'),
+    address: yup.string().required('Không được bỏ trống'),
 });
 
-const initialValues = { name: '', address: '' };
+const initialValues = { phone: '', address: '' };
 export default Form;

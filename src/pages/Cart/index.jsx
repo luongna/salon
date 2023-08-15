@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from '~/utils/api/axios';
-import { removeToCart } from '~/utils/store/authSlice';
+import { removeToCart, addToCart } from '~/utils/store/authSlice';
 import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
@@ -31,7 +31,8 @@ function Cart() {
                 phone: user.phone,
             })
             .then(() => {
-                toast.success('Bạn đã xóa thành công', {
+                dispatch(addToCart(-1));
+                toast.success('Bạn đã xóa dịch vụ thành công', {
                     position: toast.POSITION.TOP_RIGHT,
                 });
             })
@@ -62,7 +63,7 @@ function Cart() {
         } else {
             navigate('/login');
         }
-    }, [navigate, user]);
+    }, [user,navigate]);
 
     //staff
     useEffect(() => {
@@ -213,10 +214,10 @@ function Cart() {
     return (
         <div>
             {jsonData.length === 0 || !user ? (
-                <h1>Bạn chưa đặt sản phẩm!</h1>
+                <h1>Bạn chưa đặt sản phẩm!!!!!</h1>
             ) : (
                 <>
-                    <h1>Giỏ Hàng</h1>
+                    <h1>Giỏ hàng</h1>
                     <table className={cx('table-element')}>
                         <tbody>
                             {jsonData.map((element, index) => (
@@ -247,7 +248,7 @@ function Cart() {
                         <div className={cx('booking-information')}>
                             <h3>ĐẶT LỊCH</h3>
                             <div className={cx('branch-staff-booking')}>
-                                <p className={cx('branch-title')}>Chọn salon (*):</p>
+                                <p>Chọn salon (*):</p>
                                 <select onChange={handleBranchesChange}>
                                     <option value="0">- Vui lòng chọn chi nhánh -</option>
                                     {branches.map((branch) => (
@@ -256,13 +257,13 @@ function Cart() {
                                             value={branch.id}
                                             // onClick={() => handleBranchesClick(branch.id)}
                                         >
-                                            {branch.address}
+                                            {branch.name}
                                         </option>
                                     ))}
                                 </select>
                             </div>
                             <div className={cx('branch-staff-booking')}>
-                                <p className={cx('branch-title')}>Chọn nhân viên (*):</p>
+                                <p>Chọn nhân viên (*):</p>
                                 <select onChange={handleSelectChange}>
                                     <option value="0">- Vui lòng chọn nhân viên -</option>
                                     {staffs.map((staff) => (
@@ -273,7 +274,7 @@ function Cart() {
                                 </select>
                             </div>
                             <div className={cx('date-booking')}>
-                                <p className={cx('branch-title')}>Chọn ngày (*):</p>
+                                <p>Chọn ngày (*):</p>
                                 <div className={cx('date-time')}>
                                     {dates.map((date) =>
                                         active !== true ? (
@@ -291,14 +292,14 @@ function Cart() {
                                         ),
                                     )}
                                 </div>
-                                <p className={cx('branch-title')}>Chọn giờ (*):</p>
+                                <p>Chọn giờ (*):</p>
                                 <div className={cx('status-time')}>
                                     <div>
                                         <div style={{ backgroundColor: '#000' }}></div>
                                         <span>Đã chọn</span>
                                     </div>
                                     <div>
-                                        <div style={{ backgroundColor: '#fff', border: '1px solid #333' }}></div>
+                                        <div style={{ backgroundColor: 'rgb(246, 109, 109)' }}></div>
                                         <span>Chưa chọn</span>
                                     </div>
                                 </div>
@@ -338,8 +339,7 @@ function Cart() {
                                 </div>
                             </div>
                             <div className={cx('total-price')}>
-                                <p className={cx('total-price-title')}>Tổng tiền:</p>{' '}
-                                <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
+                                Tổng tiền: <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
                             </div>
                             <button className={cx('submit-booking')} type="submit" onClick={handleSubmit}>
                                 ĐẶT LỊCH
@@ -351,13 +351,12 @@ function Cart() {
                                 <h3>THÔNG TIN NHÂN VIÊN BẠN ĐÃ CHỌN</h3>
                                 {selectedStaff && (
                                     <div>
-                                        <img className={cx('staff-img')} src={selectedStaff.img} alt="img" />
+                                        <img src={selectedStaff.img} alt="img" />
                                         <div>
                                             <p>
-                                                <strong>{selectedStaff.name}</strong>
+                                                <strong>{selectedStaff.name}</strong> - {selectedStaff.position}
                                             </p>
-                                            <p>Ngày sinh: {selectedStaff.birthday}</p>
-                                            <p>Email: {selectedStaff.email}</p>
+                                            <p>{selectedStaff.description}</p>
                                             <p>Số điện thoại: {selectedStaff.phone}</p>
                                         </div>
                                     </div>

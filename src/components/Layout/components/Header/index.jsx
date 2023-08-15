@@ -2,8 +2,10 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
+import Stomp from 'stompjs';
+import SockJS from 'sockjs-client';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { logoutSuccess, removeToCart } from '~/utils/store/authSlice';
+import { logoutSuccess, removeToCart, addToNotification, removeToNotification } from '~/utils/store/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import isAdmin, { isReceptionist } from '~/utils/jwt';
 import { Avatar, Badge, Button, IconButton } from '@mui/material';
@@ -13,20 +15,23 @@ import { FiSearch } from 'react-icons/fi';
 import { IoCartSharp } from 'react-icons/io5';
 import { HiMenuAlt3 } from 'react-icons/hi';
 import { AiFillBell } from 'react-icons/ai';
-
+import { BASE_URL } from '~/utils/api/axios';
+import axios from '~/utils/api/axios';
+import { ToastContainer, toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 function Header() {
     const [status, setStatus] = useState(false);
     const [isFixed, setIsFixed] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const [isSearchVisible, setIsSearchVisible] = useState(false);
+    const [notification, setNotification] = useState([]);
     const location = useLocation();
     const currentURL = location.pathname;
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const cart = useSelector((state) => state.auth.cart);
+    const notificationCount = useSelector((state) => state.auth.notification);
     const user = useSelector((state) => state.auth.login?.currenUser);
-
     useEffect(() => {
         const handleScroll = () => {
             const headerPosition = window.scrollY;
@@ -45,14 +50,57 @@ function Header() {
         };
     }, [isFixed]);
 
+    useEffect(() => {
+        const socket = new SockJS(BASE_URL + '/ws');
+        const client = Stomp.over(socket);
+        if (user) {
+            client.connect({}, () => {
+                client.subscribe(`/topic/booking/${user.id}`, (dataGot) => {
+                    setNotification((oldComment) => [JSON.parse(dataGot.body), ...oldComment]);
+                    dispatch(addToNotification(1));
+                    toast('🔔Bạn có một thông báo mới!', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'light',
+                    });
+                });
+            });
+        }
+        let cleanup = false;
+
+        return () => {
+            cleanup = true;
+            if (!cleanup) {
+                client.disconnect();
+            }
+        };
+    }, [user, dispatch]);
+
+    useEffect(() => {
+        if (user) {
+            axios
+                .get(`/notification/${user.id}`)
+                .then((res) => {
+                    const notification = res.data;
+                    setNotification(notification);
+                })
+                .catch((error) => console.log(error));
+        }
+    }, [user]);
+
     const handleToggleSearch = () => {
-        // Toggle the visibility of the search input when the search button is clicked
         setIsSearchVisible(!isSearchVisible);
     };
 
     const handleLogout = () => {
         dispatch(logoutSuccess());
         dispatch(removeToCart());
+        dispatch(removeToNotification());
     };
 
     const handleSearchChange = (e) => {
@@ -72,6 +120,22 @@ function Header() {
         }
     };
 
+    const maskRead = () => {
+        axios
+            .get(`/notification/read/${user.id}`)
+            .then((res) => {
+                if (res.data === 'done') {
+                    setNotification((prevNotifications) =>
+                        prevNotifications.map((notification) =>
+                            notification.status === 0 ? { ...notification, status: 1 } : notification,
+                        ),
+                    );
+
+                    dispatch(removeToNotification());
+                }
+            })
+            .catch((error) => console.log(error));
+    };
     return (
         <header className={cx('wrapper', isFixed ? 'fixed-header' : '')}>
             <div className={cx('inner')} style={status ? { right: '0px' } : {}}>
@@ -201,17 +265,42 @@ function Header() {
                                 </IconButton>
                             </Link>
 
-                            <Link to={'/notification'}>
+                            <Tippy
+                                //  content="Tài khoản "
+                                hideOnClick={true}
+                                trigger="click"
+                                placement="bottom"
+                                interactive
+                                render={(attrs) => (
+                                    <div className={cx('box_notification')} tabIndex="-1" {...attrs}>
+                                        <h1>Thông báo</h1>
+                                        <ul>
+                                            {notification.map((value) => (
+                                                <li
+                                                    key={value.id}
+                                                    className={cx(value.status === 0 ? 'background-EBEDF0' : '')}
+                                                >
+                                                    <span>{value.text}</span>
+                                                    <span>{value.date}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <div className={cx('box_notification_bottom')} onClick={maskRead}>
+                                            Đánh dấu đã đọc
+                                        </div>
+                                    </div>
+                                )}
+                            >
                                 <IconButton className={cx('action-button')}>
                                     <Badge
-                                        badgeContent={5}
+                                        badgeContent={notificationCount}
                                         color="error"
                                         sx={{ '& .MuiBadge-badge': { fontSize: 15, height: 15, minWidth: 15 } }}
                                     >
                                         <AiFillBell size={28} />
                                     </Badge>
                                 </IconButton>
-                            </Link>
+                            </Tippy>
                             <Tippy
                                 //  content="Tài khoản "
                                 hideOnClick={true}
@@ -239,9 +328,6 @@ function Header() {
                         </div>
                         <div className={cx('user-nav')}>
                             <hr />
-                            <Link to={'/notification'} className={cx('element')}>
-                                Thông báo
-                            </Link>
                             <p className={cx('element')}>Hồ sơ</p>
                             <p className={cx('element')}>Lịch sử</p>
                             <p className={cx('element')} onClick={handleLogout}>
@@ -275,7 +361,6 @@ function Header() {
                                     </IconButton>
                                 </Tippy>
                             </div>
-
                             <Link to={'/cart'}>
                                 <IconButton className={cx('action-button')}>
                                     <Badge
@@ -287,6 +372,41 @@ function Header() {
                                     </Badge>
                                 </IconButton>
                             </Link>
+                            <Tippy
+                                hideOnClick={true}
+                                trigger="click"
+                                placement="bottom"
+                                interactive
+                                render={(attrs) => (
+                                    <div className={cx('box_notification')} tabIndex="-1" {...attrs}>
+                                        <h1>Thông báo</h1>
+                                        <ul>
+                                            {notification.map((value) => (
+                                                <li
+                                                    key={value.id}
+                                                    className={cx(value.status === 0 ? 'background-EBEDF0' : '')}
+                                                >
+                                                    <span>{value.text}</span>
+                                                    <span>{value.date}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <div className={cx('box_notification_bottom')} onClick={maskRead}>
+                                            Đánh dấu đã đọc
+                                        </div>
+                                    </div>
+                                )}
+                            >
+                                <IconButton className={cx('action-button')}>
+                                    <Badge
+                                        badgeContent={notificationCount}
+                                        color="error"
+                                        sx={{ '& .MuiBadge-badge': { fontSize: 15, height: 15, minWidth: 15 } }}
+                                    >
+                                        <AiFillBell size={28} />
+                                    </Badge>
+                                </IconButton>
+                            </Tippy>
                         </div>
                     )}
                     <div onClick={() => setStatus(!status)} className={cx('action-button')}>
@@ -294,8 +414,8 @@ function Header() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </header>
     );
 }
-
 export default Header;

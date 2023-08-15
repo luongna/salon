@@ -4,20 +4,25 @@ import { DataGrid, viVN } from '@mui/x-data-grid';
 import { tokens } from '~/utils/theme/theme';
 import axios from '~/utils/api/axios';
 import Swal from 'sweetalert2';
+import { useSelector } from 'react-redux';
 // import { Link } from 'react-router-dom';
-
+import { isReceptionist } from '~/utils/jwt';
+import { useNavigate } from 'react-router-dom';
 function AcceptBooking() {
     const [teamData, setTeamData] = useState([]);
-
+    const user = useSelector((state) => state.auth.login?.currenUser);
+    const navigate = useNavigate();
     useEffect(() => {
-        axios
-            .get(`/booking`)
-            .then((res) => {
-                const user = res.data;
-                setTeamData(user);
-            })
-            .catch((error) => console.log(error));
-    }, []);
+        if (user) {
+            axios
+                .get(`receptionist/booking/${user.phone}`)
+                .then((res) => {
+                    const user = res.data;
+                    setTeamData(user);
+                })
+                .catch((error) => console.log(error));
+        }
+    }, [user]);
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const handleStatusClick = (id) => {
@@ -168,7 +173,7 @@ function AcceptBooking() {
             },
         },
     ];
-    return (
+    return user && isReceptionist(user.accessToken) ? (
         <>
             <div className="container">
                 <Box
@@ -217,6 +222,8 @@ function AcceptBooking() {
                 </Box>
             </div>
         </>
+    ) : (
+        navigate('/accessDeny')
     );
 }
 
