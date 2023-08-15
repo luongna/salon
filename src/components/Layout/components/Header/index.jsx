@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
+import { AiOutlineCheck } from 'react-icons/ai';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -273,7 +274,7 @@ function Header() {
                                 interactive
                                 render={(attrs) => (
                                     <div className={cx('box_notification')} tabIndex="-1" {...attrs}>
-                                        <h1>Thông báo</h1>
+                                        <h2>Thông báo</h2>
                                         <ul>
                                             {notification.map((value) => (
                                                 <li
@@ -286,7 +287,10 @@ function Header() {
                                             ))}
                                         </ul>
                                         <div className={cx('box_notification_bottom')} onClick={maskRead}>
-                                            Đánh dấu đã đọc
+                                            <span className={cx('check-icon')}>
+                                                <AiOutlineCheck />
+                                            </span>
+                                            Đánh dấu tất cả đã đọc
                                         </div>
                                     </div>
                                 )}
