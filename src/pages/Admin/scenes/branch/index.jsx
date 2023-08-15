@@ -70,8 +70,8 @@ const Branch = () => {
     const columns = [
         { field: 'id', headerName: 'ID' },
         {
-            field: 'name',
-            headerName: 'Tên',
+            field: 'phone',
+            headerName: 'Số điện thoại',
             flex: 1,
         },
         {
