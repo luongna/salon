@@ -36,6 +36,12 @@
         background-color: transparent;
     }
 
+    @media screen and (max-width: 1550px) {
+        &::after {
+            padding-inline: 30px;
+        }
+    }
+
     &.fixed-header::after {
         background-color: #333;
     }
@@ -143,7 +149,7 @@
     background: #fbfbf1;
     box-shadow: 0px 5px 15px rgb(0 0 0 / 12%);
     // padding: 0 30px;
-    border-radius: 13px;
+    border-radius: 10px;
     ul {
         height: 100%;
         list-style-type: none;
@@ -153,7 +159,7 @@
             cursor: pointer;
             line-height: 40px;
             &:hover {
-                border-radius: 13px;
+                border-radius: 10px;
                 background-color: rgb(205, 197, 197);
             }
         }
@@ -204,6 +210,12 @@
 .line {
     display: none;
     padding-inline: 15px;
+}
+
+@media screen and (max-width: 1280px) {
+    .text-logo {
+        font-size: 32px;
+    }
 }
 
 @media screen and (max-width: 1024px) {
