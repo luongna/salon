@@ -52,15 +52,16 @@ function Header() {
     }, [isFixed]);
 
     useEffect(() => {
-        const socket = new SockJS(BASE_URL + '/ws');
-        const client = Stomp.over(socket);
         if (user) {
+            const socket = new SockJS(BASE_URL + '/ws');
+            const client = Stomp.over(socket);
+
             client.connect({}, () => {
                 client.subscribe(`/topic/booking/${user.id}`, (dataGot) => {
                     setNotification((oldComment) => [JSON.parse(dataGot.body), ...oldComment]);
                     dispatch(addToNotification(1));
                     toast('🔔Bạn có một thông báo mới!', {
-                        position: 'top-right',
+                        position: 'bottom-right',
                         autoClose: 5000,
                         hideProgressBar: false,
                         closeOnClick: true,
@@ -71,15 +72,11 @@ function Header() {
                     });
                 });
             });
-        }
-        let cleanup = false;
 
-        return () => {
-            cleanup = true;
-            if (!cleanup) {
+            return () => {
                 client.disconnect();
-            }
-        };
+            };
+        }
     }, [user, dispatch]);
 
     useEffect(() => {
@@ -120,6 +117,29 @@ function Header() {
             console.log('Please enter a search term.');
         }
     };
+
+    function formatTimeAgo(commentDate) {
+        const commentTime = new Date(commentDate).getTime();
+        const currentTime = new Date().getTime();
+        const timeDifferenceInSeconds = Math.floor((currentTime - commentTime) / 1000);
+      
+        if (timeDifferenceInSeconds < 60) {
+          return 'vài giây trước';
+        } else if (timeDifferenceInSeconds < 3600) {
+          const minutesAgo = Math.floor(timeDifferenceInSeconds / 60);
+          return `${minutesAgo} phút trước`;
+        } else if (timeDifferenceInSeconds < 86400) {
+          const hoursAgo = Math.floor(timeDifferenceInSeconds / 3600);
+          return `${hoursAgo} giờ trước`;
+        } else if (timeDifferenceInSeconds < 604800) {
+          const daysAgo = Math.floor(timeDifferenceInSeconds / 86400);
+          return `${daysAgo} ngày trước`;
+        } else {
+          // Thời gian lớn hơn 7 ngày, hiển thị thời gian đầy đủ
+          const createdAt = new Date(commentDate).toLocaleString(); // Định dạng thời gian đầy đủ
+          return createdAt;
+        }
+      }
 
     const maskRead = () => {
         axios
@@ -282,7 +302,7 @@ function Header() {
                                                     className={cx(value.status === 0 ? 'background-EBEDF0' : '')}
                                                 >
                                                     <span>{value.text}</span>
-                                                    <span>{value.date}</span>
+                                                    <span>{formatTimeAgo(value.date)}</span>
                                                 </li>
                                             ))}
                                         </ul>
@@ -391,7 +411,7 @@ function Header() {
                                                     className={cx(value.status === 0 ? 'background-EBEDF0' : '')}
                                                 >
                                                     <span>{value.text}</span>
-                                                    <span>{value.date}</span>
+                                                    <span>{formatTimeAgo(value.date)}</span>
                                                 </li>
                                             ))}
                                         </ul>

@@ -195,7 +195,9 @@
             background: #d5b981;
         }
         img {
-            width: 100%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
         }
         &:after {
             position: absolute;
@@ -207,10 +209,6 @@
             background: transparent;
             border: 1px solid #ffffff;
             z-index: 1;
-        }
-        .price-img {
-            width: 100px;
-            height: 100px;
         }
     }
     .price-text {
