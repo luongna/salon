@@ -340,6 +340,9 @@ function Header() {
                                             <Link to={'/user-history'}>
                                                 <li>Lịch sử</li>
                                             </Link>
+                                            <Link to={'/resetpage'}>
+                                                <li>Đổi mật khẩu</li>
+                                            </Link>
                                             <li onClick={handleLogout}>Đăng xuất</li>
                                         </ul>
                                     </div>

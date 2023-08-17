@@ -29,7 +29,7 @@ function MyModal() {
 }
         
   const style = {
-    position: 'absolute', 
+    position: 'absolute' , 
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -38,6 +38,7 @@ function MyModal() {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
+    
 
   };
   const customStyles = {
@@ -51,6 +52,7 @@ function MyModal() {
       border: '1px solid #ccc',
       borderRadius: '4px',
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+      zIndex:1,
     }
 }
   const handleClose = () => setOpen(false);

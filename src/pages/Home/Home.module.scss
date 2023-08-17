@@ -106,7 +106,7 @@
             }
         }
         &:before {
-            position: absolute;
+            position: absolute ;
             content: '';
             top: -60px;
             right: 60px;
@@ -116,7 +116,7 @@
             z-index: 0;
         }
         &:after {
-            position: absolute;
+            position: relative;
             content: '';
             top: -30px;
             right: 30px;
