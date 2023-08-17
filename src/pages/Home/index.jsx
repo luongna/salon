@@ -49,6 +49,7 @@ function Home() {
 
     return (
         <>
+        <MyModal/>
             <Slideshow slides={slideshowImages} />
             <div className={cx('about')}>
                 <div className="container">

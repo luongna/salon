@@ -32,6 +32,7 @@ import DataUser from '~/pages/Admin/scenes/team';
 import AcceptBooking from '~/pages/Receptionist/AcceptBooking';
 import Chart from '~/pages/Admin/scenes/chart';
 import Contact from '~/pages/Contact';
+import ResetPage from '~/ResetPass/ResetPage';
 
 // Public routes
 const publicRoutes = [
@@ -66,6 +67,7 @@ const publicRoutes = [
     { path: '/chart', component: Chart, admin: true },
     { path: '/accept', component: AcceptBooking },
     { path: '/contact', component: Contact },
+    { path: '/resetpage', component:ResetPage ,layout:null },
 ];
 //dddd
 

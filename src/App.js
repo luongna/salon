@@ -44,7 +44,7 @@ function App() {
                                 path={route.path}
                                 element={
                                     <Layout>
-                                        <MyModal/>
+                                        {/* <MyModal/> */}
                                         <Page />
                                     </Layout>
                                 }
