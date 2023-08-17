@@ -76,16 +76,16 @@ function Cart() {
     }, [user, navigate]);
 
     //staff
-    useEffect(() => {
-        axios
-            .get(`/booking/listStaff`)
-            .then((res) => {
-                const staffs = res.data;
-                // console.log(staffs);
-                setStaffs(staffs);
-            })
-            .catch((error) => console.log(error));
-    }, []);
+    // useEffect(() => {
+    //     axios
+    //         .get(`/booking/listStaff?branch=${selectedBranchId.id}`)
+    //         .then((res) => {
+    //             const staffs = res.data;
+    //             // console.log(staffs);
+    //             setStaffs(staffs);
+    //         })
+    //         .catch((error) => console.log(error));
+    // }, []);
     //branch
     useEffect(() => {
         axios
@@ -149,6 +149,14 @@ function Cart() {
         const selected = branches.find((branch) => branch.id === selectedID);
         setSelectedBranchId(selected);
         console.log(selected);
+        axios
+            .get(`/booking/listStaff?branch=${selected.id}`)
+            .then((res) => {
+                const staffs = res.data;
+                // console.log(staffs);
+                setStaffs(staffs);
+            })
+            .catch((error) => console.log(error));
     };
     const handleDateClick = (id) => {
         setSelectedDateId(id);

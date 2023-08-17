@@ -29,7 +29,6 @@ function MyModal() {
 }
         
   const style = {
-    position: 'absolute' , 
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -38,9 +37,8 @@ function MyModal() {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    
-
   };
+  
   const customStyles = {
     content: {
       top: '50%', // Đặt vị trí theo chiều dọc
@@ -52,7 +50,6 @@ function MyModal() {
       border: '1px solid #ccc',
       borderRadius: '4px',
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-      zIndex:1,
     }
 }
   const handleClose = () => setOpen(false);
@@ -64,7 +61,7 @@ function MyModal() {
   onRequestClose={handleClose}
   style={customStyles}
 >
-  <Box sx={style} >
+  <Box className='modal-container' sx={style} >
    <img className='anh' src={event.img} alt="" />
   </Box>
 </Modal>
