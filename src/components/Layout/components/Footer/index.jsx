@@ -6,41 +6,35 @@ import CallIcon from '@mui/icons-material/Call';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import PhoneIcon from '@mui/icons-material/Phone';
 import styles from './Footer.module.scss';
+import axios from '~/utils/api/axios';
+import { useState, useEffect } from 'react';
+
 const cx = classNames.bind(styles);
 function Footer() {
-    const address = [
-        {
-            location: ' Số 1 Lương Yên, Q.Hai Bà Trưng, Hà Nội',
-            phone: '0934 323 882',
-        },
-        {
-            location: ' Số 1 Lương Yên, Q.Hai Bà Trưng, Hà Nội',
-            phone: '0934 323 882',
-        },
-        {
-            location: ' Số 1 Lương Yên, Q.Hai Bà Trưng, Hà Nội',
-            phone: '0934 323 882',
-        },
-        {
-            location: ' Số 1 Lương Yên, Q.Hai Bà Trưng, Hà Nội',
-            phone: '0934 323 882',
-        },
-        {
-            location: ' Số 1 Lương Yên, Q.Hai Bà Trưng, Hà Nội',
-            phone: '0934 323 882',
-        },
-    ];
+    const [addressData, setAddressData] = useState([]);
+    useEffect(() => {
+        fetchAddressData();
+    }, []);
+
+    const fetchAddressData = async () => {
+        try {
+            const response = await axios.get(`/branch`);
+            setAddressData(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
     return (
         <>
             <footer className={cx('footer-element')}>
                 <div>
                     <h3>Địa chỉ</h3>
                     <ul>
-                        {address.map((item, index) => (
+                        {addressData.map((item, index) => (
                             <li key={index}>
                                 <span>
                                     <LocationOnIcon className="contact-icon" />
-                                    {item.location}
+                                    {item.address}
                                 </span>
                                 <span>
                                     <CallIcon className="contact-icon" />
