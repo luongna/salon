@@ -122,24 +122,24 @@ function Header() {
         const commentTime = new Date(commentDate).getTime();
         const currentTime = new Date().getTime();
         const timeDifferenceInSeconds = Math.floor((currentTime - commentTime) / 1000);
-      
+
         if (timeDifferenceInSeconds < 60) {
-          return 'vài giây trước';
+            return 'vài giây trước';
         } else if (timeDifferenceInSeconds < 3600) {
-          const minutesAgo = Math.floor(timeDifferenceInSeconds / 60);
-          return `${minutesAgo} phút trước`;
+            const minutesAgo = Math.floor(timeDifferenceInSeconds / 60);
+            return `${minutesAgo} phút trước`;
         } else if (timeDifferenceInSeconds < 86400) {
-          const hoursAgo = Math.floor(timeDifferenceInSeconds / 3600);
-          return `${hoursAgo} giờ trước`;
+            const hoursAgo = Math.floor(timeDifferenceInSeconds / 3600);
+            return `${hoursAgo} giờ trước`;
         } else if (timeDifferenceInSeconds < 604800) {
-          const daysAgo = Math.floor(timeDifferenceInSeconds / 86400);
-          return `${daysAgo} ngày trước`;
+            const daysAgo = Math.floor(timeDifferenceInSeconds / 86400);
+            return `${daysAgo} ngày trước`;
         } else {
-          // Thời gian lớn hơn 7 ngày, hiển thị thời gian đầy đủ
-          const createdAt = new Date(commentDate).toLocaleString(); // Định dạng thời gian đầy đủ
-          return createdAt;
+            // Thời gian lớn hơn 7 ngày, hiển thị thời gian đầy đủ
+            const createdAt = new Date(commentDate).toLocaleString(); // Định dạng thời gian đầy đủ
+            return createdAt;
         }
-      }
+    }
 
     const maskRead = () => {
         axios
@@ -296,6 +296,7 @@ function Header() {
                                     <div className={cx('box_notification')} tabIndex="-1" {...attrs}>
                                         <h2>Thông báo</h2>
                                         <ul>
+                                            {notification.length === 0 && <li> Bạn không có thông báo nào!</li>}
                                             {notification.map((value) => (
                                                 <li
                                                     key={value.id}
@@ -408,6 +409,7 @@ function Header() {
                                     <div className={cx('box_notification')} tabIndex="-1" {...attrs}>
                                         <h1>Thông báo</h1>
                                         <ul>
+                                            {notification.length === 0 && <li> Bạn không có thông báo nào!</li>}
                                             {notification.map((value) => (
                                                 <li
                                                     key={value.id}
@@ -419,6 +421,9 @@ function Header() {
                                             ))}
                                         </ul>
                                         <div className={cx('box_notification_bottom')} onClick={maskRead}>
+                                            <span className={cx('check-icon')}>
+                                                <AiOutlineCheck />
+                                            </span>
                                             Đánh dấu đã đọc
                                         </div>
                                     </div>

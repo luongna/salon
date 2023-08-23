@@ -15,6 +15,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
+import CelebrationIcon from '@mui/icons-material/Celebration';
 import { useSelector } from 'react-redux';
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -150,6 +151,13 @@ const Sidebar = () => {
                             selected={selected}
                             setSelected={setSelected}
                         />
+                         <Item
+                            title="Event"
+                            to="/eventData"
+                            icon={<CelebrationIcon />}
+                            selected={selected}
+                            setSelected={setSelected}
+                        />
                         <Item
                             title="Lịch sử"
                             to="/history"
@@ -178,6 +186,13 @@ const Sidebar = () => {
                             title="Tạo dịch vụ"
                             to="/formService"
                             icon={<AddShoppingCartIcon />}
+                            selected={selected}
+                            setSelected={setSelected}
+                        />
+                         <Item
+                            title="Tạo event"
+                            to="/event"
+                            icon={<CelebrationIcon />}
                             selected={selected}
                             setSelected={setSelected}
                         />
