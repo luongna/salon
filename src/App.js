@@ -5,7 +5,6 @@ import { DefaultLayout, LayoutAdmin } from '~/components/Layout';
 import { useSelector } from 'react-redux';
 import AccessDeny from './pages/Admin/Status/accessDeny';
 import isAdmin from '~/utils/jwt';
-import MyModal from './event/modal';
 function App() {
     const user = useSelector((state) => state.auth.login?.currenUser);
     return (
