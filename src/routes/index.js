@@ -32,7 +32,9 @@ import DataUser from '~/pages/Admin/scenes/team';
 import AcceptBooking from '~/pages/Receptionist/AcceptBooking';
 import Chart from '~/pages/Admin/scenes/chart';
 import Contact from '~/pages/Contact';
-
+import Event from '~/pages/Admin/scenes/form/event';
+import EditFormEvent from '~/pages/Admin/scenes/form/editEvent';
+import EventData from '~/pages/Admin/scenes/event/index'
 // Public routes
 const publicRoutes = [
     { path: '/', component: Home },
@@ -45,6 +47,7 @@ const publicRoutes = [
     { path: '/services/:id', component: ServiceDetail },
     { path: '/staff', component: Staff },
     { path: '/branch', component: Branch, admin: true },
+    { path: '/eventData', component: EventData, admin: true },
     { path: '/dataService', component: DataService, admin: true },
     { path: '/formBranch', component: FormBranch, admin: true },
     { path: '/calendar', component: Calendar, admin: true },
@@ -64,8 +67,11 @@ const publicRoutes = [
     { path: '/bookOff', component: BookOff },
     { path: '/dataUser', component: DataUser, admin: true },
     { path: '/chart', component: Chart, admin: true },
+    { path: '/event', component: Event, admin: true },
+    { path: '/editEvent/:id', component: EditFormEvent, admin: true },
     { path: '/accept', component: AcceptBooking },
     { path: '/contact', component: Contact },
+    
 ];
 //dddd
 

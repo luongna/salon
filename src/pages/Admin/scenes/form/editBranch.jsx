@@ -22,7 +22,7 @@ L.Marker.prototype.options.icon = defaultIcon;
 const Form = () => {
     const isNonMobile = useMediaQuery('(min-width:600px)');
     const [selectedPoint, setSelectedPoint] = useState(null);
-    const [initialValues, setInitialValues] = useState({ name: '', address: '', status: '' });
+    const [initialValues, setInitialValues] = useState({ phone: '', address: '', status: '' });
     let id = useParams();
     const navigate = useNavigate();
     const handleMapClick = (e) => {
@@ -39,7 +39,7 @@ const Form = () => {
             .get(`/branch/detail/${id.id}`)
             .then((res) => {
                 const branch = res.data;
-                setInitialValues({ name: branch.name, address: branch.address, status: branch.status * 1 });
+                setInitialValues({ phone: branch.phone, address: branch.address, status: branch.status * 1 });
                 setSelectedPoint({
                     lat: branch.lat,
                     lng: branch.lng,
@@ -80,7 +80,7 @@ const Form = () => {
     return (
         <Box m="20px">
             <Header title="Chỉnh sửa chi nhánh" />
-            {initialValues.name && initialValues.address && (
+            {initialValues.phone && initialValues.address && (
                 <Formik onSubmit={handleFormSubmit} initialValues={initialValues} validationSchema={checkoutSchema}>
                     {({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
@@ -96,13 +96,13 @@ const Form = () => {
                                     fullWidth
                                     variant="filled"
                                     type="text"
-                                    label="Tên chi nhánh"
+                                    label="Số điện thoại"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    value={values.name}
-                                    name="name"
-                                    error={!!touched.name && !!errors.name}
-                                    helperText={touched.name && errors.name}
+                                    value={values.phone}
+                                    name="phone"
+                                    error={!!touched.phone && !!errors.phone}
+                                    helperText={touched.phone && errors.phone}
                                     sx={{ gridColumn: 'span 4' }}
                                 />
 
@@ -161,7 +161,7 @@ const Form = () => {
                             </div>
                             <Box display="flex" justifyContent="end" mt="20px">
                                 <Button type="submit" color="secondary" variant="contained">
-                                    Update chi nhánh
+                                    Cập nhật
                                 </Button>
                                 <Link to={'/branch'}>
                                     <Button type="submit" color="warning" variant="contained">
@@ -176,10 +176,10 @@ const Form = () => {
         </Box>
     );
 };
-
+const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const checkoutSchema = yup.object().shape({
-    name: yup.string().required('required'),
-    address: yup.string().required('required'),
+   phone: yup.string().matches(phoneRegExp, 'Số điện thoại không hợp lệ').required('Không được bỏ trống'),
+    address: yup.string().required('Không được bỏ trống'),
 });
 // const initialValues = {
 //     name: '',

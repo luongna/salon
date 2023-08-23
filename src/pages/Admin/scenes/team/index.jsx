@@ -5,7 +5,7 @@ import { tokens } from '~/utils/theme/theme';
 import axios from '~/utils/api/axios';
 import Header from '../../components/Header';
 import { IconButton } from '@mui/material';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+// import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Link } from 'react-router-dom';
 
@@ -22,9 +22,9 @@ const Team = () => {
             .catch((error) => console.log(error));
     }, []);
 
-    const handleDelete = (id) => {
-        setTeamData((prevData) => prevData.filter((item) => item.id !== id));
-    };
+    // const handleDelete = (id) => {
+    //     setTeamData((prevData) => prevData.filter((item) => item.id !== id));
+    // };
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -80,7 +80,7 @@ const Team = () => {
                             </IconButton>
                         </Link>
 
-                        <IconButton
+                        {/* <IconButton
                             aria-label="Delete"
                             size="small"
                             onClick={() => {
@@ -88,7 +88,7 @@ const Team = () => {
                             }}
                         >
                             <DeleteOutlinedIcon />
-                        </IconButton>
+                        </IconButton> */}
                     </Box>
                 );
             },

@@ -41,9 +41,22 @@ const Form = () => {
             email: values.email,
             phone: values.phone,
             birthday: values.birthday,
-            branch: values.branch,
+            branch: values.branch ? values.branch : 0,
             role: right,
         };
+        if (!receptionistRole && formData.branch === 0) {
+            toast.warning('Bạn chưa chọn chi nhánh!', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+            return;
+        }
         axios
             .put(`/auth/updateAdmin`, formData)
             .then((res) => {
@@ -101,7 +114,10 @@ const Form = () => {
     const rightChecked = intersection(checked, right);
 
     useEffect(() => {
-        setReceptionistRole(!right.some((role) => role.name === 'ROLE_RECEPTIONIST'));
+        const hasReceptionistOrStaffRole = right.some(
+            (role) => role.name === 'ROLE_RECEPTIONIST' || role.name === 'ROLE_STAFF',
+        );
+        setReceptionistRole(!hasReceptionistOrStaffRole);
     }, [right]);
 
     useEffect(() => {
@@ -114,6 +130,10 @@ const Form = () => {
                     let idBranch = user.branch?.id;
                     user.branch = idBranch;
                 }
+                const hasReceptionistOrStaffRole = user.roles.some(
+                    (role) => role.name === 'ROLE_RECEPTIONIST' || role.name === 'ROLE_STAFF',
+                );
+                setReceptionistRole(!hasReceptionistOrStaffRole);
                 setInitialValues(user);
                 axios
                     .get(`/auth/role`)
@@ -298,14 +318,14 @@ const Form = () => {
                                         label="Chi nhánh"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={values.branch || 0}
+                                        value={values.branch ? values.branch : 0}
                                         name="branch"
                                         sx={{ gridColumn: 'span 4' }}
                                     >
                                         <MenuItem value={0}>Chọn chi nhánh</MenuItem>
                                         {branchData.map((values) => (
                                             <MenuItem key={values.id} value={values.id}>
-                                                {values.name}
+                                                {values.address}
                                             </MenuItem>
                                         ))}
                                     </TextField>
