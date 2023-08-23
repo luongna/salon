@@ -178,7 +178,7 @@ const Comments = ({ serviceID }) => {
                             addComment={addComment}
                             deleteComment={deleteComment}
                             updateComment={updateComment}
-                            currentUserId={user.id}
+                            currentUserId={user?.id}
                             getReplies={getReplies}
                         />
                     ))}
