@@ -31,7 +31,7 @@
     width: 100%;
     height: 100%;
     justify-content: center;
-    object-fit: cover;
+    object-fit: fill;
 }
 .slide-text {
     position: absolute;
@@ -100,13 +100,13 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: 1;
+            z-index: 0;
             &:hover {
                 transition: scale(1.1);
             }
         }
         &:before {
-            position: absolute;
+            position: absolute ;
             content: '';
             top: -60px;
             right: 60px;
@@ -116,7 +116,7 @@
             z-index: 0;
         }
         &:after {
-            position: absolute;
+            position: relative;
             content: '';
             top: -30px;
             right: 30px;
@@ -124,7 +124,7 @@
             left: -30px;
             background: transparent;
             border: 1px solid #ffffff;
-            z-index: 2;
+            z-index: 0;
         }
     }
     .about-text {

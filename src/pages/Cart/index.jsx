@@ -13,12 +13,14 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from '~/utils/api/axios';
 import { removeToCart, addToCart } from '~/utils/store/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { blue, blueGrey, green } from '@mui/material/colors';
 const cx = classNames.bind(styles);
 
 function Cart() {
     const navigate = useNavigate();
     const [jsonData, setJsonData] = useState([]);
     const [staffs, setStaffs] = useState([]);
+    const [event ,setEvent] =useState({})
     const [times, setTimes] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const user = useSelector((state) => state.auth.login?.currenUser);
@@ -42,10 +44,7 @@ function Cart() {
         setJsonData(updatedElements);
     };
 
-    useEffect(() => {
-        const newTotalPrice = jsonData.reduce((total, element) => total + element.price, 0);
-        setTotalPrice(newTotalPrice);
-    }, [jsonData]);
+    
 
     useEffect(() => {
         if (user) {
@@ -60,22 +59,33 @@ function Cart() {
                     setJsonData(cart);
                 })
                 .catch((error) => console.log(error));
+
+                
+       
+        axios.post('/booking/event')
+        .then((res)=>{
+            setEvent(res.data)
+            console.log(res.data)
+            
+        
+        })
+
         } else {
             navigate('/login');
         }
     }, [user, navigate]);
 
     //staff
-    useEffect(() => {
-        axios
-            .get(`/booking/listStaff`)
-            .then((res) => {
-                const staffs = res.data;
-                // console.log(staffs);
-                setStaffs(staffs);
-            })
-            .catch((error) => console.log(error));
-    }, []);
+    // useEffect(() => {
+    //     axios
+    //         .get(`/booking/listStaff?branch=${selectedBranchId.id}`)
+    //         .then((res) => {
+    //             const staffs = res.data;
+    //             // console.log(staffs);
+    //             setStaffs(staffs);
+    //         })
+    //         .catch((error) => console.log(error));
+    // }, []);
     //branch
     useEffect(() => {
         axios
@@ -97,7 +107,13 @@ function Cart() {
             resolve(nextDay);
         });
     };
-
+    useEffect(() => {
+        const newTotalPrice = jsonData.reduce((total, element) => total + element.price, 0);
+        if(discount !=null){
+        newTotalPrice = newTotalPrice -(newTotalPrice/100*discount)
+        }
+        setTotalPrice(newTotalPrice);
+    }, [jsonData]);
     useEffect(() => {
         const fetchDates = async () => {
             const promises = [0, 1, 2, 3, 4, 5, 6].map((daysToAdd) => handleClick(daysToAdd));
@@ -112,6 +128,7 @@ function Cart() {
 
     const [active, setActive] = useState(false);
     const [selectedBranchId, setSelectedBranchId] = useState(null);
+    const [discount, setDiscount] = useState(null);
     const [selectedTimeId, setSelectedTimeId] = useState(null);
     const [selectedDateId, setSelectedDateId] = useState(null);
     const [selectedStaff, setSelectedStaff] = useState(null);
@@ -132,10 +149,18 @@ function Cart() {
         const selected = branches.find((branch) => branch.id === selectedID);
         setSelectedBranchId(selected);
         console.log(selected);
+        axios
+            .get(`/booking/listStaff?branch=${selected.id}`)
+            .then((res) => {
+                const staffs = res.data;
+                // console.log(staffs);
+                setStaffs(staffs);
+            })
+            .catch((error) => console.log(error));
     };
     const handleDateClick = (id) => {
         setSelectedDateId(id);
-
+       const date1 = dates[id-1].date
         axios
             .post(`/booking/listTime`, {
                 staffId: selectedStaff.id,
@@ -146,7 +171,22 @@ function Cart() {
                 setTimes(time);
             })
             .catch((error) => console.log(error));
+
+            axios
+            .post(`/booking/discount?date=${date1}`)
+            .then((res) => {
+                const discount = res.data;
+                setDiscount(discount)
+                if(discount !=null){
+                    setTotalPrice(totalPrice-(totalPrice/100*discount))
+                    console.log(discount)
+                }
+            })
+            .catch((error) => console.log(error));
     };
+   
+
+    
     const handleTimesClick = (id) => {
         setSelectedTimeId(id);
     };
@@ -190,7 +230,9 @@ function Cart() {
                             dispatch(removeToCart());
                             toast.success('Bạn đã đặt lịch thành công', {
                                 position: toast.POSITION.TOP_RIGHT,
+                                
                             });
+                            navigate('/')
                         });
                 }
             } else {
@@ -292,6 +334,9 @@ function Cart() {
                                         ),
                                     )}
                                 </div>
+                                {event.img!=null ? (
+                                    <p className={cx('event')}>{event.date} giảm giá {event.discount}%</p>
+                                ):(<></>)}
                                 <p className={cx('branch-title')}>Chọn giờ (*):</p>
                                 <div className={cx('status-time')}>
                                     <div>
@@ -341,7 +386,11 @@ function Cart() {
                             <div className={cx('total-price')}>
                                 <p className={cx('total-price-title')}>Tổng tiền:</p>{' '}
                                 <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
+                                {discount!=null ? (
+                                    <p className={cx('event')}>giảm giá {discount}%</p>
+                                ):(<></>)}
                             </div>
+                            
                             <button className={cx('submit-booking')} type="submit" onClick={handleSubmit}>
                                 ĐẶT LỊCH
                             </button>

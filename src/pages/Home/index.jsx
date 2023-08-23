@@ -8,6 +8,7 @@ import slideshow3 from '~/assets/images/slideshow3.jpg';
 import axios from '~/utils/api/axios';
 import { useEffect, useState } from 'react';
 import avatarDefault from '~/assets/images/avatarDefault.jpg';
+import MyModal from '~/event/modal';
 
 const cx = classNames.bind(styles);
 function Home() {
@@ -48,6 +49,7 @@ function Home() {
 
     return (
         <>
+        <MyModal/>
             <Slideshow slides={slideshowImages} />
             <div className={cx('about')}>
                 <div className="container">

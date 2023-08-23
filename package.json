@@ -39,6 +39,7 @@
         "react-dom": "^18.1.0",
         "react-icons": "^4.10.1",
         "react-leaflet": "^4.2.1",
+        "react-modal": "^3.16.1",
         "react-paginate": "^8.2.0",
         "react-pro-sidebar": "^0.7.1",
         "react-redux": "^8.1.1",
@@ -66,7 +67,9 @@
         "start": "react-app-rewired start",
         "build": "react-app-rewired build",
         "test": "react-app-rewired test",
-        "eject": "react-app-rewired eject"
+        "eject": "react-app-rewired eject",
+        "deploy": "serve -s build"
+
     },
     "eslintConfig": {
         "extends": [

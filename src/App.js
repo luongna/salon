@@ -5,12 +5,14 @@ import { DefaultLayout, LayoutAdmin } from '~/components/Layout';
 import { useSelector } from 'react-redux';
 import AccessDeny from './pages/Admin/Status/accessDeny';
 import isAdmin from '~/utils/jwt';
+import MyModal from './event/modal';
 function App() {
     const user = useSelector((state) => state.auth.login?.currenUser);
     return (
+        
         <Router>
-            <div className="App">
-                <Routes>
+            <div className="App">           
+                <Routes>     
                     {publicRoutes.map((route, index) => {
                         let Page = route.component;
                         let Layout = DefaultLayout;
@@ -35,18 +37,23 @@ function App() {
                         }
                       
                         return (
+                            <>
+                            
                             <Route
                                 key={index}
                                 path={route.path}
                                 element={
                                     <Layout>
+                                        {/* <MyModal/> */}
                                         <Page />
                                     </Layout>
                                 }
                             />
+                            </>
                         );
                     })}
                 </Routes>
+                
             </div>
         </Router>
     );

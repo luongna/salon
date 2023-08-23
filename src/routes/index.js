@@ -35,6 +35,8 @@ import Contact from '~/pages/Contact';
 import Event from '~/pages/Admin/scenes/form/event';
 import EditFormEvent from '~/pages/Admin/scenes/form/editEvent';
 import EventData from '~/pages/Admin/scenes/event/index'
+import ResetPage from '~/ResetPass/ResetPage';
+
 // Public routes
 const publicRoutes = [
     { path: '/', component: Home },
@@ -71,9 +73,10 @@ const publicRoutes = [
     { path: '/editEvent/:id', component: EditFormEvent, admin: true },
     { path: '/accept', component: AcceptBooking },
     { path: '/contact', component: Contact },
-    
+    { path: '/resetpage', component:ResetPage ,layout:null },
+
 ];
-//dddd
+
 
 const privateRoutes = [];
 
