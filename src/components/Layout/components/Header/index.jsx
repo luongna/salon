@@ -99,6 +99,7 @@ function Header() {
         dispatch(logoutSuccess());
         dispatch(removeToCart());
         dispatch(removeToNotification());
+        navigate("/login")
     };
 
     const handleSearchChange = (e) => {

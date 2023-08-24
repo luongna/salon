@@ -52,7 +52,17 @@ const HistoryBooking = () => {
             align: 'left',
             flex: 1.5,
             renderCell: ({ row }) => {
-                return <span>{row.status === 0 ? 'Đang chờ' : 'Đã chấp nhận'}</span>;
+                return (
+                    <span>
+                        {row.status === 0
+                            ? 'Đang chờ'
+                            : row.status === 1
+                            ? 'Đã hoàn thành'
+                            : row.status === 2
+                            ? 'Đã chấp nhận'
+                            : 'Hủy'}
+                    </span>
+                );
             },
         },
         {

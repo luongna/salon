@@ -10,7 +10,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import axios from '~/utils/api/axios';
 import ConfirmBox from '~/pages/Admin/components/ConfirmBox';
+import isAdmin from '~/utils/jwt';
 const cx = classNames.bind(styles);
+let badword = /ngu|cc|cac|fuck|c/gi;
 const Comments = ({ serviceID }) => {
     const [open, setOpen] = useState(false);
     const [deleteData, setDeleteData] = useState(null);
@@ -19,14 +21,16 @@ const Comments = ({ serviceID }) => {
     const [backendComments, setBackendComments] = useState([]);
     const [activeComment, setActiveComment] = useState(null);
     const rootComments = backendComments.filter((backendComment) => backendComment.parentID === 0);
+    const isAdminCheck = isAdmin(user?.accessToken);
     const getReplies = (commentId) =>
         backendComments
             .filter((backendComment) => backendComment.parentID === commentId)
             .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+
     const addComment = (text, parentId) => {
         if (user) {
             const comment = {
-                text: text,
+                text: text.replace(badword, '♥️'),
                 parentID: parentId ? parentId : 0,
                 user_id: user.id,
                 service_id: serviceID,
@@ -80,7 +84,7 @@ const Comments = ({ serviceID }) => {
                 user_id: user.id,
                 service_id: serviceID,
                 date: null,
-                parentID: null,
+                parentID: isAdmin ? 1 : 0,
             };
             stompClient.send(`/app/deleteComment/${serviceID}`, {}, JSON.stringify(updatedComment));
         } else {
@@ -180,6 +184,7 @@ const Comments = ({ serviceID }) => {
                             updateComment={updateComment}
                             currentUserId={user?.id}
                             getReplies={getReplies}
+                            isAdmin={isAdminCheck}
                         />
                     ))}
                 </div>
