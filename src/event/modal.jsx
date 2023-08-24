@@ -22,7 +22,7 @@ function MyModal() {
             setEvent(res.data)
             console.log(res.data)
             setD(1)
-           if(event==null){
+           if(res.data=='not'){
             setOpen(false)
            }
         })

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import './registerForm.scss';
 import Swal from 'sweetalert2';
 import axios from '~/utils/api/axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 function RegisterForm() {
     const [username, setUsername] = useState('');
@@ -119,12 +119,19 @@ function RegisterForm() {
 
         return formIsValid;
     };
-
+    const [Btn,setBtn] = useState(false)
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (validateForm()) {
             console.log(email);
+            setBtn(true);
+            Swal.fire({
+                html: `<h4>OTP đã được gửi tới email của bạn !</h4>`,
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+            });
             axios
                 .post('/users/mail', {
                     otp: '12',
@@ -136,6 +143,7 @@ function RegisterForm() {
                 })
                 .then((response) => {
                     console.log(response.data);
+                    toast.success('mã OTP đã được gửi đến gmail của bạn!');
                     if (response.data === 'Email is already existed' || response.data === 'Phone is already existed') {
                         if (response.data === 'Email is already existed') {
                             setErrors((errors) => ({ ...errors, email: 'Email đã tồn tại!' }));
@@ -295,7 +303,7 @@ function RegisterForm() {
                 {errors['confirmPassword'] !== '' && <span className="error">{errors['confirmPassword']}</span>}
             </div>
 
-            <button className="form-submit" onClick={(e) => handleSubmit(e)} type="submit">
+            <button disabled={Btn} className="form-submit" onClick={(e) => handleSubmit(e)} type="submit">
                 Đăng ký
             </button>
         </form>

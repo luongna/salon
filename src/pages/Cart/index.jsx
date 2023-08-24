@@ -14,6 +14,7 @@ import axios from '~/utils/api/axios';
 import { removeToCart, addToCart } from '~/utils/store/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { blue, blueGrey, green } from '@mui/material/colors';
+import { date } from 'yup';
 const cx = classNames.bind(styles);
 
 function Cart() {
@@ -26,7 +27,6 @@ function Cart() {
     const user = useSelector((state) => state.auth.login?.currenUser);
     const dispatch = useDispatch();
     const deleteElement = (index, id) => {
-        console.log(id);
         axios
             .post(`/booking/deleteDetail`, {
                 serviceID: id,
@@ -62,13 +62,7 @@ function Cart() {
 
                 
        
-        axios.post('/booking/event')
-        .then((res)=>{
-            setEvent(res.data)
-            console.log(res.data)
-            
         
-        })
 
         } else {
             navigate('/login');
@@ -109,9 +103,7 @@ function Cart() {
     };
     useEffect(() => {
         const newTotalPrice = jsonData.reduce((total, element) => total + element.price, 0);
-        if(discount !=null){
-        newTotalPrice = newTotalPrice -(newTotalPrice/100*discount)
-        }
+    
         setTotalPrice(newTotalPrice);
     }, [jsonData]);
     useEffect(() => {
@@ -119,8 +111,10 @@ function Cart() {
             const promises = [0, 1, 2, 3, 4, 5, 6].map((daysToAdd) => handleClick(daysToAdd));
             const updatedDates = await Promise.all(promises).then((results) =>
                 results.map((date, index) => ({ id: index + 1, date })),
+                
             );
             setDates(updatedDates);
+            console.log(updatedDates[0].date)
         };
 
         fetchDates();
@@ -142,6 +136,19 @@ function Cart() {
         } else {
             setActive(false);
         }
+        axios.post('/booking/event')
+        .then((res)=>{
+            if(res.data=='not'){
+                setEvent(null)
+            }
+            else{
+                setEvent(res.data)
+            }
+            
+            console.log(res.data)
+            
+        
+        })
     };
 
     const handleBranchesChange = (event) => {
@@ -157,6 +164,8 @@ function Cart() {
                 setStaffs(staffs);
             })
             .catch((error) => console.log(error));
+
+            
     };
     const handleDateClick = (id) => {
         setSelectedDateId(id);
@@ -175,12 +184,14 @@ function Cart() {
             axios
             .post(`/booking/discount?date=${date1}`)
             .then((res) => {
+                if(res.data!='not'){
                 const discount = res.data;
                 setDiscount(discount)
                 if(discount !=null){
                     setTotalPrice(totalPrice-(totalPrice/100*discount))
                     console.log(discount)
                 }
+            }
             })
             .catch((error) => console.log(error));
     };
@@ -227,12 +238,20 @@ function Cart() {
                             bankCode: 'NCB',
                         })
                         .then((res) => {
+                           if(res.data==='ss'){ 
                             dispatch(removeToCart());
                             toast.success('Bạn đã đặt lịch thành công', {
                                 position: toast.POSITION.TOP_RIGHT,
                                 
                             });
-                            navigate('/')
+                            navigate('/')}
+                            else {
+                                setBookBtn(false)
+                                toast.error('bạn còn đơn hàng chưa được xác nhận', {
+                                    position: toast.POSITION.TOP_RIGHT,
+                                    
+                                });
+                            }
                         });
                 }
             } else {
@@ -244,6 +263,7 @@ function Cart() {
     };
 
     const [isChecked, setIsChecked] = useState(false);
+    const [bookBtn, setBookBtn] = useState(true);
     const position = [15.977456962147246, 108.2627979201717];
     let defaultIcon = L.icon({
         iconUrl: icon,
@@ -391,7 +411,7 @@ function Cart() {
                                 ):(<></>)}
                             </div>
                             
-                            <button className={cx('submit-booking')} type="submit" onClick={handleSubmit}>
+                            <button disabled={bookBtn} className={cx('submit-booking')} type="submit" onClick={handleSubmit}>
                                 ĐẶT LỊCH
                             </button>
                             <ToastContainer />
