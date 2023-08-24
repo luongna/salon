@@ -64,7 +64,7 @@ const Form = () => {
                 status: values.status * 1,
                 content: values.description,
                 img: imageBase64,
-                date: moment().add(values.date, 'days').format('DD/MM/YYYY'),
+                date: values.date
             };
 
             axios
