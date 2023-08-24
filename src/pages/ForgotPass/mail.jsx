@@ -29,10 +29,17 @@ const Mail = () => {
         }
         return formIsValid;
     };
-
+const[BtnReset,setBtnReset] = useState(false)
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validation()) {
+            Swal.fire({
+                html: `<h4>OTP đã được gửi tới email của bạn !</h4>`,
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+            });
+            setBtnReset(true)
             axios
                 .post('/users/mail2', {
                     email: email,
@@ -111,7 +118,7 @@ const Mail = () => {
                 </div>
 
                 <div className="text-center text-lg-start mt-4 pt-2">
-                    <button type="submit" className="form-submit">
+                    <button disabled={BtnReset} type="submit" className="form-submit">
                         Sent OTP
                     </button>
                 </div>
