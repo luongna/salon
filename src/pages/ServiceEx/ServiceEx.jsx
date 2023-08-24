@@ -132,10 +132,10 @@ function ServiceEx() {
             <section className="body">
                 <h2 className="heading">TRỞ THÀNH QUÝ ÔNG LỊCH LÃM CÙNG SUPLO</h2>
                 <p className="sub-heading">
-                    Suplo hạnh phúc khi mỗi ngày đem đến cho phái mạnh toàn cầu sự tự tin tỏa sáng, sức khoẻ, niềm vui
-                    thư giãn; bằng những sản phẩm, dịch vụ chăm sóc sức khỏe, da mặt chuyên nghiệp - tạo kiểu tóc thời
-                    trang - gói gọn trong quy trình khoa học 30phút (không phải chờ đợi lâu) với giá thành rẻ nhất thế
-                    giới.
+                    Chúng tôi hạnh phúc khi mỗi ngày đem đến cho phái mạnh toàn cầu sự tự tin tỏa sáng, sức khoẻ, niềm
+                    vui thư giãn; bằng những sản phẩm, dịch vụ chăm sóc sức khỏe, da mặt chuyên nghiệp - tạo kiểu tóc
+                    thời trang - gói gọn trong quy trình khoa học 30phút (không phải chờ đợi lâu) với giá thành rẻ nhất
+                    Việt Nam.
                 </p>
                 <div className="service-list">
                     {currentServices.map((service) => (

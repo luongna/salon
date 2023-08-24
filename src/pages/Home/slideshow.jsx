@@ -24,10 +24,6 @@ function Slideshow({ slides }) {
     return (
         <div className={cx('element')}>
             <img className={cx('img-element')} src={slides[currentIndex]} alt="Slide" />
-            <h1 className={cx('slide-text')}>
-                Create your style
-                <p>tạo ra phong cách của riêng bạn!</p>
-            </h1>
             <div className={cx('dots')}>
                 {slideIndexes.map((index) => (
                     <div

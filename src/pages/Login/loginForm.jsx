@@ -152,27 +152,20 @@ const LoginForm = (onClose) => {
                     {errors['password'] !== '' && <span className="error">{errors['password']}</span>}
                 </div>
 
-                <div className="d-flex justify-content-between align-items-center">
-                    <div className="form-check mb-0 d-flex justify-content-between align-items-center">
-                        <input className="form-check-input me-2" type="checkbox" id="form2Example3" />
-
-                        <label className="form-check-label" htmlFor="form2Example3">
-                            Remember me
-                        </label>
-                    </div>
+                <div className="d-flex justify-content-end align-items-center">
                     <a href="#!" className="text-body">
-                        <Link to={'/mail'}>Forgot password?</Link>
+                        <Link to={'/mail'}>Quên mật khẩu?</Link>
                     </a>
                 </div>
 
                 <div className="text-center text-lg-start mt-4 pt-2">
                     <button type="submit" className="form-submit">
-                        Login
+                        Đăng nhập
                     </button>
                     <p className="small fw-bold mt-2 pt-1 mb-0">
-                        Don't have an account?{' '}
+                        Chưa có tài khoản?{' '}
                         <a href="#!" className="link-danger">
-                            <Link to={'/register'}>Register</Link>
+                            <Link to={'/register'}>Đăng ký</Link>
                         </a>
                     </p>
                 </div>

@@ -56,7 +56,7 @@ const ForgotForm = () => {
         <div className="form">
             <form onSubmit={handleSubmit}>
                 <div className="divider d-flex align-items-center my-4">
-                    <p className="text-center fw-bold mx-3 mb-0 title-lable">Reset Password</p>
+                    <p className="text-center fw-bold mx-3 mb-0 title-lable">Đổi lại mật khẩu</p>
                 </div>
                 <p id="f"></p>
                 <div className="form-outline mb-4">
@@ -94,7 +94,7 @@ const ForgotForm = () => {
 
                 <div className="text-center text-lg-start mt-4 pt-2">
                     <button type="submit" className="form-submit">
-                        Reset Password
+                        Xác nhận
                     </button>
                 </div>
             </form>
