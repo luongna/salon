@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Box, useTheme } from '@mui/material';
-import { DataGrid, viVN, GridToolbar } from '@mui/x-data-grid';
+import { Box, Button, useTheme } from '@mui/material';
+import { DataGrid, viVN } from '@mui/x-data-grid';
 import { tokens } from '~/utils/theme/theme';
-import axios from '~/utils/api/axios';
+import axios, { BASE_URL } from '~/utils/api/axios';
 import Header from '../../components/Header';
 import { IconButton } from '@mui/material';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -10,8 +10,9 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Link } from 'react-router-dom';
 import ConfirmBox from '../../components/ConfirmBox';
 import { ToastContainer, toast } from 'react-toastify';
-
+import GridCustom from '../../components/GridCustom';
 import 'react-toastify/dist/ReactToastify.css';
+
 const Service = () => {
     const [teamData, setTeamData] = useState([]);
     const [open, setOpen] = useState(false);
@@ -143,7 +144,11 @@ const Service = () => {
         <>
             <Box m="20px">
                 <Header title="Dịch vụ" subtitle="Quản lý dịch vụ" />
-
+                <Box display="flex" justifyContent="start" mt="20px">
+                    <Button color="secondary" variant="contained" href={BASE_URL + `/download/service`}>
+                        Tải báo cáo
+                    </Button>
+                </Box>
                 <Box
                     m="40px 0 0 0"
                     height="75vh"
@@ -177,7 +182,7 @@ const Service = () => {
                         rows={teamData}
                         columns={columns}
                         localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
-                        slots={{ toolbar: GridToolbar }}
+                        slots={{ toolbar: GridCustom }}
                     />
                 </Box>
             </Box>
