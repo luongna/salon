@@ -119,7 +119,7 @@ function RegisterForm() {
 
         return formIsValid;
     };
-    const [Btn,setBtn] = useState(false)
+    const [Btn, setBtn] = useState(false);
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -254,7 +254,7 @@ function RegisterForm() {
                 {errors['phone'] !== '' && <span className="error">{errors['phone']}</span>}
             </div>
             <div className="form-group">
-                <label className="form-label">Ngày Sinh</label>
+                <label className="form-label">Ngày sinh</label>
                 <input
                     id="birthday"
                     name="birthday"
