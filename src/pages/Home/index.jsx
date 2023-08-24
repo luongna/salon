@@ -49,7 +49,7 @@ function Home() {
 
     return (
         <>
-        <MyModal/>
+            <MyModal />
             <Slideshow slides={slideshowImages} />
             <div className={cx('about')}>
                 <div className="container">
@@ -61,21 +61,21 @@ function Home() {
                         </div>
                         <div className="col-lg-7 col-md-6">
                             <div className={cx('section-header')} style={{ textAlign: 'center' }}>
-                                <p>Learn About Us</p>
-                                <h2>25 Years Experience</h2>
+                                <h2>TRẢI NGHIỆM SALON ĐẲNG CẤP VIỆT NAM</h2>
                             </div>
                             <div className={cx('about-text')}>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec pretium mi.
-                                    Curabitur facilisis ornare velit non vulputate. Aliquam metus tortor, auctor id
-                                    gravida condimentum, viverra quis sem.
+                                    Thành lập từ năm 2019, SalonSpace vẫn luôn đứng vững suốt 4 năm trong ngành thẩm mỹ
+                                    Việt cạnh tranh khốc liệt và đem đến vẻ đẹp hoàn hảo cho hàng triệu khách hàng.
                                 </p>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec pretium mi.
-                                    Curabitur facilisis ornare velit non vulputate. Aliquam metus tortor, auctor id
-                                    gravida condimentum, viverra quis sem. Curabitur non nisl nec nisi scelerisque
-                                    maximus. Aenean consectetur convallis porttitor. Aliquam interdum at lacus non
-                                    blandit.
+                                    Quy tụ đội ngũ chuyên gia uy tín hàng đầu trong nước . Mỗi một dịch vụ sẽ có ekip
+                                    chuyên gia cố vấn và bác sĩ chuyên môn để giúp khách hàng đạt hiệu quả tối đa.
+                                </p>
+                                <p>
+                                    Chúng tôi hạnh phúc khi mỗi ngày được đem đến cho mọi người sự tự tin tỏa sáng, sức
+                                    khỏe và niềm vui bằng những dịch vụ chăm sóc sức khỏe, da mặt chuyên nghiệp với giá
+                                    phù hợp.
                                 </p>
                             </div>
                         </div>
@@ -86,8 +86,7 @@ function Home() {
             <div className={cx('service')}>
                 <div className="container">
                     <div className={cx('section-header')} style={{ textAlign: 'center' }}>
-                        <p>Our Salon Services</p>
-                        <h2>Best Salon and Barber Services for You</h2>
+                        <h2>Dịch vụ tốt nhất cho bạn</h2>
                     </div>
                     <div className="row">
                         <div className="col-lg-4 col-md-6">
@@ -95,11 +94,8 @@ function Home() {
                                 <div className={cx('service-img')}>
                                     <img src={process.env.PUBLIC_URL + '/img/service-1.jpg'} alt="service" />
                                 </div>
-                                <h3>Hair Cut</h3>
-                                <p>
-                                    Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi. Curabitur facilisis
-                                    ornare velit non
-                                </p>
+                                <h3>Tạo mẫu tóc</h3>
+                                <p>Phù hợp với mọi gương mặt khác nhau, mang đến sự sự trẻ trung, hiện đại.</p>
                             </div>
                         </div>
                         <div className="col-lg-4 col-md-6">
@@ -107,11 +103,8 @@ function Home() {
                                 <div className={cx('service-img')}>
                                     <img src={process.env.PUBLIC_URL + '/img/service-2.jpg'} alt="service" />
                                 </div>
-                                <h3>Beard Style</h3>
-                                <p>
-                                    Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi. Curabitur facilisis
-                                    ornare velit non
-                                </p>
+                                <h3>Cạo mặt</h3>
+                                <p>Cạo mặt giúp da sáng mịn để bạn luôn hoàn hảo trước buổi hẹn quan trọng.</p>
                             </div>
                         </div>
                         <div className="col-lg-4 col-md-6">
@@ -119,11 +112,8 @@ function Home() {
                                 <div className={cx('service-img')}>
                                     <img src={process.env.PUBLIC_URL + '/img/service-3.jpg'} alt="service" />
                                 </div>
-                                <h3>Color & Wash</h3>
-                                <p>
-                                    Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi. Curabitur facilisis
-                                    ornare velit non
-                                </p>
+                                <h3>Vệ sinh tai</h3>
+                                <p>Vệ sinh tai giúp bảo vệ đôi tai của bạn sạch sẽ và an toàn hơn</p>
                             </div>
                         </div>
                     </div>
@@ -133,8 +123,7 @@ function Home() {
             <div className={cx('price')}>
                 <div className="container">
                     <div className={cx('section-header')} style={{ textAlign: 'center' }}>
-                        <p>Our Best Pricing</p>
-                        <h2>We Provide Best Price in the City</h2>
+                        <h2>Những Dịch vụ hàng đầu</h2>
                     </div>
                     <div className="row">
                         {mostBookedServices.map((service, index) => (
@@ -158,8 +147,7 @@ function Home() {
             <div className={cx('team')}>
                 <div className="container">
                     <div className={cx('section-header')} style={{ textAlign: 'center' }}>
-                        <p>Our Barber Team</p>
-                        <h2>Meet Our Hair Cut Expert Barber</h2>
+                        <h2>ĐỘI NGŨ CHUYÊN GIA GIÀU KINH NGHIỆM</h2>
                     </div>
                     <div className="row">
                         {topUsers.map((user, index) => (
