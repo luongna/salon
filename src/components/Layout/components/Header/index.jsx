@@ -96,9 +96,10 @@ function Header() {
     };
 
     const handleLogout = () => {
+        setStatus(!status);
         dispatch(logoutSuccess());
         dispatch(removeToCart());
-        dispatch(removeToNotification());
+        dispatch(removeToNotification());        
     };
 
     const handleSearchChange = (e) => {
@@ -165,12 +166,20 @@ function Header() {
                 </div>
                 <ul className={cx('ul-element')}>
                     <li>
-                        <Link to={'/'} className={cx('element', currentURL === '/' && 'header-active')}>
+                        <Link
+                            to={'/'}
+                            className={cx('element', currentURL === '/' && 'header-active')}
+                            onClick={() => setStatus(!status)}
+                        >
                             trang chủ
                         </Link>
                     </li>
                     <li>
-                        <Link to={'/service'} className={cx('element', currentURL === '/service' && 'header-active')}>
+                        <Link
+                            to={'/service'}
+                            className={cx('element', currentURL === '/service' && 'header-active')}
+                            onClick={() => setStatus(!status)}
+                        >
                             dịch vụ
                         </Link>
                     </li>
@@ -179,19 +188,28 @@ function Header() {
                         <Link
                             to={'/serviceExample'}
                             className={cx('element', currentURL === '/serviceExample' && 'header-active')}
+                            onClick={() => setStatus(!status)}
                         >
                             Mẫu dịch vụ
                         </Link>
                     </li>
 
                     <li>
-                        <Link to={'/staff'} className={cx('element', currentURL === '/staff' && 'header-active')}>
+                        <Link
+                            to={'/staff'}
+                            className={cx('element', currentURL === '/staff' && 'header-active')}
+                            onClick={() => setStatus(!status)}
+                        >
                             Chuyên gia
                         </Link>
                     </li>
 
                     <li>
-                        <Link to={'/contact'} className={cx('element', currentURL === '/contact' && 'header-active')}>
+                        <Link
+                            to={'/contact'}
+                            className={cx('element', currentURL === '/contact' && 'header-active')}
+                            onClick={() => setStatus(!status)}
+                        >
                             liên hệ
                         </Link>
                     </li>
@@ -335,10 +353,10 @@ function Header() {
                                 render={(attrs) => (
                                     <div className={cx('box_tippy')} tabIndex="-1" {...attrs}>
                                         <ul>
-                                            <Link to={'/profile'}>
+                                            <Link to={'/profile'} onClick={() => setStatus(!status)}>
                                                 <li>Hồ sơ</li>
                                             </Link>
-                                            <Link to={'/user-history'}>
+                                            <Link to={'/user-history'} onClick={() => setStatus(!status)}>
                                                 <li>Lịch sử</li>
                                             </Link>
                                             <Link to={'/resetpage'}>

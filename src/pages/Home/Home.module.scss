@@ -72,13 +72,15 @@
     h2 {
         margin: 0;
         position: relative;
-        font-size: 50px;
+        font-size: 36px;
         font-weight: 700;
+        text-transform: uppercase;
     }
 }
 
 @media (max-width: 767.98px) {
     .section-header h2 {
+        margin-top: 25px;
         font-size: 30px;
     }
 }
@@ -116,7 +118,7 @@
             z-index: 0;
         }
         &:after {
-            position: relative;
+            position: absolute;
             content: '';
             top: -30px;
             right: 30px;
@@ -130,6 +132,7 @@
     .about-text {
         p {
             font-size: 16px;
+            text-align: justify;
         }
     }
 }
