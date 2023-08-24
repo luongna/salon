@@ -103,7 +103,6 @@ function Cart() {
     };
     useEffect(() => {
         const newTotalPrice = jsonData.reduce((total, element) => total + element.price, 0);
-    
         setTotalPrice(newTotalPrice);
     }, [jsonData]);
     useEffect(() => {
@@ -187,7 +186,7 @@ function Cart() {
                 if(res.data!='not'){
                 const discount = res.data;
                 setDiscount(discount)
-                if(discount !=null){
+                if(discount !=0){
                     setTotalPrice(totalPrice-(totalPrice/100*discount))
                     console.log(discount)
                 }
@@ -411,7 +410,7 @@ function Cart() {
                                 ):(<></>)}
                             </div>
                             
-                            <button disabled={bookBtn} className={cx('submit-booking')} type="submit" onClick={handleSubmit}>
+                            <button  className={cx('submit-booking')} type="submit" onClick={handleSubmit}>
                                 ĐẶT LỊCH
                             </button>
                             <ToastContainer />
