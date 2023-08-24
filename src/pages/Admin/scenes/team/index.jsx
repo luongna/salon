@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box, Button, useTheme } from '@mui/material';
 import { DataGrid, viVN } from '@mui/x-data-grid';
 import { tokens } from '~/utils/theme/theme';
 import axios from '~/utils/api/axios';
@@ -8,7 +8,8 @@ import { IconButton } from '@mui/material';
 // import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Link } from 'react-router-dom';
-
+import GridCustom from '../../components/GridCustom';
+import { BASE_URL } from '~/utils/api/axios';
 const Team = () => {
     const [teamData, setTeamData] = useState([]);
 
@@ -59,7 +60,7 @@ const Team = () => {
             flex: 1,
             renderCell: ({ row }) => {
                 return (
-                    <div style={{wordWrap:'break-word'}}>
+                    <div style={{ wordWrap: 'break-word' }}>
                         {row.roles.map((role) => (
                             <div key={role.id}>{role.name},</div>
                         ))}
@@ -98,6 +99,11 @@ const Team = () => {
     return (
         <Box m="20px">
             <Header title="Người dùng" subtitle="Quản lý người dùng" />
+            <Box display="flex" justifyContent="start" mt="20px">
+                <Button color="secondary" variant="contained" href={BASE_URL+`/download/user`}>
+                    Tải báo cáo
+                </Button>
+            </Box>
             <Box
                 m="40px 0 0 0"
                 height="75vh"
@@ -131,7 +137,8 @@ const Team = () => {
                     rows={teamData}
                     columns={columns}
                     localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
-                    sx={{wordWrap: 'break-word'}}
+                    sx={{ wordWrap: 'break-word' }}
+                    slots={{ toolbar: GridCustom }}
                 />
             </Box>
         </Box>

@@ -1,14 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from '~/utils/api/axios';
-import { useEmailStore } from '~/utils/store/email';
 import { useSelector } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import './reset.scss';
 
 const ResetForm = () => {
-    const [email] = useEmailStore((state) => [state.email]);
     const user = useSelector((state) => state.auth.login?.currenUser);
     const [resetpass, setResetpass] = useState('');
     const [oldpass, setOldpass] = useState('');
@@ -16,27 +13,25 @@ const ResetForm = () => {
     const [errors, setErrors] = useState({});
     const negative = useNavigate();
 
-    useEffect(()=>{
-        if(!user){
+    useEffect(() => {
+        if (!user) {
             Swal.fire({
                 html: `<h4>Vui lòng đăng nhập!</h4>`,
                 icon: 'error',
                 showConfirmButton: false,
                 timer: 2000,
             });
-            negative('/login')
-            }
-    })
+            negative('/login');
+        }
+    });
     const validation = () => {
         let formIsValid = true;
         const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
-
-        if(!oldpass){
-            formIsValid =false
+        if (!oldpass) {
+            formIsValid = false;
             setErrors((errors) => ({ ...errors, oldpass: 'Vui lòng nhập mật khẩu cũ' }));
-        }
-        else{
+        } else {
             setErrors((errors) => ({ ...errors, oldpass: '' }));
         }
 
@@ -49,8 +44,7 @@ const ResetForm = () => {
                 ...errors,
                 resetpass: 'Mật khẩu mới phải ít nhất 8 kí tự, bao gồm chữ hoa, chữ thường và số',
             }));
-        }
-        else{
+        } else {
             setErrors((errors) => ({ ...errors, resetpass: '' }));
         }
 
@@ -60,8 +54,7 @@ const ResetForm = () => {
         } else if (resetpass !== confirmPass) {
             formIsValid = false;
             setErrors((errors) => ({ ...errors, confirmPass: 'Mật khẩu nhập lại không khớp' }));
-        }
-        else{
+        } else {
             setErrors((errors) => ({ ...errors, confirmPass: '' }));
         }
         return formIsValid;
@@ -69,12 +62,11 @@ const ResetForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validation()) {
-            
             axios
                 .post('/users/newpass', {
                     id: user.id,
                     oldPass: oldpass,
-                    newPass:resetpass,
+                    newPass: resetpass,
                 })
                 .then((res) => {
                     console.log('ssssss');
@@ -87,16 +79,11 @@ const ResetForm = () => {
                             timer: 1100,
                         });
                         negative('/login');
-                        
-
-                    }
-                    else{
-                        document.getElementById("f").innerText="Wrong old password"
+                    } else {
+                        document.getElementById('f').innerText = 'Wrong old password';
                     }
                 });
-            }
-           
-  
+        }
     };
     return (
         <div className="form">
@@ -104,7 +91,7 @@ const ResetForm = () => {
                 <div className="divider d-flex align-items-center my-4">
                     <p className="text-center fw-bold mx-3 mb-0 title-lable">Reset Password</p>
                 </div>
-                <p id="f" style={{color:'red'}}></p>
+                <p id="f" style={{ color: 'red' }}></p>
 
                 <div className="form-outline mb-4">
                     <label className="label title-lable" htmlFor="form3Example3">

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box, Button, useTheme } from '@mui/material';
 import { DataGrid, viVN } from '@mui/x-data-grid';
 import { tokens } from '~/utils/theme/theme';
 import Header from '../../components/Header';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from '~/utils/api/axios';
+import axios, { BASE_URL } from '~/utils/api/axios';
 import { useEffect } from 'react';
-
+import GridCustom from '../../components/GridCustom';
 const HistoryBooking = () => {
     const [teamData, setTeamData] = useState([]);
     const theme = useTheme();
@@ -47,7 +47,7 @@ const HistoryBooking = () => {
             align: 'left',
             flex: 1,
             renderCell: ({ row }) => {
-                return <span>{row.status === 0 ? 'Đang chờ' : 'Đã chấp nhận'}</span>;
+                return <span>{row.status === 0 ? 'Đang chờ' : row.status === 1 ? 'Đã hoàn thành' : row.status === 2 ?'Đã chấp nhận' : 'Hủy'}</span>;
             },
         },
         {
@@ -122,6 +122,11 @@ const HistoryBooking = () => {
         <>
             <Box m="20px">
                 <Header title="Lịch sử giao dịch" subtitle="Quản lý lịch sử giao dịch" />
+                <Box display="flex" justifyContent="start" mt="20px">
+                    <Button color="secondary" variant="contained" href={BASE_URL + `/download/booking`}>
+                        Tải báo cáo
+                    </Button>
+                </Box>
                 <Box
                     m="40px 0 0 0"
                     height="75vh"
@@ -155,6 +160,7 @@ const HistoryBooking = () => {
                         rows={teamData}
                         columns={columns}
                         localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
+                        slots={{ toolbar: GridCustom }}
                     />
                 </Box>
             </Box>

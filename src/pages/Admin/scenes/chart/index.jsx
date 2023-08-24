@@ -11,16 +11,29 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Box, TextField, Button, InputAdornment, MenuItem, Typography } from '@mui/material';
-import axios from '~/utils/api/axios';
+import axios, { BASE_URL } from '~/utils/api/axios';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useEffect } from 'react';
 import { useState } from 'react';
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 function Chart() {
     const [chartLine, setChartLine] = useState(null);
     const [error, setError] = useState('');
+    const [branchData, setBranchData] = useState([]);
+    const [url, setUrl] = useState(BASE_URL+`/dashboard/chart/download`);
+   
+    useEffect(() => {
+        axios
+            .get(`/branch`)
+            .then((res) => {
+                const branch = res.data;
+                setBranchData(branch);
+            })
+            .catch((error) => console.log(error));
+    }, []);
     useEffect(() => {
         axios
             .get(`/dashboard/chart`)
@@ -42,7 +55,7 @@ function Chart() {
                 console.error(error);
             });
     }, []);
-
+   
     const options = {
         responsive: true,
         plugins: {
@@ -56,8 +69,9 @@ function Chart() {
         },
     };
     const handleFormSubmit = (values) => {
+
         axios
-            .post(`/dashboard/chart`, { dateStart: values.dateStart, dateEnd: values.dateEnd, type: values.status })
+            .post(`/dashboard/chart`, { dateStart: values.dateStart, dateEnd: values.dateEnd, type: values.status, branch:values.branch  })
             .then((response) => {
                 const chart = response.data;
                 if (chart === 'year') {
@@ -68,6 +82,7 @@ function Chart() {
                     setError('Tháng phải giống nhau!');
                 } else {
                     setError('');
+                    setUrl(BASE_URL+`/dashboard/chart/${values.dateStart}/${values.dateEnd}/${values.status}/${values.branch}`)
                     setChartLine({
                         labels: chart.map((element) => element.date),
                         datasets: [
@@ -143,13 +158,35 @@ function Chart() {
                                 <MenuItem value={2}>Tháng</MenuItem>
                                 <MenuItem value={3}>Ngày</MenuItem>
                             </TextField>
+                            <TextField
+                                fullWidth
+                                variant="filled"
+                                // type="text"
+                                select
+                                label="Chi nhánh"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.branch}
+                                name="branch"
+                                sx={{ gridColumn: 'span 4' }}
+                            >
+                                <MenuItem value={0}>Tất cả chi nhánh</MenuItem>
+                                {branchData.map((values) => (
+                                    <MenuItem key={values.id} value={values.id}>
+                                        {values.address}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                         </Box>
                         <Typography variant="h4" color={'red'}>
                             {error}
                         </Typography>
                         <Box display="flex" justifyContent="start" mt="20px">
-                            <Button type="submit" color="secondary" variant="contained">
+                            <Button type="submit" color="secondary" variant="contained" sx={{ marginRight: '20px' }}>
                                 Duyệt
+                            </Button>
+                            <Button  color="secondary" variant="contained"  href={url} >
+                                Tải báo cáo
                             </Button>
                         </Box>
                     </form>
@@ -180,5 +217,6 @@ const initialValues = {
     dateStart: new Date().toISOString().split('T')[0],
     dateEnd: new Date().toISOString().split('T')[0],
     status: 0,
+    branch: 0,
 };
 export default Chart;
