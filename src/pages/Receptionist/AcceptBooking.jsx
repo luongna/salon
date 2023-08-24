@@ -24,7 +24,7 @@ function AcceptBooking() {
     }, [user]);
     const handleStatusClick = (id) => {
         Swal.fire({
-            html: `<h4>Xác nhận đơn hàng đã được được hoàn thành!</h4>`,
+            html: `<h4>Xác nhận đơn hàng đã được hoàn thành!</h4>`,
             // input: 'number',
             showCancelButton: true,
             confirmButtonText: 'Xác nhận',
@@ -41,6 +41,35 @@ function AcceptBooking() {
                             const updatedTeamData = teamData.map((booking) => {
                                 if (booking.id === id) {
                                     return { ...booking, status: 1 };
+                                }
+                                return booking;
+                            });
+                            setTeamData(updatedTeamData);
+                        }
+                    })
+                    .catch((error) => console.log(error));
+            },
+        });
+    };
+    const handleAcceptClick = (id) => {
+        Swal.fire({
+            html: `<h4>Xác nhận đơn hàng!</h4>`,
+            // input: 'number',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Đóng',
+            showLoaderOnConfirm: true,
+            confirmButtonColor: '#4caf50',
+            cancelButtonColor: ' #D3D3D3',
+            allowOutsideClick: false,
+            preConfirm: (code) => {
+                return axios
+                    .get(`/receptionist/accept/${id}`)
+                    .then((res) => {
+                        if (id === res.data) {
+                            const updatedTeamData = teamData.map((booking) => {
+                                if (booking.id === id) {
+                                    return { ...booking, status: 2 };
                                 }
                                 return booking;
                             });
@@ -115,7 +144,7 @@ function AcceptBooking() {
             headerName: 'Trạng thái',
             flex: 1,
             renderCell: ({ row }) => {
-                return row.status === 0 ? 'Chưa hoàn thành' : 'Đã hoàn thành';
+                return row.status === 0 ? 'Đang chờ' :  row.status === 1 ?'Đã hoàn thành' : row.status === 2 ? 'Đã xác nhận' : 'Hủy';
             },
         },
         {
@@ -161,6 +190,17 @@ function AcceptBooking() {
                             color="warning"
                             variant="contained"
                             sx={{ fontFamily: 'Lora, serif' }}
+                            onClick={() => handleAcceptClick(row.id)}
+                        >
+                            Xác nhận
+                        </Button>
+                    </Box>
+                ) : row.status === 2 ? (
+                    <Box>
+                        <Button
+                            color="warning"
+                            variant="contained"
+                            sx={{ fontFamily: 'Lora, serif' }}
                             onClick={() => handleStatusClick(row.id)}
                         >
                             Hoàn thành
@@ -172,10 +212,10 @@ function AcceptBooking() {
     ];
     return user && isReceptionist(user.accessToken) ? (
         <>
-            <div className="container">
+            <div style={{ width: '100%', height: '100%' }}>
                 <Box
-                    m="40px 0 0 0"
-                    height="75vh"
+                    m="40px"
+                    height="90vh"
                     sx={{
                         '& .MuiDataGrid-root': {
                             border: '1px solid #ccc',
