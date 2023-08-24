@@ -31,6 +31,7 @@ const Form = () => {
     }
     const isNonMobile = useMediaQuery('(min-width:600px)');
     const handleFormSubmit = (values, { resetForm }) => {
+        console.log(values.date)
         if (imageBase64 !== '') {
             const formValues = {
                 ...values,
@@ -38,8 +39,9 @@ const Form = () => {
                 content: values.description,
                 status: 0,
                 img: imageBase64,
-                date: moment().add(values.date, 'days').format('DD/MM/YYYY'),
+                date: values.date
             };
+            
             axios
                 .post(`/event`, formValues)
                 .then((res) => {
