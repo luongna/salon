@@ -74,7 +74,7 @@ const publicRoutes = [
     { path: '/accept', component: AcceptBooking },
     { path: '/contact', component: Contact },
     { path: '/resetpage', component:ResetPage ,layout:null },
-
+    { path: '/*', component: NotFound, layout: null },
 ];
 
 

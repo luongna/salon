@@ -96,10 +96,10 @@ function Header() {
     };
 
     const handleLogout = () => {
-        setStatus(!status);
         dispatch(logoutSuccess());
         dispatch(removeToCart());
-        dispatch(removeToNotification());        
+        dispatch(removeToNotification());
+        navigate("/login")
     };
 
     const handleSearchChange = (e) => {

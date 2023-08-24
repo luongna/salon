@@ -14,6 +14,7 @@ const Comment = ({
   // parentId ,
   currentUserId,
   getReplies,
+  isAdmin
 }) => {
   const isEditing =
     activeComment &&
@@ -24,7 +25,7 @@ const Comment = ({
     activeComment.id === comment.id &&
     activeComment.type === "replying";
   const canDelete =
-    currentUserId === comment.user_id ;
+    currentUserId === comment.user_id || isAdmin;
   const canReply = Boolean(currentUserId);
   const canEdit = currentUserId === comment.user_id ;
   const replyId =  comment.id;
@@ -109,6 +110,10 @@ const Comment = ({
           <CommentForm
             submitLabel="Trả lời"
             handleSubmit={(text) => addComment(text, replyId)}
+            hasCancelButton
+            handleCancel={() => {
+              setActiveComment(null);
+            }}
           />
         )}
         {replies.length > 0 && (
