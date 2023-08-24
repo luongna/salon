@@ -29,7 +29,7 @@ const Mail = () => {
         }
         return formIsValid;
     };
-const[BtnReset,setBtnReset] = useState(false)
+    const [BtnReset, setBtnReset] = useState(false);
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validation()) {
@@ -39,7 +39,7 @@ const[BtnReset,setBtnReset] = useState(false)
                 showConfirmButton: false,
                 timer: 1500,
             });
-            setBtnReset(true)
+            setBtnReset(true);
             axios
                 .post('/users/mail2', {
                     email: email,
@@ -93,7 +93,7 @@ const[BtnReset,setBtnReset] = useState(false)
         <div className="form">
             <form onSubmit={handleSubmit}>
                 <div className="divider d-flex align-items-center my-4">
-                    <p className="text-center fw-bold mx-3 mb-0 mail-name">Reset Password</p>
+                    <p className="text-center fw-bold mx-3 mb-0 mail-name">Đổi lại mật khẩu</p>
                 </div>
                 <p id="f"></p>
                 <div className="form-outline mb-4">
@@ -119,7 +119,7 @@ const[BtnReset,setBtnReset] = useState(false)
 
                 <div className="text-center text-lg-start mt-4 pt-2">
                     <button disabled={BtnReset} type="submit" className="form-submit">
-                        Sent OTP
+                        Gửi OTP
                     </button>
                 </div>
             </form>

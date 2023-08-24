@@ -57,7 +57,7 @@ function Footer() {
                         <a href="https://facebook.com" className="linked-icon">
                             <FontAwesomeIcon icon={faFacebook} size="xl"></FontAwesomeIcon>
                         </a>
-                        <a href="https://facebook.com" className="linked-icon">
+                        <a href="https://www.instagram.com" className="linked-icon">
                             <FontAwesomeIcon icon={faInstagram} size="xl"></FontAwesomeIcon>
                         </a>
                     </div>
@@ -66,10 +66,10 @@ function Footer() {
                     <h3>LIÊN lạc </h3>
                     <div>
                         <MailOutlineIcon className="contact-icon" />
-                        Phone: <span>13135123</span>
+                        Mail: <a href="mailto:salonspaceteam@gmail.com">salonspaceteam@gmail.com</a>
                         <br></br>
                         <PhoneIcon className="contact-icon" />
-                        Mail: <span>anhluong@gmail.com</span>
+                        Phone: <a href="tel:0702738238">0702738238</a>
                     </div>
                 </div>
             </footer>
