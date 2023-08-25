@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box ,Button} from '@mui/material';
 import { DataGrid, viVN } from '@mui/x-data-grid';
 import Header from '../../components/Header';
 import { ToastContainer } from 'react-toastify';
@@ -8,8 +8,6 @@ import axios from '~/utils/api/axios';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import './user-history.scss';
-import { Button } from 'bootstrap';
-import { green } from '@mui/material/colors';
 
 const HistoryBooking = () => {
     const [teamData, setTeamData] = useState([]);
@@ -33,7 +31,6 @@ const HistoryBooking = () => {
    {
         axios.post(`/checkout/re-create-payment?bookingid=${row}`
         ).then((res)=>{
-            console.log(row)
             window.location.href = res.data.url;
         })
    }
@@ -152,7 +149,18 @@ const HistoryBooking = () => {
             headerAlign: 'left',
             align: 'left',
             renderCell: ({ row }) => {
-                return <span>{row.payment === 0 ? (<button type='submit'onClick={() => payment(row.id)} style={{color:"green"}}>thanh toán lịch hẹn</button>) : ''}</span>;
+                return  (row.payment === 0 && row.status!=1 && row.status!=3) ? (
+                    <Box>
+                        <Button
+                            color="secondary"
+                            variant="contained"
+                            sx={{ fontFamily: 'Lora, serif' }}
+                            onClick={() => payment(row.id)} 
+                        >
+                            Thanh toán
+                        </Button>
+                    </Box>
+                ) : null;
             },
         },
     ];
