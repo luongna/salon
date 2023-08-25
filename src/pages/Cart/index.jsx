@@ -123,7 +123,7 @@ function Cart() {
 
     const [active, setActive] = useState(false);
     const [selectedBranchId, setSelectedBranchId] = useState(null);
-    const [discount, setDiscount] = useState(null);
+    const [discount, setDiscount] = useState(0);
     const [selectedTimeId, setSelectedTimeId] = useState(null);
     const [selectedDateId, setSelectedDateId] = useState(null);
     const [selectedStaff, setSelectedStaff] = useState(null);
@@ -170,7 +170,7 @@ function Cart() {
     };
     const handleDateClick = (id) => {
         setSelectedDateId(id);
-        setDiscount(discount)
+        
        const date1 = dates[id-1].date
         axios
             .post(`/booking/listTime`, {
@@ -193,7 +193,8 @@ function Cart() {
                 if(discount !==0){
                     setTotalPrice(totalPrice-(totalPrice/100*discount))
                     console.log(discount)
-                }
+                    setDiscount(discount)
+                }else  setDiscount(0)
             }
             })
             .catch((error) => console.log(error));
@@ -249,7 +250,7 @@ function Cart() {
                             });
                             navigate('/')}
                             else {
-                                setBookBtn(false)
+                                
                                 toast.error('bạn còn đơn hàng chưa được xác nhận', {
                                     position: toast.POSITION.TOP_RIGHT,
                                     
@@ -266,7 +267,7 @@ function Cart() {
     };
 
     const [isChecked, setIsChecked] = useState(false);
-    const [bookBtn, setBookBtn] = useState(true);
+   
     const position = [15.977456962147246, 108.2627979201717];
     let defaultIcon = L.icon({
         iconUrl: icon,
@@ -357,9 +358,9 @@ function Cart() {
                                         ),
                                     )}
                                 </div>
-                                {event !== null ?(
+                                {event.date !=null ?(
                                     <p className={cx('event')}>{event.date} giảm giá {event.discount}%</p>
-                                ):(<></>)}
+                                ):("")}
                                 <p className={cx('branch-title')}>Chọn giờ (*):</p>
                                 <div className={cx('status-time')}>
                                     <div>
@@ -409,7 +410,7 @@ function Cart() {
                             <div className={cx('total-price')}>
                                 <p className={cx('total-price-title')}>Tổng tiền:</p>{' '}
                                 <span>{totalPrice.toLocaleString('en-US')}</span> VNĐ
-                                {discount!=null ? (
+                                {discount!==0 ? (
                                     <p className={cx('event')}>giảm giá {discount}%</p>
                                 ):(<></>)}
                             </div>
