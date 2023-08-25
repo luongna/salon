@@ -8,6 +8,8 @@ import axios from '~/utils/api/axios';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import './user-history.scss';
+import { Button } from 'bootstrap';
+import { green } from '@mui/material/colors';
 
 const HistoryBooking = () => {
     const [teamData, setTeamData] = useState([]);
@@ -26,6 +28,16 @@ const HistoryBooking = () => {
                 .catch((error) => console.log('Error fetching data:', error)); // Debugging
         }
     }, [user]);
+
+   const payment = (row) =>
+   {
+        axios.post(`/checkout/re-create-payment?bookingid=${row}`
+        ).then((res)=>{
+            console.log(row)
+            window.location.href = res.data.url;
+        })
+   }
+
 
     const columns = [
         { field: 'id', headerName: 'ID', flex: 0.5 },
@@ -105,6 +117,7 @@ const HistoryBooking = () => {
             headerAlign: 'left',
             align: 'left',
         },
+       
         // {
         //     field: 'user', // Use a new field name
         //     headerName: 'Số điện thoại người dùng',
@@ -129,6 +142,17 @@ const HistoryBooking = () => {
                         <div>{row.branch.address}</div>
                     </div>
                 );
+            },
+        },
+        {
+            field: 'thanhtoan',
+            headerName: 'thanh toán đơn hàng',
+            flex: 2,
+            type: 'text',
+            headerAlign: 'left',
+            align: 'left',
+            renderCell: ({ row }) => {
+                return <span>{row.payment === 0 ? (<button type='submit'onClick={() => payment(row.id)} style={{color:"green"}}>thanh toán lịch hẹn</button>) : ''}</span>;
             },
         },
     ];
