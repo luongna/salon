@@ -13,8 +13,8 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from '~/utils/api/axios';
 import { removeToCart, addToCart } from '~/utils/store/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { blue, blueGrey, green } from '@mui/material/colors';
-import { date } from 'yup';
+
+import avatarDefault from '~/assets/images/avatarDefault.jpg';
 const cx = classNames.bind(styles);
 
 function Cart() {
@@ -423,8 +423,12 @@ function Cart() {
                             <div className={cx('booking-staffs-information')}>
                                 <h3>THÔNG TIN NHÂN VIÊN BẠN ĐÃ CHỌN</h3>
                                 {selectedStaff && (
-                                    <div>
-                                        <img className={cx('staff-img')} src={selectedStaff.img} alt="img" />
+                                    <div>{selectedStaff.img!=null ?
+                                           ( <img  className={cx('staff-img')} src={selectedStaff.img}  />
+                                           ):(
+                                            <img  className={cx('staff-img')} src={avatarDefault} />
+                                           ) 
+                                        }
                                         <div>
                                             <p>
                                                 <strong>{selectedStaff.name}</strong>
