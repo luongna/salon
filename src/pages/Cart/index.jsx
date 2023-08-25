@@ -24,6 +24,7 @@ function Cart() {
     const [event ,setEvent] =useState({})
     const [times, setTimes] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [totalPriceBegin, setTotalPriceBegin] = useState(0);
     const user = useSelector((state) => state.auth.login?.currenUser);
     const dispatch = useDispatch();
     const deleteElement = (index, id) => {
@@ -104,6 +105,7 @@ function Cart() {
     useEffect(() => {
         const newTotalPrice = jsonData.reduce((total, element) => total + element.price, 0);
         setTotalPrice(newTotalPrice);
+        setTotalPriceBegin(newTotalPrice);
     }, [jsonData]);
     useEffect(() => {
         const fetchDates = async () => {
@@ -168,6 +170,7 @@ function Cart() {
     };
     const handleDateClick = (id) => {
         setSelectedDateId(id);
+        setDiscount(discount)
        const date1 = dates[id-1].date
         axios
             .post(`/booking/listTime`, {
@@ -185,8 +188,9 @@ function Cart() {
             .then((res) => {
                 if(res.data!='not'){
                 const discount = res.data;
-                setDiscount(discount)
-                if(discount !=0){
+                setTotalPrice(totalPriceBegin)
+                
+                if(discount !==0){
                     setTotalPrice(totalPrice-(totalPrice/100*discount))
                     console.log(discount)
                 }
@@ -353,7 +357,7 @@ function Cart() {
                                         ),
                                     )}
                                 </div>
-                                {event.img!=null ? (
+                                {event !== null ?(
                                     <p className={cx('event')}>{event.date} giảm giá {event.discount}%</p>
                                 ):(<></>)}
                                 <p className={cx('branch-title')}>Chọn giờ (*):</p>
